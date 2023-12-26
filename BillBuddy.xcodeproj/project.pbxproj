@@ -95,7 +95,6 @@
 		46C09CD32AE1C65D001E34E6 /* ChattingMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C09CD22AE1C65D001E34E6 /* ChattingMenuView.swift */; };
 		636CE5FB2AC3B27400BF7730 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636CE5FA2AC3B27400BF7730 /* LocationManager.swift */; };
 		636CE5FF2AC3BA1E00BF7730 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636CE5FE2AC3BA1E00BF7730 /* Line.swift */; };
-		6382196D2B333B7700991A3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6382196C2B333B7700991A3E /* GoogleService-Info.plist */; };
 		638A9F492ADA812100C931DD /* MapViewCoordinater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F482ADA812100C931DD /* MapViewCoordinater.swift */; };
 		638A9F4B2ADA813D00C931DD /* AddPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */; };
 		638A9F4D2ADA815700C931DD /* EditPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */; };
@@ -240,7 +239,6 @@
 		46C09CD22AE1C65D001E34E6 /* ChattingMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingMenuView.swift; sourceTree = "<group>"; };
 		636CE5FA2AC3B27400BF7730 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		636CE5FE2AC3BA1E00BF7730 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
-		6382196C2B333B7700991A3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		638A9F482ADA812100C931DD /* MapViewCoordinater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewCoordinater.swift; sourceTree = "<group>"; };
 		638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMapView.swift; sourceTree = "<group>"; };
 		638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPaymentMapView.swift; sourceTree = "<group>"; };
@@ -560,7 +558,6 @@
 			isa = PBXGroup;
 			children = (
 				2655B7032ADD972A002E051B /* BillBuddy.entitlements */,
-				6382196C2B333B7700991A3E /* GoogleService-Info.plist */,
 				2717D0FD2ACD7E260002D620 /* Info.plist */,
 			);
 			path = Config;
@@ -1066,7 +1063,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6382196D2B333B7700991A3E /* GoogleService-Info.plist in Resources */,
 				FF63648F2AE6257400DDA16D /* AdView.xib in Resources */,
 				278BA60D2AC25EA800761B0B /* Pretendard-SemiBold.otf in Resources */,
 				276647FF2ABD53F9000F8A10 /* Assets.xcassets in Resources */,
@@ -1343,7 +1339,7 @@
 				CODE_SIGN_ENTITLEMENTS = BillBuddy/Config/BillBuddy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B369A6R9BP;
+				DEVELOPMENT_TEAM = S5877PQ292;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BillBuddy/Config/Info.plist;
@@ -1379,7 +1375,7 @@
 				CODE_SIGN_ENTITLEMENTS = BillBuddy/Config/BillBuddy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = B369A6R9BP;
+				DEVELOPMENT_TEAM = S5877PQ292;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BillBuddy/Config/Info.plist;
