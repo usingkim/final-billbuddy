@@ -15,6 +15,7 @@ struct DetailMainView: View {
     @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
     
     @StateObject var travelDetailStore: TravelDetailStore
+    @StateObject var paymentStore: PaymentStore
     @StateObject private var locationManager = LocationManager()
     
     @StateObject private var detailMainViewModel: DetailMainViewModel
@@ -24,6 +25,7 @@ struct DetailMainView: View {
     init(travel: TravelCalculation) {
         _detailMainViewModel = StateObject(wrappedValue: DetailMainViewModel(travel: travel))
         _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
+        _paymentStore = StateObject(wrappedValue: PaymentStore(travel: travel))
     }
     
     func fetchPaymentAndSettledAccount(edit: Bool) {
@@ -54,6 +56,7 @@ struct DetailMainView: View {
                         get: { detailMainViewModel.selectedDate },
                         set: { detailMainViewModel.selectedDate = $0 }
                     ))
+                        .environmentObject(paymentStore)
                         .environmentObject(travelDetailStore)
                     
                     if travelDetailStore.isChangedTravel &&

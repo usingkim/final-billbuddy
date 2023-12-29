@@ -12,7 +12,7 @@ struct PaymentMainView: View {
     
     @Binding var selectedDate: Double
     
-    @ObservedObject var paymentStore: PaymentStore = PaymentStore(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
+    @EnvironmentObject private var paymentStore: PaymentStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
@@ -22,6 +22,8 @@ struct PaymentMainView: View {
     @State private var isEditing: Bool = false
     @State private var selection = Set<String>()
     @State private var forDeletePayments: [Payment] = []
+    
+    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -37,6 +39,11 @@ struct PaymentMainView: View {
             }
             else {
                 editingPaymentDeleteButton
+            }
+        }
+        .onAppear {
+            Task {
+                await paymentStore.fetchAll()
             }
         }
     }
