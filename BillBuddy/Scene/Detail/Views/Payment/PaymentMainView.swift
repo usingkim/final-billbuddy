@@ -12,7 +12,7 @@ struct PaymentMainView: View {
     
     @Binding var selectedDate: Double
     
-    @ObservedObject var paymentStore: PaymentStore
+    @ObservedObject var paymentStore: PaymentStore = PaymentStore(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
