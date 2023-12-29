@@ -34,7 +34,7 @@ struct DetailMainView: View {
                 travelDetailStore.saveUpdateDate()
             }
             await detailMainViewModel.fetchAll()
-//            settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
+//            settlementExpensesStore.setSettlementExpenses(payments: detailMainViewModel.payments, members: travelDetailStore.travel.members)
             detailMainViewModel.selectedDate = 0
         }
     }
@@ -106,7 +106,7 @@ struct DetailMainView: View {
             }
         }
         .onChange(of: detailMainViewModel.selectedDate, perform: { date in
-            detailMainViewModel.changeDate(newDate: date)
+            detailMainViewModel.changeDate()
         })
         .onAppear {
             tabBarVisivilyStore.hideTabBar()
@@ -123,7 +123,7 @@ struct DetailMainView: View {
                 }
                 travelDetailStore.listenTravelDate()
             } else {
-                detailMainViewModel.filterDate(date: detailMainViewModel.selectedDate)
+                detailMainViewModel.filterDate()
             }
         }
         .onDisappear {
@@ -236,10 +236,10 @@ struct DetailMainView: View {
                 }
                 
                 else {
-                    Text(detailMainViewModel.selectedDate.toDate().dateWeekYear)
+                    Text(detailMainViewModel.getSelectedDateString())
                         .font(.body01)
                         .foregroundStyle(.black)
-                    Text("\(detailMainViewModel.selectedDate.howManyDaysFromStartDate(startDate: travelDetailStore.travel.startDate))일차")
+                    Text("\(detailMainViewModel.getHowManyDays(startDate: travelDetailStore.travel.startDate))일차")
                         .font(.body03)
                         .foregroundStyle(Color.gray600)
                     Image("expand_more")

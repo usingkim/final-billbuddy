@@ -11,44 +11,30 @@ import FirebaseFirestore
 @MainActor
 final class DetailMainViewModel: ObservableObject {
     
-    @Published var payments: [Payment] = []
-    @Published var filteredPayments: [Payment] = []
+    
     @Published var isFetchingList: Bool = false
     public var updateContentDate: Double = 0
     
-    var members: [TravelCalculation.Member]
-    var travelCalculationId: String
-    var dbRef: CollectionReference
-    var isPaymentSettled: Bool
-
-    var sumAllPayment: Int = 0
-    
-    var paymentDates: [Date] {
-        payments.map { $0.paymentDate.toDate() }
-    }
+    private var payments: [Payment] = []
+    var filteredPayments: [Payment] = []
+    private var members: [TravelCalculation.Member]
+    private var dbRef: CollectionReference
     
     @Published var selection: String = "내역"
     @Published var selectedDate: Double = 0
     @Published var isShowingDateSheet: Bool = false
     
     init(travel: TravelCalculation) {
-        self.travelCalculationId = travel.id
         self.dbRef = Firestore.firestore()
             .collection("TravelCalculation")
             .document(travel.id)
             .collection("Payment")
         self.members = travel.members
         self.updateContentDate = travel.updateContentDate
-        self.isPaymentSettled = travel.isPaymentSettled
-    }
-    
-    func showNewButton() {
-        
     }
     
     func fetchAll() async {
         payments.removeAll()
-        sumAllPayment = 0
         
         do {
             self.isFetchingList = true
@@ -71,21 +57,28 @@ final class DetailMainViewModel: ObservableObject {
         filteredPayments = payments
     }
     
-    func filterDate(date: Double) {
+    func filterDate() {
         filteredPayments = payments.filter({ (payment: Payment) in
-            print(payment.content, payment.paymentDate, date.todayRange(), date.todayRange() ~= payment.paymentDate)
-            return date.todayRange() ~= payment.paymentDate
+            print(payment.content, payment.paymentDate, selectedDate.todayRange(), selectedDate.todayRange() ~= payment.paymentDate)
+            return selectedDate.todayRange() ~= payment.paymentDate
         })
         print("COUNT!!!!", filteredPayments.count)
     }
     
-    func changeDate(newDate: Double) {
+    func changeDate() {
         if selectedDate == 0 {
             resetFilter()
         }
         else {
-            filterDate(date: newDate)
+            filterDate()
         }
     }
     
+    func getSelectedDateString() -> String {
+        return selectedDate.toDate().dateWeekYear
+    }
+    
+    func getHowManyDays(startDate: Double) -> Int {
+        return selectedDate.howManyDaysFromStartDate(startDate: startDate)
+    }
 }
