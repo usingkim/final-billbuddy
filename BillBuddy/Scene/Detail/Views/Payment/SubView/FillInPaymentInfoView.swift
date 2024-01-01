@@ -14,16 +14,9 @@ enum PaymentCreateMode {
 
 struct FillInPaymentInfoView: View {
     
-    @State var mode: PaymentCreateMode = .add
+    @EnvironmentObject private var paymentManageVM: PaymentManageViewModel
     
-    @Binding var travelCalculation: TravelCalculation
-    @Binding var expandDetails: String
-    @Binding var priceString: String
-    @Binding var selectedCategory: Payment.PaymentType?
-    @Binding var paymentDate: Date
-    @Binding var payment: Payment?
-    @Binding var participants: [Payment.Participant]
-    @Binding var isShowingMemberSheet: Bool
+    @State var mode: PaymentCreateMode = .add
     
     var focusedField: FocusState<PaymentFocusField?>.Binding
     
@@ -45,7 +38,7 @@ struct FillInPaymentInfoView: View {
                 // 가격
                 priceSection
                 // 인원
-                PaymentMemberManagementView(mode: mode, priceString: $priceString, travelCalculation: $travelCalculation, members: $members, payment: $payment, selectedMember: $selectedMember, participants: $participants, isShowingMemberSheet: $isShowingMemberSheet)
+//                PaymentMemberManagementView(mode: mode, priceString: $priceString, travelCalculation: $travelCalculation, members: $members, payment: $payment, selectedMember: $selectedMember, participants: $participants, isShowingMemberSheet: $isShowingMemberSheet)
             }
             .onTapGesture {
                 hideKeyboard()
@@ -68,7 +61,10 @@ struct FillInPaymentInfoView: View {
 
 extension FillInPaymentInfoView {
     var datePickerView: some View {
-        DatePicker(selection: $paymentDate, in: travelCalculation.startDate.toDate()...travelCalculation.endDate.toDate(), displayedComponents: [.date], label: {
+        DatePicker(selection: Binding<Date>(
+            get: { paymentManageVM.paymentDate },
+            set: { paymentManageVM.paymentDate = $0 }
+        ), in: paymentManageVM.travelCalculation.startDate.toDate()...paymentManageVM.travelCalculation.endDate.toDate(), displayedComponents: [.date], label: {
             Text("날짜")
                 .font(.body02)
         })
@@ -83,7 +79,10 @@ extension FillInPaymentInfoView {
     }
     
     var timePickerView: some View {
-        DatePicker(selection: $paymentDate, in: travelCalculation.startDate.toDate()...travelCalculation.endDate.toDate(), displayedComponents: [.hourAndMinute], label: {
+        DatePicker(selection: Binding<Date>(
+            get: { paymentManageVM.paymentDate },
+            set: { paymentManageVM.paymentDate = $0 }
+        ), in: paymentManageVM.travelCalculation.startDate.toDate()...paymentManageVM.travelCalculation.endDate.toDate(), displayedComponents: [.hourAndMinute], label: {
             Text("시간")
                 .font(.body02)
         })
@@ -113,7 +112,7 @@ extension FillInPaymentInfoView {
                     isShowingTimePicker.toggle()
                 }
             } label: {
-                Text(paymentDate.datePickerDateFormat)
+                Text(paymentManageVM.paymentDate.datePickerDateFormat)
                     .font(.body04)
                     .padding(.leading, 11)
                     .padding(.top, 5)
@@ -133,7 +132,7 @@ extension FillInPaymentInfoView {
                     isShowingDatePicker.toggle()
                 }
             } label: {
-                Text(paymentDate.datePickerTimeFormat)
+                Text(paymentManageVM.paymentDate.datePickerTimeFormat)
                     .font(.body04)
                     .padding(.leading, 11)
                     .padding(.top, 5)
@@ -170,7 +169,10 @@ extension FillInPaymentInfoView {
             
             HStack {
                 Spacer()
-                CategorySelectView(mode: .category, selectedCategory: $selectedCategory)
+                CategorySelectView(mode: .category, selectedCategory: Binding<Payment.PaymentType?>(
+                    get: { paymentManageVM.selectedCategory },
+                    set: { paymentManageVM.selectedCategory = $0 }
+                ) )
                 Spacer()
             }
             .padding(.bottom, 30)
@@ -190,7 +192,10 @@ extension FillInPaymentInfoView {
             HStack {
                 Text("내용")
                     .font(.body02)
-                TextField("내용을 입력해주세요", text: $expandDetails)
+                TextField("내용을 입력해주세요", text: Binding<String>(
+                    get: { paymentManageVM.expandDetails },
+                    set: { paymentManageVM.expandDetails = $0 }
+                ))
                     .multilineTextAlignment(.trailing)
                     .font(.body04)
                     .focused(focusedField, equals: .content)
@@ -217,7 +222,10 @@ extension FillInPaymentInfoView {
                 Spacer()
                 
                 
-                TextField("결제금액을 입력해주세요", text: $priceString, onCommit: {
+                TextField("결제금액을 입력해주세요", text: Binding<String>(
+                    get: { paymentManageVM.priceString },
+                    set: { paymentManageVM.priceString = $0 }
+                ), onCommit: {
                     
                 })
                     .keyboardType(.numberPad)
@@ -225,7 +233,7 @@ extension FillInPaymentInfoView {
                     .font(.body04)
                     .focused(focusedField, equals: .price)
                     .onTapGesture {
-                        priceString = ""
+                        paymentManageVM.priceString = ""
                     }
             }
             .padding(.leading, 16)

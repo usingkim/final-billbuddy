@@ -106,7 +106,7 @@ struct PaymentListView: View {
                     
                     
                     NavigationLink {
-                        PaymentManageView(mode: .edit, payment: payment, travelCalculation: travelDetailStore.travel)
+                        PaymentManageView(mode: .edit, travelCalculation: travelDetailStore.travel)
                             .environmentObject(paymentStore)
                     } label: {
                         Text("수정")
