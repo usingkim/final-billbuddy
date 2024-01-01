@@ -117,14 +117,12 @@ final class DetailMainViewModel: ObservableObject {
             self.isFetchingList = true
             do {
                 await saveUpdateDate()
-                DispatchQueue.main.sync {
-                    if let index = payments.firstIndex(where: { $0.id == payment.id }) {
-                        payments.remove(at: index)
-                    }
-                    
-                    if let index = filteredPayments.firstIndex(where: { $0.id == payment.id }) {
-                        filteredPayments.remove(at: index)
-                    }
+                if let index = payments.firstIndex(where: { $0.id == payment.id }) {
+                    payments.remove(at: index)
+                }
+                
+                if let index = filteredPayments.firstIndex(where: { $0.id == payment.id }) {
+                    filteredPayments.remove(at: index)
                 }
                 
                 try await dbRef.document(id).delete()

@@ -9,6 +9,8 @@ import SwiftUI
 
 
 struct PaymentListView: View {
+    @EnvironmentObject private var detailMainViewModel: DetailMainViewModel
+    
     @ObservedObject var paymentStore: PaymentStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
@@ -20,7 +22,7 @@ struct PaymentListView: View {
     @Binding var forDeletePayments: [Payment]
     
     var body: some View {
-        ForEach(paymentStore.filteredPayments) { payment in
+        ForEach(detailMainViewModel.filteredPayments) { payment in
             HStack(spacing: 12){
                 if isEditing {
                     if forDeletePayments.isEmpty {
@@ -134,8 +136,8 @@ extension PaymentListView {
     func deleteAPayment() {
         Task {
             if let payment = selectedPayment {
-                await paymentStore.deletePayment(payment: payment)
-                settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
+                await detailMainViewModel.deletePayment(payment: payment)
+//                settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
             }
         }
     }
