@@ -10,20 +10,13 @@ import SwiftUI
 
 struct PaymentMainView: View {
     
-    @Binding var selectedDate: Double
+    @EnvironmentObject private var detailMainViewModel: DetailMainViewModel
     
     @EnvironmentObject private var paymentStore: PaymentStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
-    @State private var isShowingSelectCategorySheet: Bool = false
-    @State private var isShowingDeletePayment: Bool = false
-    @State private var selectedCategory: Payment.PaymentType?
-    @State private var isEditing: Bool = false
-    @State private var selection = Set<String>()
-    @State private var forDeletePayments: [Payment] = []
-    
-    
+    @StateObject private var paymentMainViewModel: PaymentMainViewModel = PaymentMainViewModel()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,7 +27,7 @@ struct PaymentMainView: View {
             // 지출 내역 리스트
             paymentList
             // 편집시 addPaymentButton 대신 editingPaymentDeleteButton을 내보여야함
-            if !isEditing  {
+            if !paymentMainViewModel.isEditing  {
                 addPaymentButton
             }
             else {
@@ -43,7 +36,7 @@ struct PaymentMainView: View {
         }
         .onAppear {
             Task {
-                await paymentStore.fetchAll()
+                await detailMainViewModel.fetchAll()
             }
         }
     }
@@ -95,23 +88,26 @@ extension PaymentMainView {
             .padding(.trailing, 16)
             .padding(.bottom, 32)
         }
-        .onChange(of: selectedDate) { _ in
-            selectedCategory = nil
+        .onChange(of: detailMainViewModel.selectedDate) { _ in
+            paymentMainViewModel.selectedCategory = nil
         }
     }
     
     var editingPaymentDeleteButton: some View {
         Button(action: {
-            isShowingDeletePayment = true
+            paymentMainViewModel.isShowingDeletePayment = true
         }, label: {
             PaymentButtonView(scale: .big, text: "삭제하기")
         })
-        .alert(isPresented: $isShowingDeletePayment) {
+        .alert(isPresented: Binding<Bool>(
+            get: { paymentMainViewModel.isShowingDeletePayment },
+            set: { paymentMainViewModel.isShowingDeletePayment = $0 }
+        )) {
             return Alert(title: Text(PaymentAlertText.selectedPaymentDelete), primaryButton: .destructive(Text("네"), action: {
-                deleteSelectedPayments()
-                isEditing.toggle()
+                detailMainViewModel.deleteSelectedPayments()
+                paymentMainViewModel.isEditing.toggle()
             }), secondaryButton: .cancel(Text("아니오"), action: {
-                isEditing.toggle()
+                paymentMainViewModel.isEditing.toggle()
             }))
         }
     }
@@ -122,8 +118,8 @@ extension PaymentMainView {
                 .environmentObject(paymentStore)
                 .onDisappear {
                     if travelDetailStore.isChangedTravel {
-                        selectedCategory = nil
-                        selectedDate = 0
+                        paymentMainViewModel.selectedCategory = nil
+                        detailMainViewModel.selectedDate = 0
                     }
                 }
         } label: {
@@ -146,7 +142,6 @@ extension PaymentMainView {
         .background {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.gray100, lineWidth: 1)
-            
         }
         .padding(.leading, 16)
         .padding(.trailing, 16)
@@ -154,7 +149,7 @@ extension PaymentMainView {
     
     var paymentList: some View {
         VStack(spacing: 0) {
-            if paymentStore.isFetchingList {
+            if detailMainViewModel.isFetchingList {
                 HStack {
                     Spacer()
                     ProgressView()
@@ -163,7 +158,7 @@ extension PaymentMainView {
                 }
                 Spacer()
             }
-            else if paymentStore.payments.isEmpty {
+            else if detailMainViewModel.filteredPayments.isEmpty {
                 HStack {
                     Spacer()
                     Text("지출을 추가해주세요")
@@ -176,7 +171,13 @@ extension PaymentMainView {
             }
             else {
                 List {
-                    PaymentListView(paymentStore: paymentStore, isEditing: $isEditing, forDeletePayments: $forDeletePayments)
+                    PaymentListView(paymentStore: paymentStore, isEditing: Binding<Bool>(
+                        get: { paymentMainViewModel.isEditing },
+                        set: { paymentMainViewModel.isEditing = $0 }
+                    ), forDeletePayments: Binding<[Payment]>(
+                        get: { detailMainViewModel.forDeletePayments },
+                        set: { detailMainViewModel.forDeletePayments = $0}
+                    ))
                         .padding(.bottom, 12)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets())
@@ -191,9 +192,9 @@ extension PaymentMainView {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 Button(action: {
-                    isShowingSelectCategorySheet = true
+                    paymentMainViewModel.isShowingSelectCategorySheet = true
                 }, label: {
-                    if let category = selectedCategory {
+                    if let category = paymentMainViewModel.selectedCategory {
                         Text(category.rawValue)
                             .font(.body04)
                             .foregroundStyle(Color.gray600)
@@ -209,32 +210,38 @@ extension PaymentMainView {
                         .frame(width: 24, height: 24)
                         .foregroundStyle(Color.gray600)
                 })
-                .sheet(isPresented: $isShowingSelectCategorySheet) {
-                    CategorySelectView(mode: .sheet, selectedCategory: $selectedCategory)
+                .sheet(isPresented: Binding<Bool>(
+                    get: { paymentMainViewModel.isShowingSelectCategorySheet },
+                    set: { paymentMainViewModel.isShowingSelectCategorySheet = $0 }
+                )) {
+                    CategorySelectView(mode: .sheet, selectedCategory: Binding<Payment.PaymentType?>(
+                        get: { paymentMainViewModel.selectedCategory },
+                        set: { paymentMainViewModel.selectedCategory = $0 }
+                    ))
                         .presentationDetents([.fraction(0.3)])
                 }
                 
-                .onChange(of: selectedCategory, perform: { category in
+                .onChange(of: paymentMainViewModel.selectedCategory, perform: { category in
                     
                     // 날짜 전체일때
-                    if selectedDate == 0 {
+                    if detailMainViewModel.selectedDate == 0 {
                         // 선택된 카테고리가 있을때
-                        if let category = selectedCategory {
-                            paymentStore.filterCategory(category: category)
+                        if let category = paymentMainViewModel.selectedCategory {
+                            detailMainViewModel.filterCategory(category: category)
                         }
                         // 카테고리 전체
                         else {
-                            paymentStore.resetFilter()
-                            selectedCategory = nil
+                            detailMainViewModel.resetFilter()
+                            paymentMainViewModel.selectedCategory = nil
                         }
                     }
                     else {
-                        if let category = selectedCategory{
-                            paymentStore.filterDateCategory(date: selectedDate, category: category)
+                        if let category = paymentMainViewModel.selectedCategory{
+                            detailMainViewModel.filterDateCategory(category: category)
                         }
                         else {
-                            selectedCategory = nil
-                            paymentStore.filterDate(date: selectedDate)
+                            paymentMainViewModel.selectedCategory = nil
+                            detailMainViewModel.filterDate()
                         }
                     }
                 })
@@ -242,9 +249,9 @@ extension PaymentMainView {
                 Spacer()
                 
                 Button(action: {
-                    isEditing.toggle()
+                    paymentMainViewModel.isEditing.toggle()
                 }, label: {
-                    if isEditing {
+                    if paymentMainViewModel.isEditing {
                         Text("편집 완료")
                             .font(.body04)
                             .foregroundStyle(Color.gray600)
@@ -265,15 +272,6 @@ extension PaymentMainView {
                 .padding(.leading, 16)
                 .padding(.trailing, 16)
                 .padding(.bottom, 16)
-        }
-    }
-}
-
-extension PaymentMainView {
-    func deleteSelectedPayments() {
-        Task {
-            await paymentStore.deletePayments(payment: forDeletePayments)
-            settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
         }
     }
 }

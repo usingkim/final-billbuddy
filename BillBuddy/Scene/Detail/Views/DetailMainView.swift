@@ -52,12 +52,10 @@ struct DetailMainView: View {
             
             if detailMainViewModel.selection == "내역" {
                 ZStack {
-                    PaymentMainView(selectedDate: Binding<Double>(
-                        get: { detailMainViewModel.selectedDate },
-                        set: { detailMainViewModel.selectedDate = $0 }
-                    ))
+                    PaymentMainView()
                         .environmentObject(paymentStore)
                         .environmentObject(travelDetailStore)
+                        .environmentObject(detailMainViewModel)
                     
                     if travelDetailStore.isChangedTravel &&
                         detailMainViewModel.updateContentDate != travelDetailStore.travel.updateContentDate &&
@@ -124,6 +122,10 @@ struct DetailMainView: View {
                 travelDetailStore.listenTravelDate()
             } else {
                 detailMainViewModel.filterDate()
+            }
+            
+            Task {
+                await paymentStore.fetchAll()
             }
         }
         .onDisappear {
