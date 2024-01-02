@@ -8,7 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-final class PaymentStore: ObservableObject {
+final class PaymentService: ObservableObject {
+    
     @Published var payments: [Payment] = []
     @Published var filteredPayments: [Payment] = []
     @Published var isFetchingList: Bool = false
@@ -41,7 +42,9 @@ final class PaymentStore: ObservableObject {
         payments.removeAll()
         sumAllPayment = 0
         
+        
         do {
+            
             self.isFetchingList = true
             var tempPayment: [Payment] = []
             let snapshot = try await dbRef.order(by: "paymentDate").getDocuments()

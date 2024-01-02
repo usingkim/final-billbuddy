@@ -10,7 +10,7 @@ import SwiftUI
 struct MapSubView: View {
     
     @StateObject var locationManager: LocationManager
-    @StateObject var paymentStore: PaymentStore
+    @StateObject var paymentStore: PaymentService
     
     @Binding var selectedDate: Double
         
@@ -58,5 +58,5 @@ struct MapSubView: View {
 }
 
 #Preview {
-    MapSubView(locationManager: LocationManager(), paymentStore: PaymentStore(travel: TravelCalculation.sampletravel), selectedDate: .constant(0.0))
+    MapSubView(locationManager: LocationManager(), paymentStore: PaymentService(travel: TravelCalculation.sampletravel), selectedDate: .constant(0.0))
 }

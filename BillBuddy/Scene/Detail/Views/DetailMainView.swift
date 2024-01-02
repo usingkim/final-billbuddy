@@ -13,8 +13,9 @@ struct DetailMainView: View {
     @EnvironmentObject private var notificationStore: NotificationStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
-    @StateObject var paymentStore: PaymentStore
-    @StateObject var travelDetailStore: TravelDetailStore
+
+    @StateObject private var paymentStore: PaymentService
+    @StateObject private var travelDetailStore: TravelDetailStore
     @StateObject private var locationManager = LocationManager()
     
     @State private var selection: String = "내역"
@@ -22,6 +23,11 @@ struct DetailMainView: View {
     @State private var isShowingDateSheet: Bool = false
     
     let menus: [String] = ["내역", "지도"]
+    
+    init(travel: TravelCalculation) {
+        _paymentStore = StateObject(wrappedValue: PaymentService(travel: travel))
+        _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
+    }
     
     func fetchPaymentAndSettledAccount(edit: Bool) {
         Task {
@@ -47,8 +53,9 @@ struct DetailMainView: View {
             
             if selection == "내역" {
                 ZStack {
-                    PaymentMainView(selectedDate: $selectedDate, paymentStore: paymentStore)
+                    PaymentMainView(selectedDate: $selectedDate)
                         .environmentObject(travelDetailStore)
+                        .environmentObject(paymentStore)
                     
                     if travelDetailStore.isChangedTravel &&
                         paymentStore.updateContentDate != travelDetailStore.travel.updateContentDate &&
@@ -93,14 +100,7 @@ struct DetailMainView: View {
                 MapMainView(locationManager: locationManager, paymentStore: paymentStore, travelDetailStore: travelDetailStore, selectedDate: $selectedDate)
             }
         }
-        .onChange(of: selectedDate, perform: { date in
-            if selectedDate == 0 {
-                paymentStore.resetFilter()
-            }
-            else {
-                paymentStore.filterDate(date: date)
-            }
-        })
+        
         .onAppear {
             tabBarVisivilyStore.hideTabBar()
             if selectedDate == 0 {
@@ -115,8 +115,6 @@ struct DetailMainView: View {
                     }
                 }
                 travelDetailStore.listenTravelDate()
-            } else {
-                paymentStore.filterDate(date: selectedDate)
             }
         }
         .onDisappear {

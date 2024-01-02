@@ -24,7 +24,7 @@ struct PaymentManageView: View {
     @StateObject var locationManager = LocationManager()
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
-    @EnvironmentObject private var paymentStore: PaymentStore
+    @EnvironmentObject private var paymentStore: PaymentService
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationStore
     

@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct PaymentListView: View {
-    @ObservedObject var paymentStore: PaymentStore
+    @ObservedObject var paymentStore: PaymentService
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     

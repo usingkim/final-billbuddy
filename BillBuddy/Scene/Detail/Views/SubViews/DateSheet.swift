@@ -10,7 +10,7 @@ import SwiftUI
 struct DateSheet: View {
     
     @ObservedObject var locationManager: LocationManager
-    @ObservedObject var paymentStore: PaymentStore
+    @ObservedObject var paymentStore: PaymentService
     
     @Binding var isShowingDateSheet: Bool
     @Binding var selectedDate: Double

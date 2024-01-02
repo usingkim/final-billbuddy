@@ -12,7 +12,7 @@ struct PaymentMainView: View {
     
     @Binding var selectedDate: Double
     
-    @ObservedObject var paymentStore: PaymentStore
+    @EnvironmentObject private var paymentStore: PaymentService
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
@@ -39,6 +39,14 @@ struct PaymentMainView: View {
                 editingPaymentDeleteButton
             }
         }
+        .onChange(of: selectedDate, perform: { date in
+            if selectedDate == 0 {
+                paymentStore.resetFilter()
+            }
+            else {
+                paymentStore.filterDate(date: date)
+            }
+        })
     }
 }
 

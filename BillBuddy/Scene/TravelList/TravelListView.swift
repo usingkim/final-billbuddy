@@ -150,10 +150,7 @@ struct TravelListView: View {
             
         } //MARK: ZSTACK
         .navigationDestination(isPresented: $tabViewStore.isPresentedDetail) {
-            DetailMainView(
-                paymentStore: PaymentStore(travel: tabViewStore.seletedTravel),
-                travelDetailStore: TravelDetailStore(travel: tabViewStore.seletedTravel)
-            )
+            DetailMainView(travel: tabViewStore.seletedTravel)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
