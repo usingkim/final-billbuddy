@@ -7,8 +7,18 @@
 
 import Foundation
 
+enum PaymentManageMode {
+    case mainAdd
+    case add
+    case edit
+}
+
 @MainActor
 final class PaymentManageViewModel: ObservableObject {
+    var mode: PaymentManageMode
+    @Published var payment: Payment?
+    @Published var travelCalculation: TravelCalculation
+    
     @Published var expandDetails: String = ""
     @Published var priceString: String = ""
     @Published var searchAddress: String = ""
@@ -20,5 +30,13 @@ final class PaymentManageViewModel: ObservableObject {
     @Published var isShowingAlert: Bool = false
     @Published var participants: [Payment.Participant] = []
     @Published var isShowingMemberSheet: Bool = false
+    
+    
+    
+    init(mode: PaymentManageMode, payment: Payment?, travelCalculation: TravelCalculation) {
+        self.mode = mode
+        self.payment = payment
+        self.travelCalculation = travelCalculation
+    }
     
 }
