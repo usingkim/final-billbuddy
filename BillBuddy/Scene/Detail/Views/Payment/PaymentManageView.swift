@@ -167,14 +167,7 @@ extension PaymentManageView {
         Button(action: {
             focusedField = paymentManageVM.pressCompleteButton()
         }, label: {
-            switch(paymentManageVM.mode) {
-            case .add:
-                PaymentButtonView(scale: .big, text: "추가하기")
-            case .mainAdd:
-                PaymentButtonView(scale: .big, text: "추가하기")
-            case .edit:
-                PaymentButtonView(scale: .big, text: "수정하기")
-            }
+            PaymentButtonView(scale: .big, text: paymentManageVM.getTextButton())
         })
         .alert(isPresented: $paymentManageVM.isShowingAlert, content: {
             if paymentManageVM.mode == .mainAdd && paymentManageVM.travelCalculation.travelTitle.isEmpty {

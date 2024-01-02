@@ -142,4 +142,11 @@ final class PaymentManageViewModel: ObservableObject {
         return nil
     }
     
+    func getTextButton() -> String {
+        if mode == .edit {
+            return "수정하기"
+        }
+        return "추가하기"
+    }
+    
 }
