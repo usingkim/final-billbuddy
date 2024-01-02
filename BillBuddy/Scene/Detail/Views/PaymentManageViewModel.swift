@@ -36,6 +36,17 @@ final class PaymentManageViewModel: ObservableObject {
     @Published var selectedMember: TravelCalculation.Member = TravelCalculation.Member(name: "", advancePayment: 0, payment: 0)
     @Published var members: [TravelCalculation.Member] = []
     
+    @Published var isShowingDescription: Bool = false
+    @Published var isShowingPersonalMemberSheet: Bool = false
+    @Published var paidButton: Bool = false
+    @Published var personalButton: Bool = false
+    @Published var tempMembers: [TravelCalculation.Member] = []
+    
+    @Published var advanceAmountString: String = ""
+    @Published var seperateAmountString: String = ""
+    @Published var personalMemo: String = ""
+    @Published var seperate: [Int] = [0, 0]
+    
     init(mode: PaymentManageMode, payment: Payment?, travelCalculation: TravelCalculation) {
         self.mode = mode
         self.payment = payment
@@ -149,4 +160,125 @@ final class PaymentManageViewModel: ObservableObject {
         return "추가하기"
     }
     
+    func setMember() {
+        if mode == .edit {
+            if let payment = payment {
+                for participant in payment.participants {
+                    if let existMember = travelCalculation.members.firstIndex(where: { m in
+                        m.id == participant.memberId
+                    }) {
+                        if let _ = members.firstIndex(of: travelCalculation.members[existMember]) {
+                            continue
+                        }
+                        members.append(travelCalculation.members[existMember])
+                    }
+                }
+                participants = payment.participants
+                howManySeperate()
+            }
+        }
+    }
+    
+    func addButton() {
+        participants = []
+        for member in tempMembers {
+            participants.append(Payment.Participant(memberId: member.id, advanceAmount: 0, seperateAmount: 0, memo: ""))
+        }
+        members = tempMembers
+        isShowingMemberSheet = false
+    }
+    
+    func editButton() {
+        isShowingMemberSheet = false
+        
+        var tempParticipants: [Payment.Participant] = []
+        for m in tempMembers {
+            if let participant = participants.first(where: { p in
+                p.memberId == m.id
+            }) {
+                tempParticipants.append(participant)
+            }
+            else {
+                tempParticipants.append(Payment.Participant(memberId: m.id, advanceAmount: 0, seperateAmount: 0, memo: ""))
+            }
+        }
+        
+        participants = tempParticipants
+        payment?.participants = participants
+        members = tempMembers
+    }
+    
+    func personalPrice() {
+        if let idx = participants.firstIndex(where: { p in
+            p.memberId == selectedMember.id
+        }) {
+            participants[idx].advanceAmount = Int(advanceAmountString) ?? 0
+            participants[idx].seperateAmount = Int(seperateAmountString) ?? 0
+        }
+        howManySeperate()
+        isShowingPersonalMemberSheet = false
+    }
+    
+    func getPersonalPrice(idx: Int) -> Int {
+        if participants[idx].seperateAmount != 0 {
+            return participants[idx].seperateAmount - participants[idx].advanceAmount
+        }
+        else {
+            let numOfDutch = participants.count - seperate[0]
+            var amountOfDutch = 0
+            
+            if mode == .edit {
+                if let p = payment {
+                    amountOfDutch = p.payment - seperate[1]
+                }
+            }
+            else {
+                if priceString != "" {
+                    amountOfDutch = Int(priceString)! - seperate[1]
+                }
+                else {
+                    amountOfDutch = 0 - seperate[1]
+                }
+                
+            }
+            
+            return amountOfDutch / numOfDutch - participants[idx].advanceAmount
+        }
+    }
+    
+    func howManySeperate() {
+        var result = 0
+        var amount = 0
+        
+        for participant in self.participants {
+            if participant.seperateAmount != 0 {
+                result += 1
+                amount += participant.seperateAmount
+            }
+        }
+        
+        seperate[0] = result
+        seperate[1] = amount
+    }
+    
+    func getPersonalPrice() {
+        if let idx = participants.firstIndex(where: { p in
+            p.memberId == selectedMember.id
+        }) {
+            advanceAmountString = String(participants[idx].advanceAmount)
+            seperateAmountString = String(participants[idx].seperateAmount)
+            personalMemo = participants[idx].memo
+        }
+    }
+    
+    func addOrDeleteMember(member: TravelCalculation.Member) {
+        if let existMember = tempMembers.firstIndex(where: { m in
+            m.name == member.name
+        }) {
+            tempMembers.remove(at: existMember)
+        }
+        else {
+            tempMembers.append(member)
+        }
+    }
 }

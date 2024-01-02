@@ -870,7 +870,6 @@
 				2766484A2ABD8E34000F8A10 /* PaymentListView.swift */,
 				C478B1912AC6BAE8005EE427 /* FillInPaymentInfoView.swift */,
 				C45E24ED2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift */,
-				900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -886,6 +885,7 @@
 		C47F6C7A2AD52F1A006B77D6 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
+				900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */,
 				C4849A702AD3D49900DFFF81 /* DateSheet.swift */,
 				C45A4D432AD7958800904D89 /* CategorySelectView.swift */,
 			);

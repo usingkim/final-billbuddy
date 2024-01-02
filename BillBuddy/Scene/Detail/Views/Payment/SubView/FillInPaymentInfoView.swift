@@ -25,7 +25,7 @@ struct FillInPaymentInfoView: View {
                 // 가격
                 priceSection
                 // 인원
-                PaymentMemberManagementView(mode: paymentManageVM.mode, priceString: $paymentManageVM.priceString, travelCalculation: $paymentManageVM.travelCalculation, members: $paymentManageVM.members, payment: $paymentManageVM.payment, selectedMember: $paymentManageVM.selectedMember, participants: $paymentManageVM.participants, isShowingMemberSheet: $paymentManageVM.isShowingMemberSheet)
+                PaymentMemberManagementView(paymentManageVM: paymentManageVM)
             }
             .onTapGesture {
                 hideKeyboard()
