@@ -7,31 +7,11 @@
 
 import SwiftUI
 
-enum PaymentCreateMode {
-    case add
-    case edit
-}
-
 struct FillInPaymentInfoView: View {
     
-    @State var mode: PaymentCreateMode = .add
-    
-    @Binding var travelCalculation: TravelCalculation
-    @Binding var expandDetails: String
-    @Binding var priceString: String
-    @Binding var selectedCategory: Payment.PaymentType?
-    @Binding var paymentDate: Date
-    @Binding var payment: Payment?
-    @Binding var participants: [Payment.Participant]
-    @Binding var isShowingMemberSheet: Bool
+    @ObservedObject var paymentManageVM: PaymentManageViewModel
     
     var focusedField: FocusState<PaymentFocusField?>.Binding
-    
-    @State private var isShowingDatePicker: Bool = false
-    @State private var isShowingTimePicker: Bool = false
-    @State private var paymentType: Int = 0 // 0: 1/n, 1: 개별
-    @State private var selectedMember: TravelCalculation.Member = TravelCalculation.Member(name: "", advancePayment: 0, payment: 0)
-    @State private var members: [TravelCalculation.Member] = []
     
     var body: some View {
         ZStack {
@@ -45,20 +25,20 @@ struct FillInPaymentInfoView: View {
                 // 가격
                 priceSection
                 // 인원
-                PaymentMemberManagementView(mode: mode, priceString: $priceString, travelCalculation: $travelCalculation, members: $members, payment: $payment, selectedMember: $selectedMember, participants: $participants, isShowingMemberSheet: $isShowingMemberSheet)
+                PaymentMemberManagementView(mode: paymentManageVM.mode, priceString: $paymentManageVM.priceString, travelCalculation: $paymentManageVM.travelCalculation, members: $paymentManageVM.members, payment: $paymentManageVM.payment, selectedMember: $paymentManageVM.selectedMember, participants: $paymentManageVM.participants, isShowingMemberSheet: $paymentManageVM.isShowingMemberSheet)
             }
             .onTapGesture {
                 hideKeyboard()
-                isShowingDatePicker = false
-                isShowingTimePicker = false
+                paymentManageVM.isShowingDatePicker = false
+                paymentManageVM.isShowingTimePicker = false
             }
             
-            if isShowingDatePicker {
+            if paymentManageVM.isShowingDatePicker {
                 datePickerView
             }
             
             
-            if isShowingTimePicker {
+            if paymentManageVM.isShowingTimePicker {
                 timePickerView
             }
         }
@@ -68,7 +48,7 @@ struct FillInPaymentInfoView: View {
 
 extension FillInPaymentInfoView {
     var datePickerView: some View {
-        DatePicker(selection: $paymentDate, in: travelCalculation.startDate.toDate()...travelCalculation.endDate.toDate(), displayedComponents: [.date], label: {
+        DatePicker(selection: $paymentManageVM.paymentDate, in: paymentManageVM.travelCalculation.startDate.toDate()...paymentManageVM.travelCalculation.endDate.toDate(), displayedComponents: [.date], label: {
             Text("날짜")
                 .font(.body02)
         })
@@ -83,7 +63,7 @@ extension FillInPaymentInfoView {
     }
     
     var timePickerView: some View {
-        DatePicker(selection: $paymentDate, in: travelCalculation.startDate.toDate()...travelCalculation.endDate.toDate(), displayedComponents: [.hourAndMinute], label: {
+        DatePicker(selection: $paymentManageVM.paymentDate, in: paymentManageVM.travelCalculation.startDate.toDate()...paymentManageVM.travelCalculation.endDate.toDate(), displayedComponents: [.hourAndMinute], label: {
             Text("시간")
                 .font(.body02)
         })
@@ -108,12 +88,12 @@ extension FillInPaymentInfoView {
             Spacer()
             
             Button {
-                isShowingDatePicker.toggle()
-                if isShowingTimePicker {
-                    isShowingTimePicker.toggle()
+                paymentManageVM.isShowingDatePicker.toggle()
+                if paymentManageVM.isShowingTimePicker {
+                    paymentManageVM.isShowingTimePicker.toggle()
                 }
             } label: {
-                Text(paymentDate.datePickerDateFormat)
+                Text(paymentManageVM.paymentDate.datePickerDateFormat)
                     .font(.body04)
                     .padding(.leading, 11)
                     .padding(.top, 5)
@@ -123,17 +103,17 @@ extension FillInPaymentInfoView {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.lightBlue100)
                     }
-                    .foregroundStyle(isShowingDatePicker ? Color.myPrimary : Color.gray600)
+                    .foregroundStyle(paymentManageVM.isShowingDatePicker ? Color.myPrimary : Color.gray600)
             }
             
             
             Button {
-                isShowingTimePicker.toggle()
-                if isShowingDatePicker {
-                    isShowingDatePicker.toggle()
+                paymentManageVM.isShowingTimePicker.toggle()
+                if paymentManageVM.isShowingDatePicker {
+                    paymentManageVM.isShowingDatePicker.toggle()
                 }
             } label: {
-                Text(paymentDate.datePickerTimeFormat)
+                Text(paymentManageVM.paymentDate.datePickerTimeFormat)
                     .font(.body04)
                     .padding(.leading, 11)
                     .padding(.top, 5)
@@ -143,7 +123,7 @@ extension FillInPaymentInfoView {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.lightBlue100)
                     }
-                    .foregroundStyle(isShowingTimePicker ? Color.myPrimary : Color.gray600)
+                    .foregroundStyle(paymentManageVM.isShowingTimePicker ? Color.myPrimary : Color.gray600)
             }
             .padding(.trailing, 16)
         }
@@ -170,7 +150,7 @@ extension FillInPaymentInfoView {
             
             HStack {
                 Spacer()
-                CategorySelectView(mode: .category, selectedCategory: $selectedCategory)
+                CategorySelectView(mode: .category, selectedCategory: $paymentManageVM.selectedCategory)
                 Spacer()
             }
             .padding(.bottom, 30)
@@ -190,7 +170,7 @@ extension FillInPaymentInfoView {
             HStack {
                 Text("내용")
                     .font(.body02)
-                TextField("내용을 입력해주세요", text: $expandDetails)
+                TextField("내용을 입력해주세요", text: $paymentManageVM.expandDetails)
                     .multilineTextAlignment(.trailing)
                     .font(.body04)
                     .focused(focusedField, equals: .content)
@@ -217,7 +197,7 @@ extension FillInPaymentInfoView {
                 Spacer()
                 
                 
-                TextField("결제금액을 입력해주세요", text: $priceString, onCommit: {
+                TextField("결제금액을 입력해주세요", text: $paymentManageVM.priceString, onCommit: {
                     
                 })
                     .keyboardType(.numberPad)
@@ -225,7 +205,7 @@ extension FillInPaymentInfoView {
                     .font(.body04)
                     .focused(focusedField, equals: .price)
                     .onTapGesture {
-                        priceString = ""
+                        paymentManageVM.priceString = ""
                     }
             }
             .padding(.leading, 16)

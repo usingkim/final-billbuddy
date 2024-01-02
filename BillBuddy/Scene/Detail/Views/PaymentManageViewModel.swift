@@ -12,7 +12,6 @@ enum PaymentManageMode {
     case add
     case edit
 }
-
 @MainActor
 final class PaymentManageViewModel: ObservableObject {
     var mode: PaymentManageMode
@@ -31,7 +30,11 @@ final class PaymentManageViewModel: ObservableObject {
     @Published var participants: [Payment.Participant] = []
     @Published var isShowingMemberSheet: Bool = false
     
-    
+    @Published var isShowingDatePicker: Bool = false
+    @Published var isShowingTimePicker: Bool = false
+    @Published var paymentType: Int = 0 // 0: 1/n, 1: 개별
+    @Published var selectedMember: TravelCalculation.Member = TravelCalculation.Member(name: "", advancePayment: 0, payment: 0)
+    @Published var members: [TravelCalculation.Member] = []
     
     init(mode: PaymentManageMode, payment: Payment?, travelCalculation: TravelCalculation) {
         self.mode = mode

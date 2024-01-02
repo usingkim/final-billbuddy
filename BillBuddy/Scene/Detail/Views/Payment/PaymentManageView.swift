@@ -138,17 +138,10 @@ extension PaymentManageView {
     
     var fillInPaymentInfoViewSection: some View {
         Section {
-            switch paymentManageVM.mode {
-            case .add:
-                FillInPaymentInfoView(travelCalculation: $paymentManageVM.travelCalculation, expandDetails: $paymentManageVM.expandDetails, priceString: $paymentManageVM.priceString, selectedCategory: $paymentManageVM.selectedCategory, paymentDate: $paymentManageVM.paymentDate, payment: .constant(nil), participants: $paymentManageVM.participants, isShowingMemberSheet: $paymentManageVM.isShowingMemberSheet, focusedField: $focusedField)
-            case .edit:
-                FillInPaymentInfoView(mode: .edit, travelCalculation: $paymentManageVM.travelCalculation, expandDetails: $paymentManageVM.expandDetails, priceString: $paymentManageVM.priceString, selectedCategory: $paymentManageVM.selectedCategory, paymentDate: $paymentManageVM.paymentDate, payment: $paymentManageVM.payment, participants: $paymentManageVM.participants, isShowingMemberSheet: $paymentManageVM.isShowingMemberSheet, focusedField: $focusedField)
-            case .mainAdd:
-                FillInPaymentInfoView(travelCalculation: $paymentManageVM.travelCalculation, expandDetails: $paymentManageVM.expandDetails, priceString: $paymentManageVM.priceString, selectedCategory: $paymentManageVM.selectedCategory, paymentDate: $paymentManageVM.paymentDate, payment: .constant(nil), participants: $paymentManageVM.participants, isShowingMemberSheet: $paymentManageVM.isShowingMemberSheet, focusedField: $focusedField)
-            }
-        }
-        .onAppear {
-            paymentManageVM.setInitialValue()
+            FillInPaymentInfoView(paymentManageVM: paymentManageVM, focusedField: $focusedField)
+                .onAppear {
+                    paymentManageVM.setInitialValue()
+                }
         }
     }
     

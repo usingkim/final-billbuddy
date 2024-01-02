@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PaymentMemberManagementView: View {
-    @State var mode: PaymentCreateMode = .add
+    @State var mode: PaymentManageMode = .add
     
     @Binding var priceString: String
     @Binding var travelCalculation: TravelCalculation
@@ -184,19 +184,19 @@ struct PaymentMemberManagementView: View {
             
             
             Button {
-                if mode == .add {
-                    addButton()
-                }
-                else if mode == .edit {
+                if mode == .edit {
                     editButton()
                 }
+                else {
+                    addButton()
+                }
             } label: {
-                if mode == .add {
-                    Text("인원 추가")
+                if mode == .edit {
+                    Text("인원 수정")
                         .font(Font.body02)
                 }
-                else if mode == .edit {
-                    Text("인원 수정")
+                else {
+                    Text("인원 추가")
                         .font(Font.body02)
                 }
             }
@@ -578,18 +578,20 @@ extension PaymentMemberManagementView {
         else {
             let numOfDutch = participants.count - seperate[0]
             var amountOfDutch = 0
-            if mode == .add {
+            
+            if mode == .edit {
+                if let p = payment {
+                    amountOfDutch = p.payment - seperate[1]
+                }
+            }
+            else {
                 if priceString != "" {
                     amountOfDutch = Int(priceString)! - seperate[1]
                 }
                 else {
                     amountOfDutch = 0 - seperate[1]
                 }
-            }
-            else if mode == .edit {
-                if let p = payment {
-                    amountOfDutch = p.payment - seperate[1]
-                }
+                
             }
             
             return amountOfDutch / numOfDutch - participants[idx].advanceAmount
