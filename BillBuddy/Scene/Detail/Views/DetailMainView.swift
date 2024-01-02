@@ -83,7 +83,9 @@ struct DetailMainView: View {
                 }
             }
             else if detailMainVM.selectMenu == "지도" {
-                MapMainView(locationManager: locationManager, paymentStore: paymentService, travelDetailStore: travelDetailStore, selectedDate: $detailMainVM.selectedDate)
+                MapMainView(detailMainVM: detailMainVM)
+                    .environmentObject(locationManager)
+                    .environmentObject(paymentService)
             }
         }
         

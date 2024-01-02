@@ -99,8 +99,6 @@
 		638A9F4B2ADA813D00C931DD /* AddPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */; };
 		638A9F4D2ADA815700C931DD /* EditPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */; };
 		638A9F4F2ADA816E00C931DD /* MapMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4E2ADA816E00C931DD /* MapMainView.swift */; };
-		638A9F512ADA817B00C931DD /* MapSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F502ADA817B00C931DD /* MapSubView.swift */; };
-		638A9F532ADA818D00C931DD /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F522ADA818D00C931DD /* MapDetailView.swift */; };
 		63A3F1762ADF78B1006EE206 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */; };
 		63EF15662B319FA50031F617 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF15652B319FA50031F617 /* CustomAnnotation.swift */; };
 		900B97CF2B31DFD300A89464 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */; };
@@ -245,8 +243,6 @@
 		638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMapView.swift; sourceTree = "<group>"; };
 		638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPaymentMapView.swift; sourceTree = "<group>"; };
 		638A9F4E2ADA816E00C931DD /* MapMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainView.swift; sourceTree = "<group>"; };
-		638A9F502ADA817B00C931DD /* MapSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSubView.swift; sourceTree = "<group>"; };
-		638A9F522ADA818D00C931DD /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
 		63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		63EF15652B319FA50031F617 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
@@ -363,8 +359,6 @@
 				638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */,
 				638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */,
 				638A9F4E2ADA816E00C931DD /* MapMainView.swift */,
-				638A9F502ADA817B00C931DD /* MapSubView.swift */,
-				638A9F522ADA818D00C931DD /* MapDetailView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1124,7 +1118,6 @@
 				C47F6C772AD51878006B77D6 /* PaymentMainView.swift in Sources */,
 				27933F702AD3402300E6A545 /* CategoryLabel.swift in Sources */,
 				C478B1942AC6C5BD005EE427 /* Double+Extension.swift in Sources */,
-				638A9F512ADA817B00C931DD /* MapSubView.swift in Sources */,
 				C45E24EE2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift in Sources */,
 				2766484B2ABD8E34000F8A10 /* PaymentListView.swift in Sources */,
 				271F8BBF2B2E1C090032353C /* EditDateCalenderStore.swift in Sources */,
@@ -1199,7 +1192,6 @@
 				273201282ADB09BA00AE528B /* MemberShareSheet.swift in Sources */,
 				278266472AE2008400118C21 /* NotificationStore.swift in Sources */,
 				D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */,
-				638A9F532ADA818D00C931DD /* MapDetailView.swift in Sources */,
 				FFCF22592B24500000B79BF9 /* SNSSignInService.swift in Sources */,
 				2766480E2ABD5509000F8A10 /* Custom.swift in Sources */,
 				277A93632B354D9A002CB609 /* LicenseStore.swift in Sources */,
