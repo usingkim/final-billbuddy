@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 final class DetailMainViewModel: ObservableObject {
-    var selectMenu: String = "내역"
+    @Published var selectMenu: String = "내역"
     @Published var selectedDate: Double = 0
     @Published var isShowingDateSheet: Bool = false
     @Published var isShowingSelectCategorySheet: Bool = false

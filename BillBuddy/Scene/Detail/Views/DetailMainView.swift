@@ -14,7 +14,7 @@ struct DetailMainView: View {
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
 
-    @StateObject private var paymentStore: PaymentService
+    @StateObject private var paymentService: PaymentService
     @StateObject private var travelDetailStore: TravelDetailStore
     @StateObject private var locationManager = LocationManager()
     
@@ -23,7 +23,7 @@ struct DetailMainView: View {
     let menus: [String] = ["내역", "지도"]
     
     init(travel: TravelCalculation) {
-        _paymentStore = StateObject(wrappedValue: PaymentService(travel: travel))
+        _paymentService = StateObject(wrappedValue: PaymentService(travel: travel))
         _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
     }
     
@@ -43,15 +43,15 @@ struct DetailMainView: View {
                 ZStack {
                     PaymentMainView(detailMainVM: detailMainVM)
                         .environmentObject(travelDetailStore)
-                        .environmentObject(paymentStore)
+                        .environmentObject(paymentService)
                     
                     if travelDetailStore.isChangedTravel &&
-                        paymentStore.updateContentDate != travelDetailStore.travel.updateContentDate &&
-                        !paymentStore.isFetchingList
+                        paymentService.updateContentDate != travelDetailStore.travel.updateContentDate &&
+                        !paymentService.isFetchingList
                     {
                         
                         Button {
-                            detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentStore, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                            detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                             travelDetailStore.isChangedTravel = false
                         } label: {
                             HStack(spacing: 8) {
@@ -83,7 +83,7 @@ struct DetailMainView: View {
                 }
             }
             else if detailMainVM.selectMenu == "지도" {
-                MapMainView(locationManager: locationManager, paymentStore: paymentStore, travelDetailStore: travelDetailStore, selectedDate: $detailMainVM.selectedDate)
+                MapMainView(locationManager: locationManager, paymentStore: paymentService, travelDetailStore: travelDetailStore, selectedDate: $detailMainVM.selectedDate)
             }
         }
         
@@ -95,7 +95,7 @@ struct DetailMainView: View {
                         travelDetailStore.setTravel()
 
                         travelDetailStore.checkAndResaveToken()
-                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentStore, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                         travelDetailStore.isFirstFetch = false
                         
                     }
@@ -146,7 +146,7 @@ struct DetailMainView: View {
                 NavigationLink {
                     MoreView(travel: travelDetailStore.travel)
                         .environmentObject(travelDetailStore)
-                        .environmentObject(paymentStore)
+                        .environmentObject(paymentService)
                 } label: {
                     Image("steps-1 3")
                         .resizable()
@@ -236,7 +236,7 @@ struct DetailMainView: View {
         }
         
         .sheet(isPresented: $detailMainVM.isShowingDateSheet, content: {
-            DateSheet(locationManager: locationManager, paymentStore: paymentStore,isShowingDateSheet: $detailMainVM.isShowingDateSheet, selectedDate: $detailMainVM.selectedDate, startDate: travelDetailStore.travel.startDate, endDate: travelDetailStore.travel.endDate)
+            DateSheet(locationManager: locationManager, paymentStore: paymentService,isShowingDateSheet: $detailMainVM.isShowingDateSheet, selectedDate: $detailMainVM.selectedDate, startDate: travelDetailStore.travel.startDate, endDate: travelDetailStore.travel.endDate)
                 .presentationDetents([.fraction(0.4)])
         })
         
