@@ -44,30 +44,20 @@ struct MapMainView: View {
                 .offset(CGSize(width: geometry.size.width - 65, height: geometry.size.height - 65))
             }
         }
-        .onChange(of: detailMainVM.selectedDate, perform: { date in
+        .onChange(of: detailMainVM.selectedDate, perform: { _ in
             detailMainVM.whenChangeSelectedDate(paymentStore: paymentStore)
-            if detailMainVM.selectedDate == 0 {
-                paymentStore.resetFilter()
-            }
-            else {
-                paymentStore.filterDate(date: date)
-            }
-            locationManager.setAnnotations(filteredPayments: paymentStore.filteredPayments)
+            
+            locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
         })
         .onAppear {
-            if detailMainVM.selectedDate == 0 {
-                paymentStore.resetFilter()
-            }
-            else {
-                paymentStore.filterDate(date: detailMainVM.selectedDate)
-            }
-            locationManager.setAnnotations(filteredPayments: paymentStore.filteredPayments)
+            detailMainVM.whenOpenView(paymentStore: paymentStore)
+            locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
         }
     }
     
     var bottomList: some View {
         VStack {
-            ForEach(Array(zip(0..<paymentStore.payments.count, paymentStore.filteredPayments)), id: \.0) { index, payment in
+            ForEach(Array(zip(0..<paymentStore.payments.count, detailMainVM.filteredPayments)), id: \.0) { index, payment in
                 HStack(spacing: 12) {
                     ZStack {
                         Circle()

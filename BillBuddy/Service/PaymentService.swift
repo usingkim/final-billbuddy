@@ -8,10 +8,10 @@
 import Foundation
 import FirebaseFirestore
 
+@MainActor
 final class PaymentService: ObservableObject {
     
     @Published var payments: [Payment] = []
-    @Published var filteredPayments: [Payment] = []
     @Published var isFetchingList: Bool = false
     public var updateContentDate: Double = 0
     
@@ -19,9 +19,7 @@ final class PaymentService: ObservableObject {
     var travelCalculationId: String
     var dbRef: CollectionReference
     var isPaymentSettled: Bool
-
     var sumAllPayment: Int = 0
-    
     var paymentDates: [Date] {
         payments.map { $0.paymentDate.toDate() }
     }
@@ -37,14 +35,11 @@ final class PaymentService: ObservableObject {
         self.isPaymentSettled = travel.isPaymentSettled
     }
     
-    @MainActor
-    func fetchAll() async {
+    func fetchAll() async -> [Payment] {
         payments.removeAll()
         sumAllPayment = 0
         
-        
         do {
-            
             self.isFetchingList = true
             var tempPayment: [Payment] = []
             let snapshot = try await dbRef.order(by: "paymentDate").getDocuments()
@@ -54,81 +49,70 @@ final class PaymentService: ObservableObject {
             }
             
             self.payments = tempPayment
-            self.filteredPayments = tempPayment
             self.isFetchingList = false
+            return tempPayment
         } catch {
             print("payment fetch false \(error)")
         }
+        
+        return []
     }
     
-    func resetFilter() {
-        filteredPayments = payments
+    func resetFilter() -> [Payment] {
+        return payments
     }
     
-    func filterDate(date: Double) {
-        filteredPayments = payments.filter({ (payment: Payment) in
+    func filterDate(date: Double) -> [Payment] {
+        return payments.filter({ (payment: Payment) in
             print(payment.content, payment.paymentDate, date.todayRange(), date.todayRange() ~= payment.paymentDate)
             return date.todayRange() ~= payment.paymentDate
         })
-        print("COUNT!!!!", filteredPayments.count)
     }
     
-    func filterDateCategory(date: Double, category: Payment.PaymentType) {
-        filteredPayments = payments.filter({ (payment: Payment) in
+    func filterDateCategory(date: Double, category: Payment.PaymentType) -> [Payment] {
+        return payments.filter({ (payment: Payment) in
             return date.todayRange() ~= payment.paymentDate && payment.type == category
         })
     }
     
-    func filterCategory(category: Payment.PaymentType) {
-    
-        filteredPayments = payments.filter({ (payment: Payment) in
+    func filterCategory(category: Payment.PaymentType) -> [Payment] {
+        return payments.filter({ (payment: Payment) in
             return payment.type == category
         })
     }
     
-    func addPayment(newPayment: Payment) async {
-        if isPaymentSettled == true { return }
+    func addPayment(newPayment: Payment) async -> [Payment]? {
+        if isPaymentSettled { return nil }
         try! dbRef.addDocument(from: newPayment.self)
         await saveUpdateDate()
-        await fetchAll()
+        return await fetchAll()
     }
     
-    func editPayment(payment: Payment) async {
-        if isPaymentSettled == true { return }
+    func editPayment(payment: Payment) async -> [Payment]? {
+        if isPaymentSettled { return nil }
         if let id = payment.id {
             self.isFetchingList = true
             await saveUpdateDate()
             try? dbRef.document(id).setData(from: payment)
-
-            DispatchQueue.main.sync {
-                if let index = payments.firstIndex(where: { $0.id == payment.id }) {
-                    payments[index] = payment
-                }
-                
-                if let index = filteredPayments.firstIndex(where: { $0.id == payment.id }) {
-                    filteredPayments[index] = payment
-                }
+            if let index = payments.firstIndex(where: { $0.id == payment.id }) {
+                payments[index] = payment
             }
-            
             self.isFetchingList = false
+            return payments
         }
+        return nil
     }
     
-    func deletePayment(payment: Payment) async {
-        if isPaymentSettled == true { return }
+    func deletePayment(payment: Payment) async -> [Payment]? {
+        if isPaymentSettled { return nil }
         if let id = payment.id {
             self.isFetchingList = true
             do {
                 await saveUpdateDate()
-                DispatchQueue.main.sync {
-                    if let index = payments.firstIndex(where: { $0.id == payment.id }) {
-                        payments.remove(at: index)
-                    }
-                    
-                    if let index = filteredPayments.firstIndex(where: { $0.id == payment.id }) {
-                        filteredPayments.remove(at: index)
-                    }
+                if let index = payments.firstIndex(where: { $0.id == payment.id }) {
+                    payments.remove(at: index)
                 }
+                
                 
                 try await dbRef.document(id).delete()
             } catch {
@@ -136,18 +120,22 @@ final class PaymentService: ObservableObject {
             }
             
             self.isFetchingList = false
+            return payments
         }
+        return nil
     }
     
-    func deletePayments(payment: [Payment]) async {
-        if isPaymentSettled == true { return }
+    func deletePayments(payment: [Payment]) async -> [Payment]? {
+        if isPaymentSettled { return nil }
+        var result: [Payment]?
         for p in payment {
-            await self.deletePayment(payment: p)
+            result = await self.deletePayment(payment: p)
         }
+        return result
     }
     
     func saveUpdateDate() async {
-        if isPaymentSettled == true { return }
+        if isPaymentSettled { return }
         do {
             let newUpdateDate = Date.now.timeIntervalSince1970
             try await Firestore.firestore()
@@ -163,4 +151,5 @@ final class PaymentService: ObservableObject {
         // - edit
         // - detele
     }
+    
 }

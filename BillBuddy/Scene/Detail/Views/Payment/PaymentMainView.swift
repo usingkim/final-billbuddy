@@ -109,7 +109,7 @@ extension PaymentMainView {
             PaymentManageView(mode: .add, travelCalculation: travelDetailStore.travel)
                 .environmentObject(paymentStore)
                 .onDisappear {
-                    detailMainVM.refresh(travelDetailStore: travelDetailStore)
+                    detailMainVM.refresh(travelDetailStore: travelDetailStore, paymentStore: paymentStore)
                 }
         } label: {
             HStack(spacing: 12) {

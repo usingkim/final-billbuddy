@@ -238,7 +238,7 @@ struct DetailMainView: View {
         }
         
         .sheet(isPresented: $detailMainVM.isShowingDateSheet, content: {
-            DateSheet(locationManager: locationManager, paymentStore: paymentService,isShowingDateSheet: $detailMainVM.isShowingDateSheet, selectedDate: $detailMainVM.selectedDate, startDate: travelDetailStore.travel.startDate, endDate: travelDetailStore.travel.endDate)
+            DateSheet(locationManager: locationManager, detailMainVM: detailMainVM, startDate: travelDetailStore.travel.startDate, endDate: travelDetailStore.travel.endDate)
                 .presentationDetents([.fraction(0.4)])
         })
         

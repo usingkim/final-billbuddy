@@ -9,6 +9,8 @@ import Foundation
 
 @MainActor
 final class DetailMainViewModel: ObservableObject {
+    @Published var filteredPayments: [Payment] = []
+    
     @Published var selectMenu: String = "내역"
     @Published var selectedDate: Double = 0
     @Published var isShowingDateSheet: Bool = false
@@ -23,7 +25,7 @@ final class DetailMainViewModel: ObservableObject {
     
     func fetchPaymentAndSettledAccount(paymentStore: PaymentService, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         Task {
-            await paymentStore.fetchAll()
+            filteredPayments = await paymentStore.fetchAll()
             settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
         }
         selectedDate = 0
@@ -31,7 +33,9 @@ final class DetailMainViewModel: ObservableObject {
     
     func deleteSelectedPayments(paymentStore: PaymentService, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         Task {
-            await paymentStore.deletePayments(payment: forDeletePayments)
+            if let deleted = await paymentStore.deletePayments(payment: forDeletePayments) {
+                filteredPayments = deleted
+            }
             settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
             isEditing.toggle()
         }
@@ -39,10 +43,19 @@ final class DetailMainViewModel: ObservableObject {
     
     func whenChangeSelectedDate(paymentStore: PaymentService) {
         if selectedDate == 0 {
-            paymentStore.resetFilter()
+            filteredPayments = paymentStore.resetFilter()
         }
         else {
-            paymentStore.filterDate(date: selectedDate)
+            filteredPayments = paymentStore.filterDate(date: selectedDate)
+        }
+    }
+    
+    func whenOpenView(paymentStore: PaymentService) {
+        if selectedDate == 0 {
+            filteredPayments = paymentStore.resetFilter()
+        }
+        else {
+            filteredPayments = paymentStore.filterDate(date: selectedDate)
         }
     }
     
@@ -52,21 +65,21 @@ final class DetailMainViewModel: ObservableObject {
         if selectedDate == 0 {
             // 선택된 카테고리가 있을때
             if let category = selectedCategory {
-                paymentStore.filterCategory(category: category)
+                filteredPayments = paymentStore.filterCategory(category: category)
             }
             // 카테고리 전체
             else {
-                paymentStore.resetFilter()
+                filteredPayments = paymentStore.resetFilter()
                 selectedCategory = nil
             }
         }
         else {
             if let category = selectedCategory{
-                paymentStore.filterDateCategory(date: selectedDate, category: category)
+                filteredPayments = paymentStore.filterDateCategory(date: selectedDate, category: category)
             }
             else {
                 selectedCategory = nil
-                paymentStore.filterDate(date: selectedDate)
+                filteredPayments = paymentStore.filterDate(date: selectedDate)
             }
         }
     }
@@ -75,10 +88,11 @@ final class DetailMainViewModel: ObservableObject {
         selectedCategory = nil
     }
     
-    func refresh(travelDetailStore: TravelDetailStore) {
+    func refresh(travelDetailStore: TravelDetailStore, paymentStore: PaymentService) {
         if travelDetailStore.isChangedTravel {
             selectedCategory = nil
             selectedDate = 0
+            filteredPayments = paymentStore.resetFilter()
         }
     }
     
@@ -93,7 +107,9 @@ final class DetailMainViewModel: ObservableObject {
     func deleteAPayment(paymentStore: PaymentService, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         Task {
             if let payment = selectedPayment {
-                await paymentStore.deletePayment(payment: payment)
+                if let deleted = await paymentStore.deletePayment(payment: payment) {
+                    filteredPayments = deleted
+                }
                 settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
             }
         }
