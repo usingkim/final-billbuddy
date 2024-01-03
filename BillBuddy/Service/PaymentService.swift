@@ -15,11 +15,12 @@ final class PaymentService: ObservableObject {
     @Published var isFetchingList: Bool = false
     public var updateContentDate: Double = 0
     
-    var members: [TravelCalculation.Member]
-    var travelCalculationId: String
-    var dbRef: CollectionReference
-    var isPaymentSettled: Bool
-    var sumAllPayment: Int = 0
+    private var members: [TravelCalculation.Member]
+    private var travelCalculationId: String
+    private var dbRef: CollectionReference
+    private var isPaymentSettled: Bool
+    private var sumAllPayment: Int = 0
+    
     var paymentDates: [Date] {
         payments.map { $0.paymentDate.toDate() }
     }
@@ -146,10 +147,6 @@ final class PaymentService: ObservableObject {
         } catch {
             print("save date false")
         }
-        // TravelCaluration UpdateDate최신화
-        // - save
-        // - edit
-        // - detele
     }
     
 }

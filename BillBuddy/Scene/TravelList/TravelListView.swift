@@ -107,7 +107,7 @@ struct TravelListView: View {
                                                 if let travel = selectedTravel {
                                                     MemberManagementView(
                                                         travel: travel,
-                                                        entryViewtype: .list
+                                                        entryViewType: .list
                                                     )
                                                     .environmentObject(travelDetailStore)
                                                 }

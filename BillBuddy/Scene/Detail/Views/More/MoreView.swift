@@ -63,7 +63,7 @@ struct MoreView: View {
 
             ScrollView {
                 VStack {
-                    ForEach(ListItem.allCases, id: \.self) { item in
+                    ForEach(itemList, id: \.self) { item in
                         NavigationLink {
                             switch item {
                             case .chat:
@@ -77,9 +77,8 @@ struct MoreView: View {
                                 .environmentObject(travelDetailStore)
                             case .mamberManagement:
                                 MemberManagementView(
-                                    paymentsOfType: paymentStore.payments, 
                                     travel: travel,
-                                    entryViewtype: .more
+                                    entryViewType: .more
                                 )
                                     .environmentObject(travelDetailStore)
                             case .settledAccount:

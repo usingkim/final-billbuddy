@@ -114,7 +114,7 @@ final class InvitTravelService: ObservableObject {
                 // 현재 맴버에 자신이 포함되어있으면 return
                 if travel.members.firstIndex(where: { $0.userId == user.id }) != nil {
                     isShowingAlert = true
-                    guard let notiId = pushData?.querys["notiId"] else { return }
+                    guard let _ = pushData?.querys["notiId"] else { return }
                     deleteNotification()
                     return
                 }

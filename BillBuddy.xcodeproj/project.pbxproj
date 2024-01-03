@@ -101,6 +101,7 @@
 		63EF15662B319FA50031F617 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF15652B319FA50031F617 /* CustomAnnotation.swift */; };
 		900B97CF2B31DFD300A89464 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */; };
 		9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */; };
+		9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */; };
 		90BA673D2B2ACABE002911DB /* PaymentAlertText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */; };
 		90C6079E2B3F5C2100D8AF5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */; };
 		90CE44EC2B443FA2003DD8FB /* DetailMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */; };
@@ -244,6 +245,7 @@
 		63EF15652B319FA50031F617 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTravelViewModel.swift; sourceTree = "<group>"; };
+		9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManagementViewModel.swift; sourceTree = "<group>"; };
 		90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAlertText.swift; sourceTree = "<group>"; };
 		90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainViewModel.swift; sourceTree = "<group>"; };
@@ -813,8 +815,8 @@
 		9059FFF52B45C59E002D2F9B /* TravelList */ = {
 			isa = PBXGroup;
 			children = (
-				9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */,
 				023EF9232ACC0334005C3F30 /* UserTravelStore.swift */,
+				9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */,
 				02C949962AD7D90300DFF9D4 /* CalendarViewModel.swift */,
 				02C5A7D82AE0239800CBD8D1 /* FloatingButtonMenuStore.swift */,
 			);
@@ -824,6 +826,9 @@
 		909D4D4A2B456A2300B59A14 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				278DDC1B2ACC3E7F00B2EC50 /* JoinMemberStore.swift */,
+				2785ECC02AE046D0003E8D9D /* TravelDetailStore.swift */,
+				27933F732AD3403500E6A545 /* SettlementExpensesStore.swift */,
 				9059FFF52B45C59E002D2F9B /* TravelList */,
 				909D4D4B2B4576E300B59A14 /* Detail */,
 			);
@@ -835,10 +840,8 @@
 			children = (
 				90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */,
 				90CE44EE2B445126003DD8FB /* PaymentManageViewModel.swift */,
+				9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */,
 				636CE5FA2AC3B27400BF7730 /* LocationManager.swift */,
-				278DDC1B2ACC3E7F00B2EC50 /* JoinMemberStore.swift */,
-				2785ECC02AE046D0003E8D9D /* TravelDetailStore.swift */,
-				27933F732AD3403500E6A545 /* SettlementExpensesStore.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -1142,6 +1145,7 @@
 				D279D1142ACF0F0D0087712F /* SignUpData.swift in Sources */,
 				276648142ABD5583000F8A10 /* AuthService.swift in Sources */,
 				278266492AE2008D00118C21 /* UserNotification.swift in Sources */,
+				9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */,
 				277C99A02AC069A9006DFCFC /* TravelRenewalDate.swift in Sources */,
 				273201282ADB09BA00AE528B /* MemberShareSheet.swift in Sources */,
 				278266472AE2008400118C21 /* NotificationStore.swift in Sources */,

@@ -40,7 +40,7 @@ final class MessageStore: ObservableObject {
         
         if let data = try? await item.loadTransferable(type: Data.self) {
             do {
-                try await storage.child(path).putDataAsync(data, metadata: nil)
+                _ = try await storage.child(path).putDataAsync(data, metadata: nil)
                 let imageURL = try await storage.child(path).downloadURL()
                 urlString = imageURL.absoluteString
             } catch {

@@ -125,7 +125,7 @@ final class PaymentManageViewModel: ObservableObject {
         Payment(type: selectedCategory ?? .etc, content: expandDetails, payment: Int(priceString) ?? 0, address: Payment.Address(address: locationManager.selectedAddress, latitude: locationManager.selectedLatitude, longitude: locationManager.selectedLongitude), participants: participants, paymentDate: paymentDate.timeIntervalSince1970)
         
         Task {
-            await paymentStore.addPayment(newPayment: newPayment)
+            _ = await paymentStore.addPayment(newPayment: newPayment)
             settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelCalculation.members)
         }
         
@@ -146,7 +146,7 @@ final class PaymentManageViewModel: ObservableObject {
         if let payment = payment {
             let newPayment = Payment(id: payment.id, type: selectedCategory ?? .etc, content: expandDetails, payment: Int(priceString) ?? 0, address: Payment.Address(address: locationManager.selectedAddress, latitude: locationManager.selectedLatitude, longitude: locationManager.selectedLongitude), participants: participants, paymentDate: paymentDate.timeIntervalSince1970)
             Task {
-                await paymentStore.editPayment(payment: newPayment)
+                _ = await paymentStore.editPayment(payment: newPayment)
                 settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelCalculation.members)
             }
         }
