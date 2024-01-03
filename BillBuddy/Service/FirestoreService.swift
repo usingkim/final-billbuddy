@@ -27,6 +27,26 @@ final class FirestoreService {
         }
     }
     
+    func fetchAll<T: Codable>(collection: StoreCollection, data: T.Type) async throws -> [T] {
+        var temp: [T] = []
+        
+        do {
+//            let snapshot = try await dbRef.order(by: "paymentDate").collection(collection.rawValue).getDocuments()
+            let snapshot = try await dbRef
+                .collection(collection.rawValue)
+                .getDocuments()
+            for document in snapshot.documents {
+                let new = try document.data(as: T.self)
+                temp.append(new)
+            }
+            
+        } catch {
+            print("payment fetch false \(error)")
+        }
+        
+        return temp
+    }
+    
     func saveDocument<T: Codable>(collection: StoreCollection, documentId: String, data: T) async throws {
         do {
             try dbRef.collection(collection.path).document(documentId).setData(from: data.self, merge: true)

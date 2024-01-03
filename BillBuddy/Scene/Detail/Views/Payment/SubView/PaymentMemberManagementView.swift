@@ -8,54 +8,21 @@
 import SwiftUI
 
 struct PaymentMemberManagementView: View {
-    @State var mode: PaymentCreateMode = .add
     
-    @Binding var priceString: String
-    @Binding var travelCalculation: TravelCalculation
-    @Binding var members: [TravelCalculation.Member]
-    @Binding var payment: Payment?
-    @Binding var selectedMember: TravelCalculation.Member
-    @Binding var participants: [Payment.Participant]
-    @Binding var isShowingMemberSheet: Bool
-    
-    @State private var isShowingDescription: Bool = false
-    @State private var isShowingPersonalMemberSheet: Bool = false
-    @State private var paidButton: Bool = false
-    @State private var personalButton: Bool = false
-    @State private var tempMembers: [TravelCalculation.Member] = []
-    
-    @State private var advanceAmountString: String = ""
-    @State private var seperateAmountString: String = ""
-    @State private var personalMemo: String = ""
-    @State private var seperate: [Int] = [0, 0]
+    @ObservedObject var paymentManageVM: PaymentManageViewModel
     
     var body: some View {
         Section {
             VStack(spacing: 0) {
                 memberSection
-                    .sheet(isPresented: $isShowingMemberSheet, content: {
+                    .sheet(isPresented: $paymentManageVM.isShowingMemberSheet, content: {
                         memberSheet
                     })
                 
                 participantsListSection
             }
             .onAppear {
-                if mode == .edit {
-                    if let payment = payment {
-                        for participant in payment.participants {
-                            if let existMember = travelCalculation.members.firstIndex(where: { m in
-                                m.id == participant.memberId
-                            }) {
-                                if let _ = members.firstIndex(of: travelCalculation.members[existMember]) {
-                                    continue
-                                }
-                                members.append(travelCalculation.members[existMember])
-                            }
-                        }
-                        participants = payment.participants
-                        howManySeperate()
-                    }
-                }
+                paymentManageVM.setMember()
             }
         }
         .background {
@@ -76,15 +43,15 @@ struct PaymentMemberManagementView: View {
             Spacer()
             Button(action: {
                 hideKeyboard()
-                isShowingMemberSheet = true
+                paymentManageVM.isShowingMemberSheet = true
             }, label: {
                 HStack (spacing: 0) {
-                    if members.isEmpty {
+                    if paymentManageVM.members.isEmpty {
                         Text("추가하기")
                             .font(.body04)
                             .foregroundStyle(Color.gray600)
                     }
-                    else if members.count == travelCalculation.members.count {
+                    else if paymentManageVM.members.count == paymentManageVM.travelCalculation.members.count {
                         Text("모든 인원")
                             .font(.body04)
                             .foregroundStyle(Color.gray600)
@@ -117,7 +84,7 @@ struct PaymentMemberManagementView: View {
                     Spacer()
                     
                     Button(action: {
-                        tempMembers = travelCalculation.members
+                        paymentManageVM.tempMembers = paymentManageVM.travelCalculation.members
                     }, label: {
                         Text("전체 선택")
                     })
@@ -127,7 +94,7 @@ struct PaymentMemberManagementView: View {
                     Text("/")
                     
                     Button(action: {
-                        tempMembers = []
+                        paymentManageVM.tempMembers = []
                     }, label: {
                         Text("전체 해제")
                     })
@@ -138,7 +105,7 @@ struct PaymentMemberManagementView: View {
                 .padding(.top, 32)
                 
                 ScrollView {
-                    ForEach(travelCalculation.members) { member in
+                    ForEach(paymentManageVM.travelCalculation.members) { member in
                         HStack {
                             Text(member.name)
                                 .font(.body03)
@@ -146,7 +113,7 @@ struct PaymentMemberManagementView: View {
                             
                             Spacer()
                             
-                            if tempMembers.firstIndex(where: { m in
+                            if paymentManageVM.tempMembers.firstIndex(where: { m in
                                 m.id == member.id
                             }) != nil {
                                 Image(.checked)
@@ -163,18 +130,11 @@ struct PaymentMemberManagementView: View {
                         .padding(.trailing, 46)
                         .padding(.top, 36)
                         .onTapGesture {
-                            if let existMember = tempMembers.firstIndex(where: { m in
-                                m.name == member.name
-                            }) {
-                                tempMembers.remove(at: existMember)
-                            }
-                            else {
-                                tempMembers.append(member)
-                            }
+                            paymentManageVM.addOrDeleteMember(member: member)
                         }
                     }
                     .onAppear {
-                        tempMembers = members
+                        paymentManageVM.tempMembers = paymentManageVM.members
                     }
                     .presentationDetents([.fraction(0.45)])
                 }
@@ -184,19 +144,19 @@ struct PaymentMemberManagementView: View {
             
             
             Button {
-                if mode == .add {
-                    addButton()
+                if paymentManageVM.mode == .edit {
+                    paymentManageVM.editButton()
                 }
-                else if mode == .edit {
-                    editButton()
+                else {
+                    paymentManageVM.addButton()
                 }
             } label: {
-                if mode == .add {
-                    Text("인원 추가")
+                if paymentManageVM.mode == .edit {
+                    Text("인원 수정")
                         .font(Font.body02)
                 }
-                else if mode == .edit {
-                    Text("인원 수정")
+                else {
+                    Text("인원 추가")
                         .font(Font.body02)
                 }
             }
@@ -210,10 +170,10 @@ struct PaymentMemberManagementView: View {
     }
     
     var participantsListSection: some View {
-        ForEach(members) { member in
+        ForEach(paymentManageVM.members) { member in
             Button(action: {
-                selectedMember = member
-                isShowingPersonalMemberSheet = true
+                paymentManageVM.selectedMember = member
+                paymentManageVM.isShowingPersonalMemberSheet = true
             }, label: {
                 HStack(spacing: 2) {
                     Text(member.name)
@@ -223,10 +183,10 @@ struct PaymentMemberManagementView: View {
                         .padding(.bottom, 12)
                     Spacer()
                     
-                    if let idx = participants.firstIndex(where: { p in
+                    if let idx = paymentManageVM.participants.firstIndex(where: { p in
                         p.memberId == member.id
                     }) {
-                        Text("₩\(getPersonalPrice(idx: idx))")
+                        Text("₩\(paymentManageVM.getPersonalPrice(idx: idx))")
                             .font(.body04)
                             .foregroundStyle(Color.gray600)
                     }
@@ -252,22 +212,16 @@ struct PaymentMemberManagementView: View {
             .padding(.leading, 16)
             .padding(.trailing, 10)
             .padding(.bottom, 8)
-            .sheet(isPresented: $isShowingPersonalMemberSheet, onDismiss: {
-                paidButton = false
-                personalButton = false
+            .sheet(isPresented: $paymentManageVM.isShowingPersonalMemberSheet, onDismiss: {
+                paymentManageVM.paidButton = false
+                paymentManageVM.personalButton = false
             }) {
                 ZStack {
                     personalPriceView
                         .onAppear(perform: {
-                            if let idx = participants.firstIndex(where: { p in
-                                p.memberId == selectedMember.id
-                            }) {
-                                advanceAmountString = String(participants[idx].advanceAmount)
-                                seperateAmountString = String(participants[idx].seperateAmount)
-                                personalMemo = participants[idx].memo
-                            }
+                            paymentManageVM.getPersonalPrice()
                         })
-                    if isShowingDescription {
+                    if paymentManageVM.isShowingDescription {
                         descriptionOfPrice
                             .frame(width: 301, height: 226)
                             .background {
@@ -287,7 +241,7 @@ struct PaymentMemberManagementView: View {
             HStack(content: {
                 Spacer()
                 Button(action: {
-                    isShowingDescription = false
+                    paymentManageVM.isShowingDescription = false
                 }, label: {
                     Image(.close)
                         .resizable()
@@ -334,7 +288,7 @@ struct PaymentMemberManagementView: View {
                 .font(.body01)
                 .padding(.bottom, 30)
             
-            Text("\(selectedMember.name)")
+            Text("\(paymentManageVM.selectedMember.name)")
                 .font(.body01)
                 .padding(.bottom, 12)
             
@@ -343,7 +297,7 @@ struct PaymentMemberManagementView: View {
                     Text("분류")
                         .font(.body02)
                     Button(action: {
-                        isShowingDescription = true
+                        paymentManageVM.isShowingDescription = true
                     }, label: {
                         Image(systemName: "info.circle")
                             .renderingMode(.template)
@@ -354,9 +308,9 @@ struct PaymentMemberManagementView: View {
                     
                     Spacer()
                     Button {
-                        paidButton.toggle()
-                        if personalButton {
-                            personalButton.toggle()
+                        paymentManageVM.paidButton.toggle()
+                        if paymentManageVM.personalButton {
+                            paymentManageVM.personalButton.toggle()
                         }
                     } label: {
                         Text("먼저 지불한 금액")
@@ -371,16 +325,16 @@ struct PaymentMemberManagementView: View {
                             .fill(Color.white)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .stroke(paidButton ? Color.myPrimary : Color.gray200, lineWidth: 1)
+                                    .stroke(paymentManageVM.paidButton ? Color.myPrimary : Color.gray200, lineWidth: 1)
                             )
                     }
-                    .foregroundStyle(paidButton ? Color.myPrimary : Color.gray200)
+                    .foregroundStyle(paymentManageVM.paidButton ? Color.myPrimary : Color.gray200)
                     .padding(.trailing, 8)
                     
                     Button {
-                        personalButton.toggle()
-                        if paidButton {
-                            paidButton.toggle()
+                        paymentManageVM.personalButton.toggle()
+                        if paymentManageVM.paidButton {
+                            paymentManageVM.paidButton.toggle()
                         }
                     } label: {
                         Text("개인 사용 금액")
@@ -395,10 +349,10 @@ struct PaymentMemberManagementView: View {
                             .fill(Color.white)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .stroke(personalButton ? Color.myPrimary : Color.gray200, lineWidth: 1)
+                                    .stroke(paymentManageVM.personalButton ? Color.myPrimary : Color.gray200, lineWidth: 1)
                             )
                     }
-                    .foregroundStyle(personalButton ? Color.myPrimary : Color.gray200)
+                    .foregroundStyle(paymentManageVM.personalButton ? Color.myPrimary : Color.gray200)
                 }
                 .padding(.bottom, 26)
                 
@@ -408,24 +362,24 @@ struct PaymentMemberManagementView: View {
                     
                     Spacer()
                     
-                    if paidButton {
-                        TextField("금액을 입력해주세요", text: $advanceAmountString)
+                    if paymentManageVM.paidButton {
+                        TextField("금액을 입력해주세요", text: $paymentManageVM.advanceAmountString)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .font(.body04)
                             .padding(.trailing, 14)
                             .onTapGesture {
-                                advanceAmountString = ""
+                                paymentManageVM.advanceAmountString = ""
                             }
                     }
-                    else if personalButton {
-                        TextField("금액을 입력해주세요", text: $seperateAmountString)
+                    else if paymentManageVM.personalButton {
+                        TextField("금액을 입력해주세요", text: $paymentManageVM.seperateAmountString)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .font(.body04)
                             .padding(.trailing, 14)
                             .onTapGesture {
-                                seperateAmountString = ""
+                                paymentManageVM.seperateAmountString = ""
                             }
                     }
                     else {
@@ -447,12 +401,12 @@ struct PaymentMemberManagementView: View {
                     
                     Spacer()
                     
-                    TextField("내용을 입력해주세요", text: $personalMemo)
+                    TextField("내용을 입력해주세요", text: $paymentManageVM.personalMemo)
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.trailing)
                         .font(.body04)
                         .onTapGesture {
-                            personalMemo = ""
+                            paymentManageVM.personalMemo = ""
                         }
                         .padding(.trailing, 14)
                 }
@@ -480,7 +434,7 @@ struct PaymentMemberManagementView: View {
                     .padding(.leading, 16)
                     .padding(.bottom, 14)
                 Spacer()
-                Text("₩\((Int(seperateAmountString) ?? 0) - (Int(advanceAmountString) ?? 0))")
+                Text("₩\((Int(paymentManageVM.seperateAmountString) ?? 0) - (Int(paymentManageVM.advanceAmountString) ?? 0))")
                     .font(.body01)
                     .padding(.top, 16)
                     .padding(.trailing, 16)
@@ -496,7 +450,7 @@ struct PaymentMemberManagementView: View {
             }
             Spacer()
             Button {
-                personalPrice()
+                paymentManageVM.personalPrice()
             } label: {
                 HStack {
                     Spacer()
@@ -530,90 +484,5 @@ extension PaymentMemberManagementView {
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
-    
-    func addButton() {
-        participants = []
-        for member in tempMembers {
-            participants.append(Payment.Participant(memberId: member.id, advanceAmount: 0, seperateAmount: 0, memo: ""))
-        }
-        members = tempMembers
-        isShowingMemberSheet = false
-    }
-    
-    func editButton() {
-        isShowingMemberSheet = false
-        
-        var tempParticipants: [Payment.Participant] = []
-        for m in tempMembers {
-            if let participant = participants.first(where: { p in
-                p.memberId == m.id
-            }) {
-                tempParticipants.append(participant)
-            }
-            else {
-                tempParticipants.append(Payment.Participant(memberId: m.id, advanceAmount: 0, seperateAmount: 0, memo: ""))
-            }
-        }
-        
-        participants = tempParticipants
-        payment?.participants = participants
-        members = tempMembers
-    }
-    
-    func personalPrice() {
-        if let idx = participants.firstIndex(where: { p in
-            p.memberId == selectedMember.id
-        }) {
-            participants[idx].advanceAmount = Int(advanceAmountString) ?? 0
-            participants[idx].seperateAmount = Int(seperateAmountString) ?? 0
-        }
-        howManySeperate()
-        isShowingPersonalMemberSheet = false
-    }
-    
-    func getPersonalPrice(idx: Int) -> Int {
-        if participants[idx].seperateAmount != 0 {
-            return participants[idx].seperateAmount - participants[idx].advanceAmount
-        }
-        else {
-            let numOfDutch = participants.count - seperate[0]
-            var amountOfDutch = 0
-            if mode == .add {
-                if priceString != "" {
-                    amountOfDutch = Int(priceString)! - seperate[1]
-                }
-                else {
-                    amountOfDutch = 0 - seperate[1]
-                }
-            }
-            else if mode == .edit {
-                if let p = payment {
-                    amountOfDutch = p.payment - seperate[1]
-                }
-            }
-            
-            return amountOfDutch / numOfDutch - participants[idx].advanceAmount
-        }
-    }
-    
-    func howManySeperate() {
-        var result = 0
-        var amount = 0
-        
-        for participant in self.participants {
-            if participant.seperateAmount != 0 {
-                result += 1
-                amount += participant.seperateAmount
-            }
-        }
-        
-        seperate[0] = result
-        seperate[1] = amount
-    }
 }
 
-
-#Preview {
-    PaymentMemberManagementView(priceString: .constant("15000"), travelCalculation: .constant(TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])), members: .constant([TravelCalculation.Member(name: "김유진", advancePayment: 0, payment: 0)]), payment: .constant(nil), selectedMember: .constant(TravelCalculation.Member(name: "", advancePayment: 0, payment: 0)), participants: .constant([]), isShowingMemberSheet: .constant(false))
-        .background(Color.black)
-}

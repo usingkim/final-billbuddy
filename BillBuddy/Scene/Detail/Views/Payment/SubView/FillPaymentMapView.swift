@@ -7,13 +7,10 @@
 
 import SwiftUI
 
-struct AddPaymentMapView: View {
+struct FillPaymentMapView: View {
     @ObservedObject var locationManager: LocationManager
-    
-    @State private var isShowingAddress: Bool = false
-    @State private var isShowingMapView: Bool = false
-    
-    @Binding var searchAddress: String
+    @ObservedObject var paymentManageVM: PaymentManageViewModel
+
     @FocusState private var isKeyboardUp: Bool
     
     var body: some View {
@@ -23,24 +20,25 @@ struct AddPaymentMapView: View {
                     Text("위치")
                         .font(.body02)
                     Spacer()
-                    if isShowingAddress {
+                    if paymentManageVM.isShowingAddress {
                         Text("\(locationManager.selectedAddress)")
                             .font(.body04)
                     }
                 }
-                if isShowingMapView == false {
+                if paymentManageVM.isShowingMapView == false {
                     HStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color(uiColor: .systemGray6))
                             .frame(width: geometry.size.width * 4.6/5, height: 40)
                             .overlay(alignment: .leading) {
                                 HStack {
-                                    TextField("주소 입력", text: $searchAddress)
+                                    TextField("주소 입력", text: $paymentManageVM.searchAddress)
+                                        .font(.body04)
                                         .padding()
                                     Button(action: {
-                                        locationManager.searchAddress(searchAddress: searchAddress)
-                                        isShowingAddress = true
-                                        isShowingMapView = true
+                                        locationManager.searchAddress(searchAddress: paymentManageVM.searchAddress)
+                                        paymentManageVM.isShowingAddress = true
+                                        paymentManageVM.isShowingMapView = true
                                         
                                     }, label: {
                                         Image("my_location")
@@ -54,7 +52,7 @@ struct AddPaymentMapView: View {
                             }
                     }
                 }
-                if isShowingMapView == true {
+                if paymentManageVM.isShowingMapView == true {
                     MapViewCoordinater(locationManager: locationManager)
                         .frame(width: 329, height: 170)
                         .cornerRadius(12)
@@ -63,7 +61,7 @@ struct AddPaymentMapView: View {
             }
             .padding()
             
-            if isShowingMapView == true {
+            if paymentManageVM.isShowingMapView == true {
                 Button {
                     locationManager.moveFocusOnUserLocation()
                 } label: {
@@ -90,10 +88,6 @@ struct AddPaymentMapView: View {
                     .foregroundStyle(Color.myPrimary)
             }
         }
-        .frame(height: isShowingMapView ? 248 : 120)
+        .frame(height: paymentManageVM.isShowingMapView ? 248 : 120)
     }
-}
-
-#Preview {
-    AddPaymentMapView(locationManager: LocationManager(), searchAddress: .constant("cheonan"))
 }

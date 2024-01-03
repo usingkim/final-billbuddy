@@ -79,7 +79,7 @@
 		278CC7342ADF2E2D004CAABA /* LodingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278CC7332ADF2E2D004CAABA /* LodingView.swift */; };
 		278DDC162ACC396D00B2EC50 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DDC152ACC396D00B2EC50 /* FirestoreService.swift */; };
 		278DDC1A2ACC3A3B00B2EC50 /* StoreCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DDC192ACC3A3B00B2EC50 /* StoreCollection.swift */; };
-		278DDC1C2ACC3E7F00B2EC50 /* SampleMemeberStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DDC1B2ACC3E7F00B2EC50 /* SampleMemeberStore.swift */; };
+		278DDC1C2ACC3E7F00B2EC50 /* SampleMemberStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278DDC1B2ACC3E7F00B2EC50 /* SampleMemberStore.swift */; };
 		278FA0A52B2CDCC00031E987 /* CustomSpendingAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278FA0A42B2CDCC00031E987 /* CustomSpendingAlert.swift */; };
 		27933F6A2AD33D9A00E6A545 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27933F692AD33D9A00E6A545 /* Int+Extension.swift */; };
 		27933F702AD3402300E6A545 /* CategoryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27933F6D2AD3402300E6A545 /* CategoryLabel.swift */; };
@@ -96,16 +96,15 @@
 		636CE5FB2AC3B27400BF7730 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636CE5FA2AC3B27400BF7730 /* LocationManager.swift */; };
 		636CE5FF2AC3BA1E00BF7730 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636CE5FE2AC3BA1E00BF7730 /* Line.swift */; };
 		638A9F492ADA812100C931DD /* MapViewCoordinater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F482ADA812100C931DD /* MapViewCoordinater.swift */; };
-		638A9F4B2ADA813D00C931DD /* AddPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */; };
-		638A9F4D2ADA815700C931DD /* EditPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */; };
+		638A9F4B2ADA813D00C931DD /* FillPaymentMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4A2ADA813D00C931DD /* FillPaymentMapView.swift */; };
 		638A9F4F2ADA816E00C931DD /* MapMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F4E2ADA816E00C931DD /* MapMainView.swift */; };
-		638A9F512ADA817B00C931DD /* MapSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F502ADA817B00C931DD /* MapSubView.swift */; };
-		638A9F532ADA818D00C931DD /* MapDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638A9F522ADA818D00C931DD /* MapDetailView.swift */; };
 		63A3F1762ADF78B1006EE206 /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */; };
 		63EF15662B319FA50031F617 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF15652B319FA50031F617 /* CustomAnnotation.swift */; };
 		900B97CF2B31DFD300A89464 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */; };
 		90BA673D2B2ACABE002911DB /* PaymentAlertText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */; };
 		90C6079E2B3F5C2100D8AF5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */; };
+		90CE44EC2B443FA2003DD8FB /* DetailMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */; };
+		90CE44EF2B445126003DD8FB /* PaymentManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CE44EE2B445126003DD8FB /* PaymentManageViewModel.swift */; };
 		C45A4D442AD7958800904D89 /* CategorySelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45A4D432AD7958800904D89 /* CategorySelectView.swift */; };
 		C45E24EE2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45E24ED2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift */; };
 		C478B1922AC6BAE8005EE427 /* FillInPaymentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C478B1912AC6BAE8005EE427 /* FillInPaymentInfoView.swift */; };
@@ -115,9 +114,8 @@
 		C4849A712AD3D49900DFFF81 /* DateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4849A702AD3D49900DFFF81 /* DateSheet.swift */; };
 		C4860EF72AC4151100392D29 /* SpendingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4860EF62AC4151100392D29 /* SpendingListView.swift */; };
 		C493894D2ACD2EE5008115FA /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493894C2ACD2EE5008115FA /* MoreView.swift */; };
-		C4E1F39D2ADFCC8800603A6A /* PaymentFocusField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E1F39C2ADFCC8800603A6A /* PaymentFocusField.swift */; };
 		C4F433B22ADE41AC00C8D20C /* PaymentManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F433B12ADE41AC00C8D20C /* PaymentManageView.swift */; };
-		C4F87C0C2AC160FE00472876 /* PaymentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F87C0B2AC160FE00472876 /* PaymentStore.swift */; };
+		C4F87C0C2AC160FE00472876 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F87C0B2AC160FE00472876 /* PaymentService.swift */; };
 		D21BD5EF2AD62E590074FA80 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD5EE2AD62E590074FA80 /* ProfileView.swift */; };
 		D26894172B2AF45400D37357 /* AppleSignInStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894162B2AF45400D37357 /* AppleSignInStore.swift */; };
 		D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894182B2AF67200D37357 /* AppleSignInView.swift */; };
@@ -224,7 +222,7 @@
 		278CC7332ADF2E2D004CAABA /* LodingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LodingView.swift; sourceTree = "<group>"; };
 		278DDC152ACC396D00B2EC50 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		278DDC192ACC3A3B00B2EC50 /* StoreCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreCollection.swift; sourceTree = "<group>"; };
-		278DDC1B2ACC3E7F00B2EC50 /* SampleMemeberStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMemeberStore.swift; sourceTree = "<group>"; };
+		278DDC1B2ACC3E7F00B2EC50 /* SampleMemberStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMemberStore.swift; sourceTree = "<group>"; };
 		278FA0A42B2CDCC00031E987 /* CustomSpendingAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSpendingAlert.swift; sourceTree = "<group>"; };
 		27933F692AD33D9A00E6A545 /* Int+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		27933F6D2AD3402300E6A545 /* CategoryLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryLabel.swift; sourceTree = "<group>"; };
@@ -241,16 +239,15 @@
 		636CE5FA2AC3B27400BF7730 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		636CE5FE2AC3BA1E00BF7730 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		638A9F482ADA812100C931DD /* MapViewCoordinater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewCoordinater.swift; sourceTree = "<group>"; };
-		638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPaymentMapView.swift; sourceTree = "<group>"; };
-		638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPaymentMapView.swift; sourceTree = "<group>"; };
+		638A9F4A2ADA813D00C931DD /* FillPaymentMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillPaymentMapView.swift; sourceTree = "<group>"; };
 		638A9F4E2ADA816E00C931DD /* MapMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMainView.swift; sourceTree = "<group>"; };
-		638A9F502ADA817B00C931DD /* MapSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSubView.swift; sourceTree = "<group>"; };
-		638A9F522ADA818D00C931DD /* MapDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDetailView.swift; sourceTree = "<group>"; };
 		63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		63EF15652B319FA50031F617 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAlertText.swift; sourceTree = "<group>"; };
 		90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainViewModel.swift; sourceTree = "<group>"; };
+		90CE44EE2B445126003DD8FB /* PaymentManageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManageViewModel.swift; sourceTree = "<group>"; };
 		C45A4D432AD7958800904D89 /* CategorySelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectView.swift; sourceTree = "<group>"; };
 		C45E24ED2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMemberManagementView.swift; sourceTree = "<group>"; };
 		C478B1912AC6BAE8005EE427 /* FillInPaymentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillInPaymentInfoView.swift; sourceTree = "<group>"; };
@@ -260,9 +257,8 @@
 		C4849A702AD3D49900DFFF81 /* DateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSheet.swift; sourceTree = "<group>"; };
 		C4860EF62AC4151100392D29 /* SpendingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendingListView.swift; sourceTree = "<group>"; };
 		C493894C2ACD2EE5008115FA /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
-		C4E1F39C2ADFCC8800603A6A /* PaymentFocusField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentFocusField.swift; sourceTree = "<group>"; };
 		C4F433B12ADE41AC00C8D20C /* PaymentManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManageView.swift; sourceTree = "<group>"; };
-		C4F87C0B2AC160FE00472876 /* PaymentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStore.swift; sourceTree = "<group>"; };
+		C4F87C0B2AC160FE00472876 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		D21BD5EE2AD62E590074FA80 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D26894162B2AF45400D37357 /* AppleSignInStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInStore.swift; sourceTree = "<group>"; };
 		D26894182B2AF67200D37357 /* AppleSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInView.swift; sourceTree = "<group>"; };
@@ -336,35 +332,6 @@
 				C4860EF62AC4151100392D29 /* SpendingListView.swift */,
 			);
 			path = SpendingList;
-			sourceTree = "<group>";
-		};
-		2717D0EB2ACD76C90002D620 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				636CE5FE2AC3BA1E00BF7730 /* Line.swift */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		2717D0EC2ACD76DF0002D620 /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				636CE5FA2AC3B27400BF7730 /* LocationManager.swift */,
-			);
-			name = Store;
-			sourceTree = "<group>";
-		};
-		2717D0ED2ACD76EF0002D620 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				638A9F482ADA812100C931DD /* MapViewCoordinater.swift */,
-				638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */,
-				638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */,
-				638A9F4E2ADA816E00C931DD /* MapMainView.swift */,
-				638A9F502ADA817B00C931DD /* MapSubView.swift */,
-				638A9F522ADA818D00C931DD /* MapDetailView.swift */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 		2717D0EE2ACD770D0002D620 /* Views */ = {
@@ -515,9 +482,11 @@
 				2766480C2ABD54F2000F8A10 /* Config */,
 				2766480A2ABD54BD000F8A10 /* Model */,
 				276648152ABD5586000F8A10 /* Service */,
+				909D4D4A2B456A2300B59A14 /* ViewModels */,
 				2766480B2ABD54DD000F8A10 /* Scene */,
 				2766480F2ABD550D000F8A10 /* Common */,
 				276648122ABD5550000F8A10 /* Extension */,
+				90CE44ED2B4450C9003DD8FB /* Constant */,
 				278BA5F92AC25C4C00761B0B /* Resource */,
 			);
 			path = BillBuddy;
@@ -532,6 +501,7 @@
 				277C999F2AC069A9006DFCFC /* TravelRenewalDate.swift */,
 				276648302ABD8B6E000F8A10 /* TravelCalculation.swift */,
 				276648342ABD8C73000F8A10 /* Payment.swift */,
+				636CE5FE2AC3BA1E00BF7730 /* Line.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -543,7 +513,6 @@
 				276648172ABD55C2000F8A10 /* Content */,
 				278CC7322ADF2E0A004CAABA /* DeepLink */,
 				2766484C2ABD8E37000F8A10 /* Detail */,
-				276648402ABD8D7E000F8A10 /* Map */,
 				2766483D2ABD8D30000F8A10 /* TravelList */,
 				276648382ABD8D02000F8A10 /* Sign */,
 				276648462ABD8DD7000F8A10 /* Notification */,
@@ -597,6 +566,7 @@
 				278DDC152ACC396D00B2EC50 /* FirestoreService.swift */,
 				D279D1172ACFE6670087712F /* UserService.swift */,
 				FFCF22582B24500000B79BF9 /* SNSSignInService.swift */,
+				C4F87C0B2AC160FE00472876 /* PaymentService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -652,10 +622,10 @@
 		276648402ABD8D7E000F8A10 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				2717D0EB2ACD76C90002D620 /* Model */,
-				2717D0EC2ACD76DF0002D620 /* Store */,
-				2717D0ED2ACD76EF0002D620 /* Views */,
-				63A3F1742ADF7888006EE206 /* CustomAnnotation */,
+				638A9F4E2ADA816E00C931DD /* MapMainView.swift */,
+				638A9F482ADA812100C931DD /* MapViewCoordinater.swift */,
+				63EF15652B319FA50031F617 /* CustomAnnotation.swift */,
+				63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -692,7 +662,6 @@
 		2766484C2ABD8E37000F8A10 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				C49389542ACD43C5008115FA /* Store */,
 				C48F7C392ACE8F4300466308 /* Views */,
 			);
 			path = Detail;
@@ -856,41 +825,54 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
-		63A3F1742ADF7888006EE206 /* CustomAnnotation */ = {
-			isa = PBXGroup;
-			children = (
-				63EF15652B319FA50031F617 /* CustomAnnotation.swift */,
-				63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */,
-			);
-			name = CustomAnnotation;
-			sourceTree = "<group>";
-		};
 		900B97D02B31E34E00A89464 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
 				2766484A2ABD8E34000F8A10 /* PaymentListView.swift */,
 				C478B1912AC6BAE8005EE427 /* FillInPaymentInfoView.swift */,
+				638A9F4A2ADA813D00C931DD /* FillPaymentMapView.swift */,
 				C45E24ED2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift */,
-				90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */,
 				900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */,
+				C4849A702AD3D49900DFFF81 /* DateSheet.swift */,
+				C45A4D432AD7958800904D89 /* CategorySelectView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
 		};
-		C47F6C7A2AD52F1A006B77D6 /* SubViews */ = {
+		909D4D4A2B456A2300B59A14 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				C4849A702AD3D49900DFFF81 /* DateSheet.swift */,
-				C45A4D432AD7958800904D89 /* CategorySelectView.swift */,
+				909D4D4B2B4576E300B59A14 /* Detail */,
 			);
-			path = SubViews;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		909D4D4B2B4576E300B59A14 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */,
+				90CE44EE2B445126003DD8FB /* PaymentManageViewModel.swift */,
+				636CE5FA2AC3B27400BF7730 /* LocationManager.swift */,
+				278DDC1B2ACC3E7F00B2EC50 /* SampleMemberStore.swift */,
+				2785ECC02AE046D0003E8D9D /* TravelDetailStore.swift */,
+				27933F732AD3403500E6A545 /* SettlementExpensesStore.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		90CE44ED2B4450C9003DD8FB /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */,
+			);
+			path = Constant;
 			sourceTree = "<group>";
 		};
 		C48F7C392ACE8F4300466308 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				C4849A6E2AD3C50E00DFFF81 /* DetailMainView.swift */,
-				C47F6C7A2AD52F1A006B77D6 /* SubViews */,
+				276648402ABD8D7E000F8A10 /* Map */,
 				C48F7C3D2ACEA5F800466308 /* Payment */,
 				278544692AC413AF009032CE /* MemberManagement */,
 				27933F6B2AD3402300E6A545 /* SettledAccount */,
@@ -909,18 +891,6 @@
 				900B97D02B31E34E00A89464 /* SubView */,
 			);
 			path = Payment;
-			sourceTree = "<group>";
-		};
-		C49389542ACD43C5008115FA /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				C4F87C0B2AC160FE00472876 /* PaymentStore.swift */,
-				278DDC1B2ACC3E7F00B2EC50 /* SampleMemeberStore.swift */,
-				2785ECC02AE046D0003E8D9D /* TravelDetailStore.swift */,
-				27933F732AD3403500E6A545 /* SettlementExpensesStore.swift */,
-				C4E1F39C2ADFCC8800603A6A /* PaymentFocusField.swift */,
-			);
-			path = Store;
 			sourceTree = "<group>";
 		};
 		D2C16DA02ACD549F00F48A06 /* Model */ = {
@@ -1089,7 +1059,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				638A9F4B2ADA813D00C931DD /* AddPaymentMapView.swift in Sources */,
+				638A9F4B2ADA813D00C931DD /* FillPaymentMapView.swift in Sources */,
 				C4860EF72AC4151100392D29 /* SpendingListView.swift in Sources */,
 				276648092ABD54AE000F8A10 /* User.swift in Sources */,
 				27933F6A2AD33D9A00E6A545 /* Int+Extension.swift in Sources */,
@@ -1100,7 +1070,6 @@
 				277403E62AC3E579000537DF /* SignInStore.swift in Sources */,
 				27B7AC3A2B324F7100D15972 /* OnboardingView.swift in Sources */,
 				D21BD5EF2AD62E590074FA80 /* ProfileView.swift in Sources */,
-				638A9F4D2ADA815700C931DD /* EditPaymentMapView.swift in Sources */,
 				02C5A7D92AE0239800CBD8D1 /* FloatingButtonMenuStore.swift in Sources */,
 				C4849A712AD3D49900DFFF81 /* DateSheet.swift in Sources */,
 				266869AB2AE7CB9D0072FDB2 /* ServerKeyManager.swift in Sources */,
@@ -1111,6 +1080,7 @@
 				2717D0F72ACD78390002D620 /* BillBuddyTabView.swift in Sources */,
 				26E188282AE46E3F0046AF12 /* NotificationCell.swift in Sources */,
 				27933F742AD3403500E6A545 /* SettlementExpensesStore.swift in Sources */,
+				90CE44EC2B443FA2003DD8FB /* DetailMainViewModel.swift in Sources */,
 				278563022B08A5F500B465DB /* TabViewStore.swift in Sources */,
 				2766484B2ABD8E34000F8A10 /* PaymentListView.swift in Sources */,
 				0266B7392ADA6A1500DBF07D /* CalendarSheetView.swift in Sources */,
@@ -1120,13 +1090,12 @@
 				C47F6C772AD51878006B77D6 /* PaymentMainView.swift in Sources */,
 				27933F702AD3402300E6A545 /* CategoryLabel.swift in Sources */,
 				C478B1942AC6C5BD005EE427 /* Double+Extension.swift in Sources */,
-				638A9F512ADA817B00C931DD /* MapSubView.swift in Sources */,
 				C45E24EE2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift in Sources */,
 				2766484B2ABD8E34000F8A10 /* PaymentListView.swift in Sources */,
 				271F8BBF2B2E1C090032353C /* EditDateCalenderStore.swift in Sources */,
 				27499B702B2DA11D00DE1BB3 /* DateManagementView.swift in Sources */,
 				278CC7342ADF2E2D004CAABA /* LodingView.swift in Sources */,
-				278DDC1C2ACC3E7F00B2EC50 /* SampleMemeberStore.swift in Sources */,
+				278DDC1C2ACC3E7F00B2EC50 /* SampleMemberStore.swift in Sources */,
 				46C09CD32AE1C65D001E34E6 /* ChattingMenuView.swift in Sources */,
 				FF6364912AE6257D00DDA16D /* AdView.swift in Sources */,
 				636CE5FF2AC3BA1E00BF7730 /* Line.swift in Sources */,
@@ -1139,7 +1108,6 @@
 				D2A8B6E02ADE481800A469D7 /* AgreementCheckButton.swift in Sources */,
 				27499B742B2DABB800DE1BB3 /* DateManagementCalendar.swift in Sources */,
 				023EF9242ACC0334005C3F30 /* UserTravelStore.swift in Sources */,
-				C4E1F39D2ADFCC8800603A6A /* PaymentFocusField.swift in Sources */,
 				63A3F1762ADF78B1006EE206 /* CustomAnnotationView.swift in Sources */,
 				27933F722AD3402300E6A545 /* SettledAccountView.swift in Sources */,
 				277C99A22AC08F9C006DFCFC /* UserTravel.swift in Sources */,
@@ -1163,7 +1131,7 @@
 				2729F3312AD427960089147E /* MemberCell.swift in Sources */,
 				2766483C2ABD8D29000F8A10 /* TravelListView.swift in Sources */,
 				2766484E2ABD8E4D000F8A10 /* MyPageView.swift in Sources */,
-				C4F87C0C2AC160FE00472876 /* PaymentStore.swift in Sources */,
+				C4F87C0C2AC160FE00472876 /* PaymentService.swift in Sources */,
 				FFBA42A42B2C9A9400915D2F /* MessageAlertView.swift in Sources */,
 				278193C42ADBDD900041A6BF /* MoreListCell.swift in Sources */,
 				2663484B2AD8DD6C002CCCF4 /* NotificationListView.swift in Sources */,
@@ -1195,7 +1163,6 @@
 				273201282ADB09BA00AE528B /* MemberShareSheet.swift in Sources */,
 				278266472AE2008400118C21 /* NotificationStore.swift in Sources */,
 				D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */,
-				638A9F532ADA818D00C931DD /* MapDetailView.swift in Sources */,
 				FFCF22592B24500000B79BF9 /* SNSSignInService.swift in Sources */,
 				2766480E2ABD5509000F8A10 /* Custom.swift in Sources */,
 				277A93632B354D9A002CB609 /* LicenseStore.swift in Sources */,
@@ -1206,6 +1173,7 @@
 				276647FB2ABD53F8000F8A10 /* BillBuddyApp.swift in Sources */,
 				276648372ABD8CFD000F8A10 /* SignInView.swift in Sources */,
 				FF17CCA72B2D7D5A000ACF72 /* ChangePasswordView.swift in Sources */,
+				90CE44EF2B445126003DD8FB /* PaymentManageViewModel.swift in Sources */,
 				278DDC1A2ACC3A3B00B2EC50 /* StoreCollection.swift in Sources */,
 				D2713EF72AD78C980020B2F4 /* ProfileEditView.swift in Sources */,
 				638A9F492ADA812100C931DD /* MapViewCoordinater.swift in Sources */,

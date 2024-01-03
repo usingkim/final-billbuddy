@@ -10,7 +10,7 @@ import Kingfisher
 
 struct MemberCell: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @ObservedObject var sampleMemeberStore: SampleMemeberStore
+    @ObservedObject var sampleMemeberStore: SampleMemberStore
     @Binding var isShowingShareSheet: Bool
     var member: TravelCalculation.Member
     let isPaymentSettled: Bool
@@ -98,5 +98,5 @@ struct MemberCell: View {
 }
 
 #Preview {
-    MemberCell(sampleMemeberStore: SampleMemeberStore(), isShowingShareSheet: .constant(false), member: TravelCalculation.Member(name: "name", advancePayment: 100, payment: 100), isPaymentSettled: false, onEditing: { print("edit") }, onRemove: { print("remove") }, saveAction: { })
+    MemberCell(sampleMemeberStore: SampleMemberStore(), isShowingShareSheet: .constant(false), member: TravelCalculation.Member(name: "name", advancePayment: 100, payment: 100), isPaymentSettled: false, onEditing: { print("edit") }, onRemove: { print("remove") }, saveAction: { })
 }

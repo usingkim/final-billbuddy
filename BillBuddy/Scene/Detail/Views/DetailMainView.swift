@@ -13,26 +13,20 @@ struct DetailMainView: View {
     @EnvironmentObject private var notificationStore: NotificationStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
-    @StateObject var paymentStore: PaymentStore
-    @StateObject var travelDetailStore: TravelDetailStore
+
+    @StateObject private var paymentService: PaymentService
+    @StateObject private var travelDetailStore: TravelDetailStore
     @StateObject private var locationManager = LocationManager()
     
-    @State private var selection: String = "내역"
-    @State private var selectedDate: Double = 0
-    @State private var isShowingDateSheet: Bool = false
+    @StateObject private var detailMainVM = DetailMainViewModel()
     
     let menus: [String] = ["내역", "지도"]
     
-    func fetchPaymentAndSettledAccount(edit: Bool) {
-        Task {
-            if edit {
-                travelDetailStore.saveUpdateDate()
-            }
-            await paymentStore.fetchAll()
-            settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
-            selectedDate = 0
-        }
+    init(travel: TravelCalculation) {
+        _paymentService = StateObject(wrappedValue: PaymentService(travel: travel))
+        _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
     }
+    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -45,21 +39,20 @@ struct DetailMainView: View {
             dateSelectSection
                 .frame(height: 52)
             
-            if selection == "내역" {
+            if detailMainVM.selectMenu == "내역" {
                 ZStack {
-                    PaymentMainView(selectedDate: $selectedDate, paymentStore: paymentStore)
+                    PaymentMainView(detailMainVM: detailMainVM)
                         .environmentObject(travelDetailStore)
+                        .environmentObject(paymentService)
                     
                     if travelDetailStore.isChangedTravel &&
-                        paymentStore.updateContentDate != travelDetailStore.travel.updateContentDate &&
-                        !paymentStore.isFetchingList
+                        paymentService.updateContentDate != travelDetailStore.travel.updateContentDate &&
+                        !paymentService.isFetchingList
                     {
                         
                         Button {
-                            Task {
-                                fetchPaymentAndSettledAccount(edit: false)
-                                travelDetailStore.isChangedTravel = false
-                            }
+                            detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                            travelDetailStore.isChangedTravel = false
                         } label: {
                             HStack(spacing: 8) {
                                 Image(.info)
@@ -89,34 +82,27 @@ struct DetailMainView: View {
                     
                 }
             }
-            else if selection == "지도" {
-                MapMainView(locationManager: locationManager, paymentStore: paymentStore, travelDetailStore: travelDetailStore, selectedDate: $selectedDate)
+            else if detailMainVM.selectMenu == "지도" {
+                MapMainView(detailMainVM: detailMainVM)
+                    .environmentObject(locationManager)
+                    .environmentObject(paymentService)
             }
         }
-        .onChange(of: selectedDate, perform: { date in
-            if selectedDate == 0 {
-                paymentStore.resetFilter()
-            }
-            else {
-                paymentStore.filterDate(date: date)
-            }
-        })
+        
         .onAppear {
             tabBarVisivilyStore.hideTabBar()
-            if selectedDate == 0 {
+            if detailMainVM.selectedDate == 0 {
                 Task {
                     if travelDetailStore.isFirstFetch {
                         travelDetailStore.setTravel()
 
                         travelDetailStore.checkAndResaveToken()
-                        fetchPaymentAndSettledAccount(edit: false)
+                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                         travelDetailStore.isFirstFetch = false
                         
                     }
                 }
                 travelDetailStore.listenTravelDate()
-            } else {
-                paymentStore.filterDate(date: selectedDate)
             }
         }
         .onDisappear {
@@ -162,7 +148,7 @@ struct DetailMainView: View {
                 NavigationLink {
                     MoreView(travel: travelDetailStore.travel)
                         .environmentObject(travelDetailStore)
-                        .environmentObject(paymentStore)
+                        .environmentObject(paymentService)
                 } label: {
                     Image("steps-1 3")
                         .resizable()
@@ -185,11 +171,11 @@ struct DetailMainView: View {
             ForEach(menus, id: \.self) { menu in
                 Button(action: {
                     withAnimation(Animation.default) {
-                        selection = menu
+                        detailMainVM.selectMenu = menu
                     }
                 }, label: {
                     VStack(spacing: 0) {
-                        if selection == menu {
+                        if detailMainVM.selectMenu == menu {
                             Text(menu)
                                 .frame(width: 160, height: 41)
                                 .font(.body01)
@@ -217,10 +203,10 @@ struct DetailMainView: View {
         
         HStack {
             Button {
-                isShowingDateSheet = true
+                detailMainVM.isShowingDateSheet = true
             } label: {
                 
-                if selectedDate == 0 {
+                if detailMainVM.selectedDate == 0 {
                     Text("전체")
                         .font(.body01)
                         .foregroundStyle(.black)
@@ -230,10 +216,10 @@ struct DetailMainView: View {
                 }
                 
                 else {
-                    Text(selectedDate.toDate().dateWeekYear)
+                    Text(detailMainVM.selectedDate.toDate().dateWeekYear)
                         .font(.body01)
                         .foregroundStyle(.black)
-                    Text("\(selectedDate.howManyDaysFromStartDate(startDate: travelDetailStore.travel.startDate))일차")
+                    Text("\(detailMainVM.selectedDate.howManyDaysFromStartDate(startDate: travelDetailStore.travel.startDate))일차")
                         .font(.body03)
                         .foregroundStyle(Color.gray600)
                     Image("expand_more")
@@ -251,8 +237,8 @@ struct DetailMainView: View {
             Spacer()
         }
         
-        .sheet(isPresented: $isShowingDateSheet, content: {
-            DateSheet(locationManager: locationManager, paymentStore: paymentStore,isShowingDateSheet: $isShowingDateSheet, selectedDate: $selectedDate, startDate: travelDetailStore.travel.startDate, endDate: travelDetailStore.travel.endDate)
+        .sheet(isPresented: $detailMainVM.isShowingDateSheet, content: {
+            DateSheet(locationManager: locationManager, detailMainVM: detailMainVM, startDate: travelDetailStore.travel.startDate, endDate: travelDetailStore.travel.endDate)
                 .presentationDetents([.fraction(0.4)])
         })
         

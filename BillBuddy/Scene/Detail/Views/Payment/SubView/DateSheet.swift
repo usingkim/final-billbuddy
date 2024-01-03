@@ -10,10 +10,7 @@ import SwiftUI
 struct DateSheet: View {
     
     @ObservedObject var locationManager: LocationManager
-    @ObservedObject var paymentStore: PaymentStore
-    
-    @Binding var isShowingDateSheet: Bool
-    @Binding var selectedDate: Double
+    @ObservedObject var detailMainVM: DetailMainViewModel
     
     @State var startDate: Double
     @State var endDate: Double
@@ -23,15 +20,16 @@ struct DateSheet: View {
         var dateNum: String
     }
     
-    @State var dates: [dateNumber] = []
+    @State private var dates: [dateNumber] = []
+    
     var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 HStack {
                     Button(action: {
-                        selectedDate = 0
-                        locationManager.setAnnotations(filteredPayments: paymentStore.filteredPayments)
-                        isShowingDateSheet.toggle()
+                        detailMainVM.selectedDate = 0
+                        locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
+                        detailMainVM.isShowingDateSheet.toggle()
                     }, label: {
                         Text("전체")
                             .font(.body01)
@@ -45,9 +43,9 @@ struct DateSheet: View {
                 ForEach(dates, id:\.self) { date in
                     HStack {
                         Button(action: {
-                            selectedDate = date.date.timeIntervalSince1970
-                            locationManager.setAnnotations(filteredPayments: paymentStore.filteredPayments)
-                            isShowingDateSheet.toggle()
+                            detailMainVM.selectedDate = date.date.timeIntervalSince1970
+                            locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
+                            detailMainVM.isShowingDateSheet.toggle()
                         }, label: {
                             Text(date.date.dateWeek + " " + date.dateNum)
                                 .font(.body01)

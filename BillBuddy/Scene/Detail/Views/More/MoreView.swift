@@ -50,7 +50,7 @@ struct MoreView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var tabViewStore: TabViewStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
-    @EnvironmentObject private var paymentStore: PaymentStore
+    @EnvironmentObject private var paymentStore: PaymentService
     @State var itemList: [ListItem] = ListItem.allCases
     @State var isPresentedLeaveAlert: Bool = false
     
@@ -160,6 +160,6 @@ struct MoreView: View {
             .environmentObject(UserTravelStore())
             .environmentObject(TabViewStore.shared)
             .environmentObject(TravelDetailStore(travel: TravelCalculation.sampletravel))
-            .environmentObject(PaymentStore(travel: TravelCalculation.sampletravel))
+            .environmentObject(PaymentService(travel: TravelCalculation.sampletravel))
     }
 }
