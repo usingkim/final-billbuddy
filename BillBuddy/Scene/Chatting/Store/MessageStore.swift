@@ -17,7 +17,7 @@ final class MessageStore: ObservableObject {
     var lastDoc: QueryDocumentSnapshot?
     @Published var messages: [Message] = []
     @Published var isAddedNewMessage: Bool = false
-    @Published var travel: TravelCalculation = TravelCalculation.sampletravel
+    @Published var travel: TravelCalculation?
     
     /// 채팅 메세지 보내기
     func sendMessage(travelCalculation: TravelCalculation, message: Message) {

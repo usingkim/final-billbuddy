@@ -87,12 +87,3 @@ struct EditTravelSheetView: View {
 } //MARK: BODY
 
 
-
-#Preview {
-    EditTravelSheetView(
-        isPresentedSheet: .constant(true),
-        isPresentedDateView: .constant(true),
-        isPresentedMemeberView: .constant(true),
-        isPresentedSpendingView: .constant(true),
-        travel: TravelCalculation.sampletravel)
-}

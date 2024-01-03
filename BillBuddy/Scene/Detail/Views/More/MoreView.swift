@@ -153,13 +153,3 @@ struct MoreView: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        MoreView(travel: .sampletravel)
-            .environmentObject(UserTravelStore())
-            .environmentObject(TabViewStore.shared)
-            .environmentObject(TravelDetailStore(travel: TravelCalculation.sampletravel))
-            .environmentObject(PaymentService(travel: TravelCalculation.sampletravel))
-    }
-}

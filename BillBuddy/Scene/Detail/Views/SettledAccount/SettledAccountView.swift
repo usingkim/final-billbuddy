@@ -152,13 +152,3 @@ struct SettledAccountView: View {
     
     
 }
-
-#Preview {
-    NavigationStack {
-        SettledAccountView(entryViewtype: .more)
-            .environmentObject(SettlementExpensesStore())
-            .environmentObject(TravelDetailStore(travel: .sampletravel))
-            .environmentObject(UserTravelStore())
-    }
-    
-}

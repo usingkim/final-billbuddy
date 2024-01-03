@@ -14,18 +14,17 @@ struct TravelListView: View {
     @EnvironmentObject private var nativeAdViewModel: NativeAdViewModel
     @EnvironmentObject private var userService: UserService
     @EnvironmentObject private var tabViewStore: TabViewStore
-    @StateObject private var travelDetailStore: TravelDetailStore = TravelDetailStore(travel: .sampletravel)
+    
+    @StateObject private var travelDetailStore: TravelDetailStore = TravelDetailStore()
     @ObservedObject var floatingButtonMenuStore: FloatingButtonMenuStore
     
     @State private var selectedFilter: TravelFilter = .paymentInProgress
     @State private var isShowingEditTravelView = false
-    @State private var selectedTravel: TravelCalculation = .sampletravel
+    @State private var selectedTravel: TravelCalculation?
     
     @State private var isPresentedDateView: Bool = false
     @State private var isPresentedMemeberView: Bool = false
     @State private var isPresentedSpendingView: Bool = false
-//    @Namespace var animation
-    
     
     var body: some View {
         ZStack {
@@ -38,16 +37,6 @@ struct TravelListView: View {
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 0) {
-//                        if let isPremium = userService.currentUser?.isPremium {
-//                            if !isPremium {
-//                                NativeAdView(nativeViewModel: nativeAdViewModel)
-//                                    .frame(height: 94)
-//                                    .frame(maxWidth: .infinity)
-//                                    .cornerRadius(12)
-//                                    .padding(.horizontal, 16)
-//                                    .padding(.top, 16)
-//                            }
-//                        }
                         if !userTravelStore.isFetching {
                             //.onAppear 애니메이션 효과 때문에 문장이 접혔다 펴지는 문제가 있음
                             if selectedFilter == .paymentInProgress && createTravelList().isEmpty {
@@ -95,14 +84,16 @@ struct TravelListView: View {
                                             }
                                             .padding(.trailing, 23)
                                             .sheet(isPresented: $isShowingEditTravelView) {
-                                                EditTravelSheetView(
-                                                    isPresentedSheet: $isShowingEditTravelView,
-                                                    isPresentedDateView: $isPresentedDateView,
-                                                    isPresentedMemeberView: $isPresentedMemeberView,
-                                                    isPresentedSpendingView: $isPresentedSpendingView,
-                                                    travel: selectedTravel
-                                                )
-                                                .presentationDetents([.height(250)])
+                                                if let travel = selectedTravel {
+                                                    EditTravelSheetView(
+                                                        isPresentedSheet: $isShowingEditTravelView,
+                                                        isPresentedDateView: $isPresentedDateView,
+                                                        isPresentedMemeberView: $isPresentedMemeberView,
+                                                        isPresentedSpendingView: $isPresentedSpendingView,
+                                                        travel: travel
+                                                    )
+                                                    .presentationDetents([.height(250)])
+                                                }
                                             }
                                             .navigationDestination(isPresented: $isPresentedDateView) {
                                                 DateManagementView(
@@ -113,11 +104,13 @@ struct TravelListView: View {
                                                 .environmentObject(travelDetailStore)
                                             }
                                             .navigationDestination(isPresented: $isPresentedMemeberView) {
-                                                MemberManagementView(
-                                                    travel: selectedTravel,
-                                                    entryViewtype: .list
-                                                )
-                                                .environmentObject(travelDetailStore)
+                                                if let travel = selectedTravel {
+                                                    MemberManagementView(
+                                                        travel: travel,
+                                                        entryViewtype: .list
+                                                    )
+                                                    .environmentObject(travelDetailStore)
+                                                }
                                             }
                                             .navigationDestination(isPresented: $isPresentedSpendingView) {
                                                 SettledAccountView(entryViewtype: .list)
@@ -150,7 +143,9 @@ struct TravelListView: View {
             
         } //MARK: ZSTACK
         .navigationDestination(isPresented: $tabViewStore.isPresentedDetail) {
-            DetailMainView(travel: tabViewStore.seletedTravel)
+            if let travel = tabViewStore.seletedTravel {
+                DetailMainView(travel: travel)
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

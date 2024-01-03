@@ -113,11 +113,3 @@ struct DateManagementView: View {
         }
     }
 }
-
-#Preview {
-    NavigationStack {
-        DateManagementView(travel: TravelCalculation.sampletravel, paymentDates: [], entryViewtype: .list)
-    }
-    .environmentObject(UserTravelStore())
-    .environmentObject(TravelDetailStore(travel: .sampletravel))
-}

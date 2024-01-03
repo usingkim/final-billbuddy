@@ -12,7 +12,7 @@ import FirebaseFirestore
 
 struct MemberManagementView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var sampleMemeberStore: SampleMemberStore = SampleMemberStore()
+    @StateObject var sampleMemeberStore: JoinMemberStore = JoinMemberStore()
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var userTravelStore: UserTravelStore
@@ -276,12 +276,4 @@ struct MemberManagementView: View {
         settlementExpensesStore.setSettlementExpenses(payments: paymentsOfType, members: sampleMemeberStore.members)
         dismiss()
     }
-}
-
-#Preview {
-    NavigationStack {
-        MemberManagementView(travel: .sampletravel, entryViewtype: .more)
-    }
-    .environmentObject(TravelDetailStore(travel: .sampletravel))
-    .environmentObject(UserTravelStore())
 }

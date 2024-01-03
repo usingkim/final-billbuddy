@@ -13,18 +13,6 @@ final class FloatingButtonMenuStore: ObservableObject {
     @Published var isDimmedBackground = false
     @Published var buttonImage = "openButton"
     
-//    func showMenu() {
-//        showMenuItem1 = !showMenuItem1
-//        showMenuItem2 = !showMenuItem2
-//        buttonImage = showMenuItem1 || showMenuItem2 ? "closeButton" : "openButton"
-//    }
-//    
-//    func closeMenu() {
-//        showMenuItem1 = false
-//        showMenuItem2 = false
-//        buttonImage = "openButton"
-//    }
-    
     func showMenu() {
             if showMenuItem1 || showMenuItem2 {
                 showMenuItem1 = false

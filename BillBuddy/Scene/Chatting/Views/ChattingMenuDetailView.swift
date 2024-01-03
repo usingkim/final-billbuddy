@@ -86,7 +86,7 @@ struct ChattingMenuDetailView: View {
     
     private var noticeList: some View {
         ScrollView {
-            if let noticeExist = messageStore.travel.chatNotice {
+            if let noticeExist = messageStore.travel?.chatNotice {
                 ForEach(noticeExist.reversed(), id: \.self) { notice in
                     VStack(spacing: 3) {
                         HStack {
@@ -122,7 +122,7 @@ struct ChattingMenuDetailView: View {
     
     private var photoList: some View {
         VStack {
-            if let existImageList = messageStore.travel.chatImages {
+            if let existImageList = messageStore.travel?.chatImages {
                 HStack {
                     Text("\(existImageList.count)개")
                         .font(.caption02)

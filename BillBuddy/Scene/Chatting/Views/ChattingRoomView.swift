@@ -29,7 +29,7 @@ struct ChattingRoomView: View {
             if messageStore.messages.isEmpty {
                 emptyChat
             } else {
-                if messageStore.travel.chatNotice != nil {
+                if messageStore.travel?.chatNotice != nil {
                     chattingItem
                         .padding(.top, 40)
                         .overlay(alignment: .top) {
@@ -125,7 +125,7 @@ struct ChattingRoomView: View {
                     .foregroundColor(.myPrimary)
                     .frame(width: 24, height: 24)
                     .padding(.leading, 12)
-                if let notice = messageStore.travel.chatNotice?.last?.notice {
+                if let notice = messageStore.travel?.chatNotice?.last?.notice {
                     Text(notice)
                         .font(Font.body04)
                         .foregroundColor(.systemBlack)

@@ -26,7 +26,9 @@ struct ChattingView: View {
             Divider().padding(0)
         }
         .navigationDestination(isPresented: $tabViewStore.isPresentedChat) {
-            ChattingRoomView(travel: tabViewStore.seletedTravel)
+            if let travel = tabViewStore.seletedTravel {
+                ChattingRoomView(travel: travel)
+            }
         }
         .onAppear {
             tabBarVisivilyStore.showTabBar()
