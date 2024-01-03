@@ -46,7 +46,7 @@ MV
 <br>
 <br>
 
-## Folder Structure
+## Folder Structure -> MVVM Structure로 수정 진행중
 ```
 📦BillBuddy
  ┣ 🗂Common
