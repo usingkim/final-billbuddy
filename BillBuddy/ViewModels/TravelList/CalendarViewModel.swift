@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class CalendarStore: ObservableObject {
+final class CalendarViewModel: ObservableObject {
     
     var calendar = Calendar.current
     

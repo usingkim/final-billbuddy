@@ -8,18 +8,16 @@
 import SwiftUI
 
 struct CalendarSheetView: View {
-    @EnvironmentObject var userTravleStroe : UserTravelStore
-    @StateObject var calendarStore = CalendarStore()
-    @Binding var startDate: Date
-    @Binding var endDate: Date
-    @Binding var isShowingCalendarView: Bool
+    @EnvironmentObject private var userTravleStroe : UserTravelStore
+    @ObservedObject var addTravelVM: AddTravelViewModel
+    @StateObject var calendarVM = CalendarViewModel()
     
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
             HStack {
                 Button(action: {
-                    calendarStore.selectBackMonth()
+                    calendarVM.selectBackMonth()
                 }) {
                     Image("arrow_back")
                         .resizable()
@@ -28,11 +26,11 @@ struct CalendarSheetView: View {
                 }
                 .padding(.trailing, 27)
                 
-                Text("\(calendarStore.titleForYear())   \(calendarStore.titleForMonth())")
+                Text("\(calendarVM.titleForYear())   \(calendarVM.titleForMonth())")
                     .font(.body01)
                 
                 Button(action: {
-                    calendarStore.selectForwardMonth()
+                    calendarVM.selectForwardMonth()
                 }) {
                     Image("arrow_forward_ios")
                         .resizable()
@@ -46,42 +44,41 @@ struct CalendarSheetView: View {
             
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
-                    ForEach(calendarStore.days, id: \.self) { day in
+                    ForEach(calendarVM.days, id: \.self) { day in
                         Text(day)
                             .font(.body04)
                             .foregroundColor(.gray500)
                             .frame(height: 36)
                             .frame(maxWidth: .infinity)
                     }
-                    
                 }
                 .padding(.bottom, 12)
                 
                 VStack {
-                    ForEach(calendarStore.weeks, id: \.self) { week in
+                    ForEach(calendarVM.weeks, id: \.self) { week in
                         ZStack {
                             HStack(spacing: 0) {
                                 ForEach(week, id: \.self) { day in
-                                    let isCurrentMonth = calendarStore.calendar.isDate(day, equalTo: calendarStore.date, toGranularity: .month)
+                                    let isCurrentMonth = calendarVM.calendar.isDate(day, equalTo: calendarVM.date, toGranularity: .month)
                                     ZStack {
                                         fillRange(day: day, week: week, index: week.firstIndex(of: day)!)
                                         Button(action: {
-                                            calendarStore.selectDay(day)
+                                            calendarVM.selectDay(day)
                                         }) {
                                             ZStack {
-                                                Text("\(calendarStore.calendar.component(.day, from: day))")
-                                                    .foregroundColor(isCurrentMonth ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.black) : Color.gray500)
-                                                    .foregroundColor(calendarStore.isDateSelected(day: day) ? Color.white : Color.black)
+                                                Text("\(calendarVM.calendar.component(.day, from: day))")
+                                                    .foregroundColor(isCurrentMonth ? (calendarVM.isDateSelected(day: day) ? Color.white : Color.black) : Color.gray500)
+                                                    .foregroundColor(calendarVM.isDateSelected(day: day) ? Color.white : Color.black)
                                                 
                                                 Circle()
                                                     .frame(width: 4, height: 4)
-                                                    .foregroundColor(calendarStore.isToday(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.myPrimary) : Color.clear)
+                                                    .foregroundColor(calendarVM.isToday(day: day) ? (calendarVM.isDateSelected(day: day) ? Color.white : Color.myPrimary) : Color.clear)
                                                     .offset(y: 11.5)
                                             }
                                             .frame(width: 30, height: 30)
                                             .clipShape(Circle())
                                         }
-                                        .background(calendarStore.isDateInRange(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.myPrimary.cornerRadius(30) : Color.clear.cornerRadius(30)) : Color.clear.cornerRadius(30))
+                                        .background(calendarVM.isDateInRange(day: day) ? (calendarVM.isDateSelected(day: day) ? Color.myPrimary.cornerRadius(30) : Color.clear.cornerRadius(30)) : Color.clear.cornerRadius(30))
                                     }
                                     .frame(height: 36)
                                     .frame(maxWidth: .infinity)
@@ -96,14 +93,14 @@ struct CalendarSheetView: View {
                 Button(action: {
                     saveSelectedDate()
                 }) {
-                    Text(calendarStore.instructionText)
-                        .foregroundColor(calendarStore.buttonFontColor)
+                    Text(calendarVM.instructionText)
+                        .foregroundColor(calendarVM.buttonFontColor)
                         .font(Font.body02)
                     
                 }
-                .disabled(calendarStore.instructionText != "여행 일정 선택 완료")
+                .disabled(calendarVM.instructionText != "여행 일정 선택 완료")
                 .frame(width: 335, height: 52)
-                .background(calendarStore.buttonBackgroundColor.cornerRadius(8))
+                .background(calendarVM.buttonBackgroundColor.cornerRadius(8))
                 .foregroundColor(.white)
                 .padding(.bottom, 52)
                 
@@ -122,18 +119,18 @@ struct CalendarSheetView: View {
                 .fill(Color.lightBlue200)
                 .frame(height: 30)
             
-            if calendarStore.isDateSelected(day: day) {
-                if day == calendarStore.firstDate {
+            if calendarVM.isDateSelected(day: day) {
+                if day == calendarVM.firstDate {
                     Color.clear
                 } else {
                     rangeFrame
                 }
             } else {
-                if calendarStore.isDateInRange(day: day) {
+                if calendarVM.isDateInRange(day: day) {
                     if index == 0 {
                         rangeFrame
                     } else {
-                        if calendarStore.isFirstDayOfMonth(date: day) {
+                        if calendarVM.isFirstDayOfMonth(date: day) {
                             rangeFrame
                         } else {
                             rangeFrame
@@ -144,22 +141,22 @@ struct CalendarSheetView: View {
                 }
             }
             
-            if calendarStore.isDateSelected(day: day) {
-                if day == calendarStore.secondDate {
+            if calendarVM.isDateSelected(day: day) {
+                if day == calendarVM.secondDate {
                     Color.clear
                 } else {
-                    if calendarStore.secondDate == nil {
+                    if calendarVM.secondDate == nil {
                         Color.clear
                     } else {
                         rangeFrame
                     }
                 }
             } else {
-                if calendarStore.isDateInRange(day: day) {
+                if calendarVM.isDateInRange(day: day) {
                     if index == week.count - 1 {
                         rangeFrame
                     } else {
-                        if calendarStore.isLastDayOfMonth(date: day) {
+                        if calendarVM.isLastDayOfMonth(date: day) {
                             rangeFrame
                         } else {
                             rangeFrame
@@ -173,27 +170,15 @@ struct CalendarSheetView: View {
     }
     
     func saveSelectedDate() {
-        guard let firstDate = calendarStore.firstDate, let secondDate = calendarStore.secondDate else {
+        guard let firstDate = calendarVM.firstDate, let secondDate = calendarVM.secondDate else {
             return
         }
         
-        //        let adjustedFirstDate = calendarStore.calendar.date(byAdding: .hour, value: 9, to: firstDate)!
-        //        let adjustedSecondDate = calendarStore.calendar.date(byAdding: .hour, value: 9, to: secondDate)!
+        addTravelVM.startDate = firstDate
+        addTravelVM.endDate = secondDate
         
-        startDate = firstDate
-        endDate = secondDate
-        //        startDate = adjustedFirstDate
-        //        endDate = adjustedSecondDate
-        
-        isShowingCalendarView = false
-        print("시작일: \(firstDate)")
-        print("종료일: \(secondDate)")
-        
+        addTravelVM.isShowingCalendarView = false
     }
 }
 
 
-#Preview {
-    CalendarSheetView(startDate: .constant(Date()), endDate: .constant(Date()), isShowingCalendarView: .constant(false))
-    
-}
