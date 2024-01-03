@@ -12,7 +12,7 @@ import FirebaseFirestore
 
 struct MemberManagementView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var sampleMemeberStore: SampleMemeberStore = SampleMemeberStore()
+    @StateObject var sampleMemeberStore: SampleMemberStore = SampleMemberStore()
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var userTravelStore: UserTravelStore

@@ -10,7 +10,7 @@ import UIKit
 
 struct MemberShareSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var sampleMemeberStore: SampleMemeberStore
+    @ObservedObject var sampleMemeberStore: SampleMemberStore
     @EnvironmentObject private var notificationStore: NotificationStore
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @Binding var isShowingShareSheet: Bool
@@ -170,7 +170,7 @@ struct MemberShareSheet: View {
 
 #Preview {
     NavigationStack {
-        MemberShareSheet(sampleMemeberStore: SampleMemeberStore(), isShowingShareSheet: .constant(true), saveAction: { })
+        MemberShareSheet(sampleMemeberStore: SampleMemberStore(), isShowingShareSheet: .constant(true), saveAction: { })
             .environmentObject(NotificationStore.shared)
     }
 }
