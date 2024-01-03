@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum EntryViewType {
-    case list
-    case more
-}
 
 enum ListItem: String, CaseIterable {
     case chat

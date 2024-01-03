@@ -7,22 +7,6 @@
 
 import Foundation
 
-enum PaymentManageMode {
-    case mainAdd
-    case add
-    case edit
-}
-
-enum PaymentFocusField {
-    case travel
-    case date
-    case type
-    case content
-    case member
-    case price
-}
-
-
 @MainActor
 final class PaymentManageViewModel: ObservableObject {
     var mode: PaymentManageMode
