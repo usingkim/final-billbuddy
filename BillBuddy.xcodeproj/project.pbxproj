@@ -338,33 +338,6 @@
 			path = SpendingList;
 			sourceTree = "<group>";
 		};
-		2717D0EB2ACD76C90002D620 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				636CE5FE2AC3BA1E00BF7730 /* Line.swift */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		2717D0EC2ACD76DF0002D620 /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				636CE5FA2AC3B27400BF7730 /* LocationManager.swift */,
-			);
-			name = Store;
-			sourceTree = "<group>";
-		};
-		2717D0ED2ACD76EF0002D620 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				638A9F482ADA812100C931DD /* MapViewCoordinater.swift */,
-				638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */,
-				638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */,
-				638A9F4E2ADA816E00C931DD /* MapMainView.swift */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
 		2717D0EE2ACD770D0002D620 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,6 +504,7 @@
 				277C999F2AC069A9006DFCFC /* TravelRenewalDate.swift */,
 				276648302ABD8B6E000F8A10 /* TravelCalculation.swift */,
 				276648342ABD8C73000F8A10 /* Payment.swift */,
+				636CE5FE2AC3BA1E00BF7730 /* Line.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -596,6 +570,7 @@
 				D279D1172ACFE6670087712F /* UserService.swift */,
 				FFCF22582B24500000B79BF9 /* SNSSignInService.swift */,
 				C4F87C0B2AC160FE00472876 /* PaymentService.swift */,
+				636CE5FA2AC3B27400BF7730 /* LocationManager.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -651,10 +626,12 @@
 		276648402ABD8D7E000F8A10 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				2717D0EB2ACD76C90002D620 /* Model */,
-				2717D0EC2ACD76DF0002D620 /* Store */,
-				2717D0ED2ACD76EF0002D620 /* Views */,
-				63A3F1742ADF7888006EE206 /* CustomAnnotation */,
+				638A9F482ADA812100C931DD /* MapViewCoordinater.swift */,
+				638A9F4A2ADA813D00C931DD /* AddPaymentMapView.swift */,
+				638A9F4C2ADA815700C931DD /* EditPaymentMapView.swift */,
+				638A9F4E2ADA816E00C931DD /* MapMainView.swift */,
+				63EF15652B319FA50031F617 /* CustomAnnotation.swift */,
+				63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -853,15 +830,6 @@
 				46B8E2262AD8295F001B3A6C /* MessageStore.swift */,
 			);
 			path = Store;
-			sourceTree = "<group>";
-		};
-		63A3F1742ADF7888006EE206 /* CustomAnnotation */ = {
-			isa = PBXGroup;
-			children = (
-				63EF15652B319FA50031F617 /* CustomAnnotation.swift */,
-				63A3F1752ADF78B1006EE206 /* CustomAnnotationView.swift */,
-			);
-			name = CustomAnnotation;
 			sourceTree = "<group>";
 		};
 		900B97D02B31E34E00A89464 /* SubView */ = {
