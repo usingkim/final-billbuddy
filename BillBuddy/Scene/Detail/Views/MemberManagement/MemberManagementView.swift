@@ -11,8 +11,8 @@ import SwiftUI
 struct MemberManagementView: View {
     @Environment(\.dismiss) var dismiss
     
-    @StateObject var joinMemberStore: JoinMemberStore = JoinMemberStore()
-    @StateObject var memberManagementVM: MemberManagementViewModel
+    @StateObject private var joinMemberStore: JoinMemberStore = JoinMemberStore()
+    @StateObject private var memberManagementVM: MemberManagementViewModel
     
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
@@ -42,10 +42,9 @@ struct MemberManagementView: View {
                 
                 ForEach(joinMemberStore.connectedMemebers) { member in
                     MemberCell(
-                        sampleMemeberStore: joinMemberStore,
-                        isShowingShareSheet: $memberManagementVM.isShowingShareSheet,
+                        memberManagementVM: memberManagementVM,
+                        joinMemberStore: joinMemberStore,
                         member: member,
-                        isPaymentSettled: memberManagementVM.travel.isPaymentSettled,
                         onEditing: {
                             joinMemberStore.selectMember(member.id)
                             memberManagementVM.isShowingEditSheet = true
@@ -79,10 +78,9 @@ struct MemberManagementView: View {
                 
                 ForEach(joinMemberStore.dummyMemebers) { member in
                     MemberCell(
-                        sampleMemeberStore: joinMemberStore,
-                        isShowingShareSheet: $memberManagementVM.isShowingShareSheet,
+                        memberManagementVM: memberManagementVM,
+                        joinMemberStore: joinMemberStore,
                         member: member,
-                        isPaymentSettled: memberManagementVM.travel.isPaymentSettled,
                         onEditing: {
                             joinMemberStore.selectMember(member.id)
                             memberManagementVM.isShowingEditSheet = true
@@ -116,10 +114,9 @@ struct MemberManagementView: View {
                 
                 ForEach(joinMemberStore.excludedMemebers) { member in
                     MemberCell(
-                        sampleMemeberStore: joinMemberStore,
-                        isShowingShareSheet: $memberManagementVM.isShowingShareSheet,
+                        memberManagementVM: memberManagementVM,
+                        joinMemberStore: joinMemberStore,
                         member: member,
-                        isPaymentSettled: memberManagementVM.travel.isPaymentSettled,
                         onEditing: {
                             joinMemberStore.selectMember(member.id)
                             memberManagementVM.isShowingEditSheet = true
@@ -174,8 +171,8 @@ struct MemberManagementView: View {
                     if joinMemberStore.isSelectedMember {
                         memberManagementVM.isShowingSaveAlert = true
                     } else {
-                        travelDetailStore.stoplistening()
-                        dismissAction()
+                        memberManagementVM.dismissAction(settlementExpensesStore: settlementExpensesStore, travelDetailStore: travelDetailStore, joinMemberStore: joinMemberStore)
+                        dismiss()
                     }
                 }, label: {
                     Image("arrow_back")
@@ -195,21 +192,14 @@ struct MemberManagementView: View {
             Alert(title: Text("변경사항을 저장하시겠습니까?"),
                   message: Text("뒤로가기 시 변경사항이 삭제됩니다."),
                   primaryButton: .destructive(Text("취소하고 나가기"), action: {
-                travelDetailStore.stoplistening()
-                dismissAction()
+                memberManagementVM.dismissAction(settlementExpensesStore: settlementExpensesStore, travelDetailStore: travelDetailStore, joinMemberStore: joinMemberStore)
+                dismiss()
             }),
                   secondaryButton: .default(Text("저장"), action: {
                 Task {
-                    travelDetailStore.stoplistening()
-                    await joinMemberStore.saveMemeber() {
-                        if memberManagementVM.entryViewType == .list {
-                            userTravelStore.setTravelMember(travelId: memberManagementVM.travel.id, members: joinMemberStore.members)
-                        }
-                    }
-                    if memberManagementVM.entryViewType == .list {
-                        memberManagementVM.fetchPayments()
-                    }
-                    dismissAction()
+                    await memberManagementVM.saveChange(joinMemberStore: joinMemberStore, userTravelStore: userTravelStore)
+                    memberManagementVM.dismissAction(settlementExpensesStore: settlementExpensesStore, travelDetailStore: travelDetailStore, joinMemberStore: joinMemberStore)
+                    dismiss()
                 }
             }))
         }
@@ -218,9 +208,7 @@ struct MemberManagementView: View {
         } content: {
             ZStack {
                 MemberEditSheet(
-                    member: $joinMemberStore.members[joinMemberStore.selectedmemberIndex],
-                    isShowingEditSheet: $memberManagementVM.isShowingEditSheet,
-                    isExcluded: joinMemberStore.members[joinMemberStore.selectedmemberIndex].isExcluded,
+                    memberManagementVM: memberManagementVM,
                     saveAction: {
                         Task {
                             await joinMemberStore.saveMemeber() {
@@ -231,6 +219,9 @@ struct MemberManagementView: View {
                         }
                     }
                 )
+                .onAppear {
+                    memberManagementVM.setMemberAndIsExcluded(m: joinMemberStore.members[joinMemberStore.selectedmemberIndex])
+                }
             }
             .presentationDetents([.height(374)])
             .presentationDragIndicator(.hidden)
@@ -238,19 +229,18 @@ struct MemberManagementView: View {
         .sheet(isPresented: $memberManagementVM.isShowingShareSheet) {
             // onDismiss
         } content: {
-            MemberShareSheet(sampleMemeberStore: joinMemberStore, isShowingShareSheet: $memberManagementVM.isShowingShareSheet, saveAction: {
+            MemberShareSheet(joinMemberStore: joinMemberStore, memberManagementVM: memberManagementVM) {
                 if memberManagementVM.entryViewType == .list {
-                    userTravelStore.setTravelMember(travelId: memberManagementVM.travel.id, members: joinMemberStore.members)
+                    userTravelStore.setTravelMember(
+                        travelId: memberManagementVM.travel.id, 
+                        members: joinMemberStore.members
+                    )
                 }
-            })
+            }
                 .presentationDetents([.large])
                 .presentationDragIndicator(.hidden)
         }
     }
     
     
-    func dismissAction() {
-        settlementExpensesStore.setSettlementExpenses(payments: memberManagementVM.payments, members: joinMemberStore.members)
-        dismiss()
-    }
 }

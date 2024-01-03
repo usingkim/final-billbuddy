@@ -10,15 +10,17 @@ import UIKit
 
 struct MemberShareSheet: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var sampleMemeberStore: JoinMemberStore
+    
     @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var userTravelStore: UserTravelStore
-    @Binding var isShowingShareSheet: Bool
-    @State private var searchText: String = ""
-    @State private var isShowingInviteAlert: Bool = false
-    @State private var seletedUser: User = User(email: "", name: "", bankName: "", bankAccountNum: "", isPremium: false, premiumDueDate: Date.now, reciverToken: "")
-    @State private var isfinishsearched: Bool = true
-    let saveAction: () -> Void
+    
+    @ObservedObject var joinMemberStore: JoinMemberStore
+    @ObservedObject var memberManagementVM: MemberManagementViewModel
+    
+    init(joinMemberStore: JoinMemberStore, memberManagementVM: MemberManagementViewModel, saveAction: @escaping () -> Void) {
+        self.joinMemberStore = joinMemberStore
+        self.memberManagementVM = memberManagementVM
+        memberManagementVM.saveAction = saveAction
+    }
     
     var body: some View {
         NavigationStack {
@@ -30,21 +32,21 @@ struct MemberShareSheet: View {
                         .frame(width: 24, height: 24)
                         .padding(.leading, 12)
                         .padding(.trailing, 8)
-                    TextField("이름 또는 이메일을 입력해주세요", text: $searchText)
+                    TextField("이름 또는 이메일을 입력해주세요", text: $memberManagementVM.searchText)
                         .textInputAutocapitalization(.never)
                         .font(.body04)
-                        .onChange(of: searchText) { _ in
-                            sampleMemeberStore.isfinishsearched = true
+                        .onChange(of: memberManagementVM.searchText) { _ in
+                            joinMemberStore.isfinishsearched = true
                         }
                         .onSubmit() {
-                            if searchText.isEmpty == false {
-                                sampleMemeberStore.searchUser(query: searchText)
+                            if memberManagementVM.searchText.isEmpty == false {
+                                joinMemberStore.searchUser(query: memberManagementVM.searchText)
                             }
                         }
                     
-                    if !searchText.isEmpty {
+                    if !memberManagementVM.searchText.isEmpty {
                         Button(action: {
-                            self.searchText = ""
+                            memberManagementVM.searchText = ""
                         }) {
                             Image(systemName: "xmark.circle.fill")
                                 .frame(width: 24, height: 24)
@@ -63,12 +65,12 @@ struct MemberShareSheet: View {
                 .padding(.top, 15)
                 .padding(.bottom, 8)
                 
-                if sampleMemeberStore.isSearching == false {
-                    if sampleMemeberStore.searchResult.isEmpty == false {
-                        ForEach(sampleMemeberStore.searchResult) { user in
+                if joinMemberStore.isSearching == false {
+                    if joinMemberStore.searchResult.isEmpty == false {
+                        ForEach(joinMemberStore.searchResult) { user in
                             Button {
-                                seletedUser = user
-                                isShowingInviteAlert = true
+                                memberManagementVM.seletedUser = user
+                                memberManagementVM.isShowingInviteAlert = true
                             } label: {
                                 VStack(alignment: .leading, spacing: 0) {
                                     HStack(spacing: 0) {
@@ -92,35 +94,19 @@ struct MemberShareSheet: View {
                                 .padding([.leading, .trailing], 24)
                                 .foregroundColor(Color.systemBlack)
                             }
-                            .alert(isPresented: $isShowingInviteAlert) {
+                            .alert(isPresented: $memberManagementVM.isShowingInviteAlert) {
                                 Alert(title: Text("해당인원을 초대하시겠습다."),
                                       message: Text("모든 변경내용이 저장됩니다."),
                                       primaryButton: .destructive(Text("취소")),
                                       secondaryButton: .default(Text("초대"), action: {
-                                    Task {
-                                        let noti = UserNotification(
-                                            type: .invite,
-                                            content: "\(sampleMemeberStore.travel.travelTitle) 에서 당신을 초대했습니다",
-                                            contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(sampleMemeberStore.travel.id )&memberId=\(sampleMemeberStore.seletedMember.id)",
-                                            addDate: Date.now)
-                                        await sampleMemeberStore.inviteMemberAndSave() {
-                                            saveAction()
-                                        }
-                                        notificationStore.sendNotification(users: [seletedUser], notification: noti)
-                                        
-                                        if let serverKey = ServerKeyManager.loadServerKey() {
-                                            PushNotificationManager.sendPushNotificationToToken(seletedUser.reciverToken, title: "여행 초대", body: "\(sampleMemeberStore.travel.travelTitle)에서 당신을 초대했습니다", senderToken: UserService.shared.currentUser?.reciverToken ?? "", serverKey: serverKey)
-                                        }
-                                        
-                                        isShowingShareSheet = false
-                                    }
+                                    memberManagementVM.inviteMember(joinMemberStore: joinMemberStore, notificationStore: notificationStore)
                                 }))
                             }
                         }
                     } else {
                         VStack {
-                            if sampleMemeberStore.isfinishsearched == false && sampleMemeberStore.searchResult.isEmpty {
-                                Text("'\(searchText)'에 대한 검색 결과가 없어요")
+                            if joinMemberStore.isfinishsearched == false && joinMemberStore.searchResult.isEmpty {
+                                Text("'\(memberManagementVM.searchText)'에 대한 검색 결과가 없어요")
                                     .font(.body03)
                                     .foregroundStyle(Color.systemBlack)
                                 
@@ -152,7 +138,7 @@ struct MemberShareSheet: View {
                         .foregroundColor(Color.systemBlack)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    ShareLink(items: [sampleMemeberStore.getURL(memberId: sampleMemeberStore.seletedMember.id)]) {
+                    ShareLink(items: [joinMemberStore.getURL(memberId: joinMemberStore.seletedMember.id)]) {
                         Image(systemName: "square.and.arrow.up")
                     }
                     .foregroundStyle(Color.systemBlack)
@@ -161,16 +147,9 @@ struct MemberShareSheet: View {
             }
         }
         .onDisappear {
-            sampleMemeberStore.searchResult = []
+            joinMemberStore.searchResult = []
         }
      
     }
     
-}
-
-#Preview {
-    NavigationStack {
-        MemberShareSheet(sampleMemeberStore: JoinMemberStore(), isShowingShareSheet: .constant(true), saveAction: { })
-            .environmentObject(NotificationStore.shared)
-    }
 }

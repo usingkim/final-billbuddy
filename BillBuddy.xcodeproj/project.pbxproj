@@ -699,8 +699,8 @@
 		278544692AC413AF009032CE /* MemberManagement */ = {
 			isa = PBXGroup;
 			children = (
-				2729F3322AD4279D0089147E /* SubView */,
 				278544672AC413A2009032CE /* MemberManagementView.swift */,
+				2729F3322AD4279D0089147E /* SubView */,
 			);
 			path = MemberManagement;
 			sourceTree = "<group>";

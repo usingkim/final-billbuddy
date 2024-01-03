@@ -8,11 +8,7 @@
 import SwiftUI
 
 struct MemberEditSheet: View {
-    @Binding var member: TravelCalculation.Member
-    @Binding var isShowingEditSheet: Bool
-    @State var isExcluded: Bool
-    @State var nickName: String = ""
-    @State var advancePayment: String = ""
+    @ObservedObject var memberManagementVM: MemberManagementViewModel
     @FocusState private var isKeyboardUp: Bool
     
     let saveAction: () -> Void
@@ -28,7 +24,7 @@ struct MemberEditSheet: View {
                     HStack {
                         Text("닉네임")
                             .font(.body02)
-                        TextField(member.name, value: $nickName, formatter: NumberFormatter.numberFomatter)
+                        TextField(memberManagementVM.member.name, value: $memberManagementVM.nickName, formatter: NumberFormatter.numberFomatter)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .font(Font.body04)
@@ -48,7 +44,7 @@ struct MemberEditSheet: View {
                     HStack {
                         Text("선금")
                             .font(.body02)
-                        TextField(member.advancePayment.wonAndDecimal, text: $advancePayment)
+                        TextField(memberManagementVM.member.advancePayment.wonAndDecimal, text: $memberManagementVM.advancePayment)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
                             .font(Font.body04)
@@ -69,10 +65,9 @@ struct MemberEditSheet: View {
                             .font(.body02)
                         Spacer()
                         Button {
-                            isExcluded.toggle()
-                            print(isExcluded)
+                            memberManagementVM.isExcluded.toggle()
                         } label: {
-                            Image(isExcluded ? .checked : .noneChecked)
+                            Image(memberManagementVM.isExcluded ? .checked : .noneChecked)
                         }
                     }
                     .padding([.leading, .trailing], 16)
@@ -80,7 +75,8 @@ struct MemberEditSheet: View {
             Spacer()
             
             Button {
-                setMemeber()
+                memberManagementVM.setMemeber()
+                saveAction()
             } label: {
                 Text("수정 완료")
                     .font(Font.body02)
@@ -97,17 +93,5 @@ struct MemberEditSheet: View {
             }
         }
     }
-    
-    func setMemeber() {
-        let nickName = nickName.isEmpty ? member.name : nickName
-        member.name = nickName
-        member.advancePayment = Int(advancePayment) ?? 0
-        member.isExcluded = isExcluded
-        isShowingEditSheet = false
-        saveAction()
-    }
 }
 
-#Preview {
-    MemberEditSheet(member: .constant(TravelCalculation.Member(name: "name", advancePayment: 0, payment: 0)), isShowingEditSheet: .constant(true), isExcluded: false, saveAction: { })
-}
