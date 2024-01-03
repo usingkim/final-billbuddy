@@ -12,6 +12,17 @@ enum PaymentManageMode {
     case add
     case edit
 }
+
+enum PaymentFocusField {
+    case travel
+    case date
+    case type
+    case content
+    case member
+    case price
+}
+
+
 @MainActor
 final class PaymentManageViewModel: ObservableObject {
     var mode: PaymentManageMode
@@ -30,6 +41,8 @@ final class PaymentManageViewModel: ObservableObject {
     @Published var participants: [Payment.Participant] = []
     @Published var isShowingMemberSheet: Bool = false
     
+    @Published var isShowingAddress: Bool = false
+    @Published var isShowingMapView: Bool = false
     @Published var isShowingDatePicker: Bool = false
     @Published var isShowingTimePicker: Bool = false
     @Published var paymentType: Int = 0 // 0: 1/n, 1: 개별
@@ -100,6 +113,10 @@ final class PaymentManageViewModel: ObservableObject {
     func setAddress() {
         if let p = payment {
             searchAddress = p.address.address
+        }
+        
+        if mode == .edit {
+            isShowingMapView = true
         }
     }
     

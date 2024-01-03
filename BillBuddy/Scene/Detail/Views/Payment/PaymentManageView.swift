@@ -147,7 +147,7 @@ extension PaymentManageView {
     
     var mapViewSection: some View {
         Section {
-            AddPaymentMapView(locationManager: locationManager, searchAddress: $paymentManageVM.searchAddress)
+            FillPaymentMapView(locationManager: locationManager, paymentManageVM: paymentManageVM)
                 .onAppear {
                     paymentManageVM.setAddress()
                 }
