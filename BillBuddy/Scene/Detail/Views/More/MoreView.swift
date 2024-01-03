@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum EntryViewType {
-    case list
-    case more
-}
 
 enum ListItem: String, CaseIterable {
     case chat
@@ -63,7 +59,7 @@ struct MoreView: View {
 
             ScrollView {
                 VStack {
-                    ForEach(ListItem.allCases, id: \.self) { item in
+                    ForEach(itemList, id: \.self) { item in
                         NavigationLink {
                             switch item {
                             case .chat:
@@ -77,9 +73,8 @@ struct MoreView: View {
                                 .environmentObject(travelDetailStore)
                             case .mamberManagement:
                                 MemberManagementView(
-                                    paymentsOfType: paymentStore.payments, 
                                     travel: travel,
-                                    entryViewtype: .more
+                                    entryViewType: .more
                                 )
                                     .environmentObject(travelDetailStore)
                             case .settledAccount:
@@ -151,15 +146,5 @@ struct MoreView: View {
             }
 
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        MoreView(travel: .sampletravel)
-            .environmentObject(UserTravelStore())
-            .environmentObject(TabViewStore.shared)
-            .environmentObject(TravelDetailStore(travel: TravelCalculation.sampletravel))
-            .environmentObject(PaymentService(travel: TravelCalculation.sampletravel))
     }
 }

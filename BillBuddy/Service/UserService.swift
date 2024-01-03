@@ -85,7 +85,7 @@ final class UserService: ObservableObject {
     
     @MainActor
     func updateReciverToken() async throws {
-        guard let user = currentUser else {
+        guard currentUser != nil else {
             return
         }
         do {

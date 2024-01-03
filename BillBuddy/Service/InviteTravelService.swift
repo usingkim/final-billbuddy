@@ -23,11 +23,11 @@ struct PushData {
     var querys: [String:String]
 }
 
-final class InvitTravelService: ObservableObject {
+final class InviteTravelService: ObservableObject {
     @Published var isLoading = false
     @Published var isShowingAlert = false
     
-    static let shared: InvitTravelService = InvitTravelService()
+    static let shared: InviteTravelService = InviteTravelService()
     private init() { }
 
     private let dbRef = Firestore.firestore()
@@ -114,7 +114,7 @@ final class InvitTravelService: ObservableObject {
                 // 현재 맴버에 자신이 포함되어있으면 return
                 if travel.members.firstIndex(where: { $0.userId == user.id }) != nil {
                     isShowingAlert = true
-                    guard let notiId = pushData?.querys["notiId"] else { return }
+                    guard let _ = pushData?.querys["notiId"] else { return }
                     deleteNotification()
                     return
                 }

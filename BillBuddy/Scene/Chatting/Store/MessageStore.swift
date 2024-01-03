@@ -17,7 +17,7 @@ final class MessageStore: ObservableObject {
     var lastDoc: QueryDocumentSnapshot?
     @Published var messages: [Message] = []
     @Published var isAddedNewMessage: Bool = false
-    @Published var travel: TravelCalculation = TravelCalculation.sampletravel
+    @Published var travel: TravelCalculation?
     
     /// 채팅 메세지 보내기
     func sendMessage(travelCalculation: TravelCalculation, message: Message) {
@@ -40,7 +40,7 @@ final class MessageStore: ObservableObject {
         
         if let data = try? await item.loadTransferable(type: Data.self) {
             do {
-                try await storage.child(path).putDataAsync(data, metadata: nil)
+                _ = try await storage.child(path).putDataAsync(data, metadata: nil)
                 let imageURL = try await storage.child(path).downloadURL()
                 urlString = imageURL.absoluteString
             } catch {

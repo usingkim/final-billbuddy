@@ -14,7 +14,7 @@ struct ChattingRoomView: View {
     @EnvironmentObject private var userService: UserService
     @EnvironmentObject private var messageStore: MessageStore
     @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
     var travel: TravelCalculation
     ///pagination 적용 시 스크롤 올릴 때 몇개의 데이터를 가져올 지 갯수
     @State private var leadingCount: Int = 20
@@ -29,7 +29,7 @@ struct ChattingRoomView: View {
             if messageStore.messages.isEmpty {
                 emptyChat
             } else {
-                if messageStore.travel.chatNotice != nil {
+                if messageStore.travel?.chatNotice != nil {
                     chattingItem
                         .padding(.top, 40)
                         .overlay(alignment: .top) {
@@ -74,7 +74,7 @@ struct ChattingRoomView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .toolbar(tabBarVisivilyStore.visivility, for: .tabBar)
+        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
@@ -125,7 +125,7 @@ struct ChattingRoomView: View {
                     .foregroundColor(.myPrimary)
                     .frame(width: 24, height: 24)
                     .padding(.leading, 12)
-                if let notice = messageStore.travel.chatNotice?.last?.notice {
+                if let notice = messageStore.travel?.chatNotice?.last?.notice {
                     Text(notice)
                         .font(Font.body04)
                         .foregroundColor(.systemBlack)
@@ -429,7 +429,7 @@ struct ChattingRoomView: View {
     NavigationStack {
         ChattingRoomView(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
             .environmentObject(MessageStore())
-            .environmentObject(TabBarVisivilyStore())
+            .environmentObject(TabBarVisibilityStore())
             .environmentObject(NotificationStore.shared)
     }
 }

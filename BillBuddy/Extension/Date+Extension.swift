@@ -63,4 +63,11 @@ extension Date {
         return Self.dateFormatter.string(from: self)
     }
     
+    func toFormattedMonthandDay() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM.dd"
+        
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return dateFormatter.string(from: self)
+    }
 }

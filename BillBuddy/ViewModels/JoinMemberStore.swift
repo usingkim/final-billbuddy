@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class SampleMemberStore: ObservableObject {    
+class JoinMemberStore: ObservableObject {    
     @Published var members: [TravelCalculation.Member] = []
     @Published var searchResult: [User] = []
     var connectedMemebers: [TravelCalculation.Member] {

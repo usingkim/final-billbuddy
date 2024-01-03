@@ -11,11 +11,11 @@ struct ContentView: View {
     @StateObject private var signInStore: SignInStore = SignInStore()
     @StateObject private var signUpStore: SignUpStore = SignUpStore()
     @StateObject private var userService: UserService = .shared
-    @StateObject private var invitTravelService: InvitTravelService = .shared
+    @StateObject private var inviteTravelService: InviteTravelService = .shared
     @StateObject private var userTravelStore = UserTravelStore()
     @StateObject private var settlementExpensesStore = SettlementExpensesStore()
     @StateObject private var messageStore = MessageStore()
-    @StateObject private var tabBarVisivilyStore = TabBarVisivilyStore()
+    @StateObject private var tabBarVisivilyStore = TabBarVisibilityStore()
     @StateObject private var notificationStore = NotificationStore.shared
     @StateObject private var nativeViewModel = NativeAdViewModel()
     @StateObject private var myPageStore = MyPageStore()
@@ -26,7 +26,7 @@ struct ContentView: View {
     var body: some View {
         if AuthStore.shared.userUid != "" {
             if userService.isSignIn {
-                if invitTravelService.isLoading == false {
+                if inviteTravelService.isLoading == false {
                     BillBuddyTabView()
                         .environmentObject(settlementExpensesStore)
                         .environmentObject(userTravelStore)
@@ -36,7 +36,7 @@ struct ContentView: View {
                         .environmentObject(signUpStore)
                         .environmentObject(tabBarVisivilyStore)
                         .environmentObject(notificationStore)
-                        .environmentObject(invitTravelService)
+                        .environmentObject(inviteTravelService)
                         .environmentObject(nativeViewModel)
                         .environmentObject(myPageStore)
                         .environmentObject(adViewModel)
@@ -48,7 +48,7 @@ struct ContentView: View {
                     NavigationStack {
                         LodingView()
                     }
-                    .environmentObject(invitTravelService)
+                    .environmentObject(inviteTravelService)
                     .environmentObject(tabViewStore)
                     .environmentObject(userTravelStore)
                 }

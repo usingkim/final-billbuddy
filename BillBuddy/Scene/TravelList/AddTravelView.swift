@@ -8,19 +8,12 @@
 import SwiftUI
 
 struct AddTravelView: View {
-    //    @Binding var travelData: TravelCalculation
-    //    @StateObject private var tempMemberStore: TempMemberStore = TempMemberStore()
-    //    @State private var newTravel = TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970, updateContentDate: Date(), members: [])
     
-    
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
     @EnvironmentObject var userTravelStore: UserTravelStore
-    @State private var travelTitle: String = ""
-    @State private var selectedMember = 1
-    @State private var startDate: Date = Date()
-    @State private var endDate: Date = Date() - 1
-    @State private var isShowingCalendarView = false
     @Environment(\.dismiss) private var dismiss
+    
+    @StateObject private var addTravelVM: AddTravelViewModel = AddTravelViewModel()
     
     @FocusState private var isKeyboardUp: Bool
     
@@ -36,7 +29,7 @@ struct AddTravelView: View {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.white)
                         .overlay(
-                            TextField("여행 이름을 입력해주세요.", text: $travelTitle)
+                            TextField("여행 이름을 입력해주세요.", text: $addTravelVM.travelTitle)
                                 .padding(12)
                                 .focused($isKeyboardUp)
                         )
@@ -61,14 +54,14 @@ struct AddTravelView: View {
                                 
                                 Button(action: {
                                     hideKeyboard()
-                                    isShowingCalendarView.toggle()
+                                    addTravelVM.isShowingCalendarView.toggle()
                                 }) {
                                     
                                     // CalendarSheetView의 firstDate와 endDate가 시차때문에 하루 전날로 표시돼서 
-                                    if startDate <= endDate {
+                                    if addTravelVM.startDate <= addTravelVM.endDate {
                                         let nineHoursInSeconds: TimeInterval = 9 * 60 * 60
-                                        let adjustedStartDate = startDate.addingTimeInterval(nineHoursInSeconds)
-                                        let adjustedEndDate = endDate.addingTimeInterval(nineHoursInSeconds)
+                                        let adjustedStartDate = addTravelVM.startDate.addingTimeInterval(nineHoursInSeconds)
+                                        let adjustedEndDate = addTravelVM.endDate.addingTimeInterval(nineHoursInSeconds)
                                         Text("\(adjustedStartDate.toFormattedMonthandDay()) - \(adjustedEndDate.toFormattedMonthandDay())")
                                             .font(.body04)
                                             .frame(width: 110, height: 30)
@@ -86,8 +79,9 @@ struct AddTravelView: View {
                                 }
                                 .padding(.trailing, 14)
                                 .shadow(color: Color.gray, radius: 0)
-                                .sheet(isPresented: $isShowingCalendarView) {
-                                    CalendarSheetView(startDate: $startDate, endDate: $endDate, isShowingCalendarView: $isShowingCalendarView)
+                                .sheet(isPresented: $addTravelVM.isShowingCalendarView) {
+                                    CalendarSheetView(addTravelVM: addTravelVM)
+                                        .environmentObject(userTravelStore)
                                         .presentationDetents([.height(560)])
                                 }
                             }
@@ -112,7 +106,7 @@ struct AddTravelView: View {
                                 
                                 Button(action: {
                                     hideKeyboard()
-                                    selectedMember = max(1, selectedMember - 1)
+                                    addTravelVM.selectedMember = max(1, addTravelVM.selectedMember - 1)
                                 }) {
                                     Image("Group 1171275315")
                                         .resizable()
@@ -120,12 +114,12 @@ struct AddTravelView: View {
                                 }
                                 .buttonStyle(.plain)
                                 
-                                Text("\(selectedMember)")
+                                Text("\(addTravelVM.selectedMember)")
                                     .font(.body01)
                                 
                                 Button(action: {
                                     hideKeyboard()
-                                    selectedMember += 1
+                                    addTravelVM.selectedMember += 1
                                 }) {
                                     Image("Group 1171275314")
                                         .resizable()
@@ -145,7 +139,7 @@ struct AddTravelView: View {
                 Spacer()
                 
                 Button {
-                    userTravelStore.addTravel(travelTitle, memberCount: selectedMember, startDate: startDate, endDate: endDate)
+                    userTravelStore.addTravel(addTravelVM.travelTitle, memberCount: addTravelVM.selectedMember, startDate: addTravelVM.startDate, endDate: addTravelVM.endDate)
                     dismiss()
                 } label: {
                     Text("개설하기")
@@ -164,16 +158,16 @@ struct AddTravelView: View {
         } //MARK: ZSTACK
         .overlay(
             Rectangle()
-                .fill(Color.systemBlack.opacity(isShowingCalendarView ? 0.5 : 0)).edgesIgnoringSafeArea(.all)
+                .fill(Color.systemBlack.opacity(addTravelVM.isShowingCalendarView ? 0.5 : 0)).edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    isShowingCalendarView = false
+                    addTravelVM.isShowingCalendarView = false
                 }
         )
         
         .navigationBarTitle("여행 추가하기")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .toolbar(tabBarVisivilyStore.visivility, for: .tabBar)
+        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -198,22 +192,10 @@ struct AddTravelView: View {
     
 }
 
-
-
-extension Date {
-    func toFormattedMonthandDay() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM.dd"
-        
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        return dateFormatter.string(from: self)
-    }
-}
-
 #Preview {
     NavigationStack {
         AddTravelView()
-            .environmentObject(TabBarVisivilyStore())
+            .environmentObject(TabBarVisibilityStore())
             .environmentObject(UserTravelStore())
     }
 }

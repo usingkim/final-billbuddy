@@ -12,7 +12,7 @@ class PushNotificationManager {
     static func sendPushNotification(toTravel travel: TravelCalculation, title: String, body: String, senderToken: String) {
         if let serverKey = ServerKeyManager.loadServerKey() {
             let db = Firestore.firestore()
-            let roomRef = db.collection("TravelCalculation").document(travel.id)
+            let _ = db.collection("TravelCalculation").document(travel.id)
             
             let members = travel.members.filter { member in
                 return member.userId != nil && !member.reciverToken.isEmpty && member.userId != AuthStore.shared.userUid

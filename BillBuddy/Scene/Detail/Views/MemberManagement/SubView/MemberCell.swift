@@ -9,11 +9,10 @@ import SwiftUI
 import Kingfisher
 
 struct MemberCell: View {
-    @EnvironmentObject private var userTravelStore: UserTravelStore
-    @ObservedObject var sampleMemeberStore: SampleMemberStore
-    @Binding var isShowingShareSheet: Bool
+    @ObservedObject var memberManagementVM: MemberManagementViewModel
+    @ObservedObject var joinMemberStore: JoinMemberStore
+    
     var member: TravelCalculation.Member
-    let isPaymentSettled: Bool
     
     var onEditing: () -> Void
     var onRemove: () -> Void
@@ -36,7 +35,6 @@ struct MemberCell: View {
                     .frame(width: 40, height: 40)
             }
             
-            
             VStack(alignment: .leading, spacing: 0) {
                 Text(member.name)
                     .font(.body04)
@@ -49,14 +47,15 @@ struct MemberCell: View {
             .foregroundColor(Color.systemBlack)
             
             Spacer()
+            
             if member.inviteState != .invited {
                 Button(member.inviteState.string) {
                     if member.inviteState == .dummy {
-                        sampleMemeberStore.selectMember(member.id)
-                        isShowingShareSheet = true
+                        joinMemberStore.selectMember(member.id)
+                        memberManagementVM.isShowingShareSheet = true
                     }
                     if member.inviteState == .wating {
-                        sampleMemeberStore.cancelInvite(member.id) {
+                        joinMemberStore.cancelInvite(member.id) {
                             saveAction()
                         }
                     }
@@ -68,35 +67,27 @@ struct MemberCell: View {
                 .foregroundStyle(member.inviteState == .dummy ? Color.myPrimary : Color.myGreen)
                 .padding(.trailing, 12)
             }
-                
-                
         }
         .frame(height: 40)
         .padding([.top, .bottom], 12)
         .swipeActions(edge: .trailing) {
-            if isPaymentSettled == false {
-                Button("삭제") {
-                    if isPaymentSettled == false {
-                        onRemove()
+            Button("삭제") {
+                if memberManagementVM.travel.isPaymentSettled == false {
+                    onRemove()
+                    saveAction()
+                }
+            }
+            .tint(Color.error)
+            
+            if member.inviteState != .wating {
+                Button("수정") {
+                    if memberManagementVM.travel.isPaymentSettled == false {
+                        onEditing()
                         saveAction()
                     }
                 }
-                .tint(Color.error)
-                
-                if member.inviteState != .wating {
-                    Button("수정") {
-                        if isPaymentSettled == false {
-                            onEditing()
-                            saveAction()
-                        }
-                    }
-                    .tint(Color.gray500)
-                }
+                .tint(Color.gray500)
             }
         }
     }
-}
-
-#Preview {
-    MemberCell(sampleMemeberStore: SampleMemberStore(), isShowingShareSheet: .constant(false), member: TravelCalculation.Member(name: "name", advancePayment: 100, payment: 100), isPaymentSettled: false, onEditing: { print("edit") }, onRemove: { print("remove") }, saveAction: { })
 }

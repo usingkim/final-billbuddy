@@ -26,7 +26,7 @@ final class TabViewStore: ObservableObject {
         return isPresentedChat || isPresentedDetail
     }
     
-    var seletedTravel: TravelCalculation = TravelCalculation.sampletravel
+    var seletedTravel: TravelCalculation?
     
     private func switchTab() {
         DispatchQueue.main.async {

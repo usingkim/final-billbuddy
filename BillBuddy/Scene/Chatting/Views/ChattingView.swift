@@ -10,7 +10,7 @@ import SwiftUI
 struct ChattingView: View {
     @EnvironmentObject private var travelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
     @EnvironmentObject private var tabViewStore: TabViewStore
     
     var body: some View {
@@ -26,7 +26,9 @@ struct ChattingView: View {
             Divider().padding(0)
         }
         .navigationDestination(isPresented: $tabViewStore.isPresentedChat) {
-            ChattingRoomView(travel: tabViewStore.seletedTravel)
+            if let travel = tabViewStore.seletedTravel {
+                ChattingRoomView(travel: travel)
+            }
         }
         .onAppear {
             tabBarVisivilyStore.showTabBar()
@@ -34,7 +36,7 @@ struct ChattingView: View {
                 travelStore.fetchTravelCalculation()
             }
         }
-        .toolbar(tabBarVisivilyStore.visivility, for: .tabBar)
+        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Text("채팅")
@@ -147,7 +149,7 @@ struct ChattingView: View {
     NavigationStack {
         ChattingView()
             .environmentObject(UserTravelStore())
-            .environmentObject(TabBarVisivilyStore())
+            .environmentObject(TabBarVisibilityStore())
             .environmentObject(NotificationStore.shared)
     }
 }

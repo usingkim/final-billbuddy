@@ -88,7 +88,7 @@ struct ChattingMenuView: View {
             }
             .padding(.bottom, 10)
             
-            if let noticeExist = messageStore.travel.chatNotice {
+            if let noticeExist = messageStore.travel?.chatNotice {
                 ForEach(noticeExist.reversed().prefix(1), id: \.self) { notice in
                     Text(notice.notice)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -137,7 +137,7 @@ struct ChattingMenuView: View {
             }
             .padding(.bottom, 10)
             
-            if let existImageList = messageStore.travel.chatImages {
+            if let existImageList = messageStore.travel?.chatImages {
                 LazyVGrid(columns: [
                     GridItem(.flexible()),
                     GridItem(.flexible()),

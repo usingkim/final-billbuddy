@@ -20,7 +20,7 @@ struct BillBuddyApp: App {
         WindowGroup {
             ContentView()
                 .onOpenURL(perform: { url in
-                    InvitTravelService.shared.getInviteURL(url)
+                    InviteTravelService.shared.getInviteURL(url)
                 })
         }
     }

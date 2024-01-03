@@ -12,7 +12,7 @@ struct DetailMainView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var notificationStore: NotificationStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
 
     @StateObject private var paymentService: PaymentService
     @StateObject private var travelDetailStore: TravelDetailStore
@@ -110,7 +110,7 @@ struct DetailMainView: View {
         }
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar(tabBarVisivilyStore.visivility, for: .tabBar)
+        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {

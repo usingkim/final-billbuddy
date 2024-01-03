@@ -119,9 +119,9 @@ struct NotificationListView: View {
         guard let selectedNotification else { return }
         switch accept {
         case true:
-            InvitTravelService.shared.getInviteNoti(selectedNotification)
+            InviteTravelService.shared.getInviteNoti(selectedNotification)
         case false:
-            InvitTravelService.shared.denialInviteNoti(selectedNotification)
+            InviteTravelService.shared.denialInviteNoti(selectedNotification)
         }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LodingView: View {
-    @EnvironmentObject private var invitTravelService: InvitTravelService
+    @EnvironmentObject private var invitTravelService: InviteTravelService
     @EnvironmentObject private var tabViewStore: TabViewStore
     @EnvironmentObject private var userTravelStore: UserTravelStore
 
@@ -40,7 +40,7 @@ struct LodingView: View {
 
 #Preview {
     LodingView()
-        .environmentObject(InvitTravelService.shared)
+        .environmentObject(InviteTravelService.shared)
         .environmentObject(TabViewStore.shared)
         .environmentObject(UserTravelStore())
 }
