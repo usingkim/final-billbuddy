@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-final class TabBarVisivilyStore: ObservableObject {
-    @Published var visivility: Visibility = .visible
+final class TabBarVisibilityStore: ObservableObject {
+    @Published var visibility: Visibility = .visible
     
     func hideTabBar() {
-        visivility = .hidden
+        visibility = .hidden
     }
     
     func showTabBar() {
-        visivility = .visible
+        visibility = .visible
     }
     
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditTravelSheetView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
 
     @Binding var isPresentedSheet: Bool
     @Binding var isPresentedDateView: Bool

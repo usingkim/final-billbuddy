@@ -12,7 +12,7 @@ struct PaymentManageView: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
     @EnvironmentObject private var paymentService: PaymentService
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationStore
@@ -47,7 +47,7 @@ struct PaymentManageView: View {
             
             underButton
         }
-        .toolbar(tabBarVisivilyStore.visivility, for: .tabBar)
+        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {

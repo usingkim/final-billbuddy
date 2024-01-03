@@ -10,7 +10,7 @@ import SwiftUI
 struct TravelListView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisivilyStore
+    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
     @EnvironmentObject private var nativeAdViewModel: NativeAdViewModel
     @EnvironmentObject private var userService: UserService
     @EnvironmentObject private var tabViewStore: TabViewStore
@@ -204,7 +204,7 @@ struct TravelListView: View {
                 }
         )
         
-        .toolbar(tabBarVisivilyStore.visivility, for: .tabBar)
+        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
         
         .onAppear {
             tabBarVisivilyStore.showTabBar()

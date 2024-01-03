@@ -103,8 +103,8 @@ final class MemberManagementViewModel: ObservableObject {
     
     @MainActor
     func dismissAction(settlementExpensesStore: SettlementExpensesStore, travelDetailStore: TravelDetailStore, joinMemberStore: JoinMemberStore) {
+        // TODO: payments가 안들어오나? 암튼 ... 나중에 해보쟈
         settlementExpensesStore.setSettlementExpenses(payments: payments, members: joinMemberStore.members)
         travelDetailStore.stoplistening()
-        
     }
 }

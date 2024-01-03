@@ -23,11 +23,11 @@ struct PushData {
     var querys: [String:String]
 }
 
-final class InvitTravelService: ObservableObject {
+final class InviteTravelService: ObservableObject {
     @Published var isLoading = false
     @Published var isShowingAlert = false
     
-    static let shared: InvitTravelService = InvitTravelService()
+    static let shared: InviteTravelService = InviteTravelService()
     private init() { }
 
     private let dbRef = Firestore.firestore()
