@@ -9,8 +9,8 @@ import SwiftUI
 import FirebaseAuth
 
 struct ForgotPasswordView: View {
-    @EnvironmentObject private var signUpStore: SignUpStore
     @Environment(\.dismiss) var dismiss
+    
     @State private var email: String = ""
     @State private var isShowingAlert = false
     @State private var firstLineMessage: String = ""
@@ -58,11 +58,11 @@ struct ForgotPasswordView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .frame(height: 52)
-                    .background(signUpStore.isValidEmailId(email) ? Color.myPrimary : Color.gray400)
+                    .background(isValidEmailId(email) ? Color.myPrimary : Color.gray400)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             })
             .padding(.top, 20)
-            .disabled(!signUpStore.isValidEmailId(email))
+            .disabled(!isValidEmailId(email))
             
             Spacer()
         }
@@ -83,12 +83,19 @@ struct ForgotPasswordView: View {
             }
         }
     }
+    
+    // 이메일 형식
+    public func isValidEmailId(_ emailText: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: emailText)
+    }
 }
 
 #Preview {
     NavigationStack {
         ForgotPasswordView()
-            .environmentObject(SignUpStore())
+            .environmentObject(SignUpViewModel())
     }
 }
 

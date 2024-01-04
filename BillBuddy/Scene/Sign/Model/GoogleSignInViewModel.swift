@@ -12,7 +12,7 @@ import GoogleSignInSwift
 import GoogleSignIn
 import FirebaseCore
 
-class GoogleSIgnInStore {
+class GoogleSignInViewModel {
     func handleSignInButton() {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
         

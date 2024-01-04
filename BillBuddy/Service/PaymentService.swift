@@ -40,23 +40,21 @@ final class PaymentService: ObservableObject {
         payments.removeAll()
         sumAllPayment = 0
         
+        var tempPayment: [Payment] = []
         do {
             self.isFetchingList = true
-            var tempPayment: [Payment] = []
             let snapshot = try await dbRef.order(by: "paymentDate").getDocuments()
             for document in snapshot.documents {
                 let newPayment = try document.data(as: Payment.self)
                 tempPayment.append(newPayment)
             }
-            
             self.payments = tempPayment
             self.isFetchingList = false
-            return tempPayment
         } catch {
             print("payment fetch false \(error)")
         }
         
-        return []
+        return tempPayment
     }
     
     func resetFilter() -> [Payment] {

@@ -11,7 +11,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-final class SignUpStore: ObservableObject {
+final class SignUpViewModel: ObservableObject {
     @Published var signUpData = SignUpData()
     
     @Published var isNameTextError: Bool = false
@@ -19,11 +19,11 @@ final class SignUpStore: ObservableObject {
     @Published var isEmailInUseError: Bool = false
     @Published var isPasswordUnCorrectError: Bool = false
     @Published var isPasswordCountError: Bool = false
-    
-    @Published var isShowingAlert: Bool = false
+    @Published var isShowingCompleteJoinAlert: Bool = false
     @Published var isEmailValid = true
+    @Published var isShowingProgressView: Bool = false
     
-    var showError = false
+    @FocusState var isKeyboardUp: Bool
     
     func checkSignUp() -> Bool {
         if signUpData.name.isEmpty || signUpData.email.isEmpty || signUpData.password.isEmpty || signUpData.passwordConfirm.isEmpty || signUpData.isPrivacyAgree == false || signUpData.isTermOfUseAgree == false {
@@ -79,16 +79,28 @@ final class SignUpStore: ObservableObject {
             UserDefaults.standard.setValue(authResult.user.uid, forKey: "User")
             return true
         } catch {
-            self.isShowingAlert = true
+            self.isShowingCompleteJoinAlert = true
         }
         return false
     }
     
-    func deleteUser() async throws {
-           do {
-               try await UserService.shared.removeUserData(userId: AuthStore.shared.userUid)
-           } catch {
-               print("deleteUser \(error)")
-           }
-       }
+    
+}
+
+extension SignUpViewModel {
+    struct SignUpData {
+        var name: String = ""
+        var email: String = ""
+        var password: String = ""
+        var passwordConfirm: String = ""
+
+        
+        var isPrivacyAgree: Bool = false
+        var isTermOfUseAgree: Bool = false
+        
+        func changeToUserModel(id: String) -> User {
+            return User(id: id, email: email, name: name, bankName: "", bankAccountNum: "", isPremium: false, premiumDueDate: Date(), reciverToken: "")
+        }
+    }
+
 }
