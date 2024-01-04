@@ -8,18 +8,20 @@
 import Foundation
 import SwiftUI
 
-final class SignInStore: ObservableObject {
+final class SignInViewModel: ObservableObject {
     @Published var signInData = SignInData()
+    
+    @FocusState var isKeyboardUp: Bool
     
     @Published var emailText: String = ""
     @Published var passwordText: String = ""
-    
     @Published var isSignedIn: Bool = false
-    
-    @Published var isShowingAlert: Bool = false
+    @Published var isShowingLoginResultAlert: Bool = false
     @Published var isDisableSignInButton: Bool = false
-    
     @Published var alertDescription: String = ""
+    @Published var isShowingEmptyNameAlert: Bool = false
+    @Published var name: String = ""
+    @Published var isFirstEntry = false
     
     @MainActor
     func checkSignIn() async throws -> Bool {
@@ -33,7 +35,7 @@ final class SignInStore: ObservableObject {
             isSignedIn = true
             return true
         default:
-            isShowingAlert = true
+            isShowingLoginResultAlert = true
             return false
         }
     }
@@ -45,8 +47,16 @@ final class SignInStore: ObservableObject {
         return true
     }
     
-    @MainActor
-    func deleteUser() async throws -> Int{
-        return try await AuthStore.shared.deleteUser()
+}
+
+extension SignInViewModel {
+    struct SignInData {
+        var id: String = UUID().uuidString
+        var email: String = ""
+        var password: String = ""
+        
+        func changeToUserModel(id: String) -> User {
+            return User(id: id, email: email, name: "", bankName: "", bankAccountNum: "", isPremium: false, premiumDueDate: Date(), reciverToken: "")
+        }
     }
 }

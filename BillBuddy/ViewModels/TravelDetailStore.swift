@@ -16,31 +16,26 @@ final class TravelDetailStore: ObservableObject {
     @Published var isChangedTravel: Bool = false
     @Published var isFirstFetch: Bool = true
     
-    var travelTump: TravelCalculation
+    var travelTmp: TravelCalculation
     var travelId: String
-    let dbRef = Firestore.firestore().collection(StoreCollection.travel.path)
+    let dbRef = Firestore.firestore().collection(StoreCollection.travel.path) // "TravelCalculation"
     var listener: ListenerRegistration? = nil
     
     init() {
-        travelTump = TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
+        travelTmp = TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
         travelId = ""
-        self.travel = travelTump
+        self.travel = travelTmp
     }
     
     init(travel: TravelCalculation) {
         self.travel = travel
-        self.travelTump = travel
+        self.travelTmp = travel
         self.travelId = travel.id
     }
     
     @MainActor
-    func setTravel() {
-        self.travel = travelTump
-    }
-    
-    @MainActor
     func setTravel(travel: TravelCalculation) {
-        self.travelTump = travel
+        self.travelTmp = travel
         self.travel = travel
         self.travelId = travel.id
     }
@@ -68,10 +63,10 @@ final class TravelDetailStore: ObservableObject {
     }
     
     func checkAndResaveToken() {
-        guard let index = travelTump.members.firstIndex(where: { $0.userId == AuthStore.shared.userUid }) else { return }
-        if travelTump.members[index].reciverToken != UserService.shared.reciverToken {
-            travelTump.members[index].reciverToken = UserService.shared.reciverToken
-            travelTump.updateContentDate = Date.now.timeIntervalSince1970
+        guard let index = travelTmp.members.firstIndex(where: { $0.userId == AuthStore.shared.userUid }) else { return }
+        if travelTmp.members[index].reciverToken != UserService.shared.reciverToken {
+            travelTmp.members[index].reciverToken = UserService.shared.reciverToken
+            travelTmp.updateContentDate = Date.now.timeIntervalSince1970
             do {
                 try Firestore.firestore().collection(StoreCollection.travel.path).document(self.travelId).setData(from: travel.self)
             } catch {

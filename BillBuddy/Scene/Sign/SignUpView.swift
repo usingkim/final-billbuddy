@@ -8,14 +8,9 @@
 import SwiftUI
 
 struct SignUpView: View {
-    
     @Environment(\.dismiss) private var dismiss
     
-    @ObservedObject var signUpStore: SignUpStore
-    
-    @State private var isShowingProgressView: Bool = false
-    @State private var isShowingAlert: Bool = false
-    @FocusState private var isKeyboardUp: Bool
+    @StateObject private var signUpVM: SignUpViewModel = SignUpViewModel()
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -26,18 +21,18 @@ struct SignUpView: View {
             
             ScrollView {
                 VStack(alignment: .leading) {
-                    TextField("이름을 입력해주세요.", text: $signUpStore.signUpData.name)
+                    TextField("이름을 입력해주세요.", text: $signUpVM.signUpData.name)
                         .padding(16)
                         .font(.body04)
                         .autocapitalization(.none)
                         .frame(width: 351, height: 52)
                         .background(RoundedRectangle(cornerRadius: 12)
-                            .stroke(signUpStore.isNameTextError ? Color.error : Color.gray300, lineWidth: 2))
+                            .stroke(signUpVM.isNameTextError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
-                        .padding(.bottom, signUpStore.isNameTextError ? 0 : 12)
-                        .focused($isKeyboardUp)
+                        .padding(.bottom, signUpVM.isNameTextError ? 0 : 12)
+                        .focused(signUpVM.$isKeyboardUp)
                     
-                    if signUpStore.isNameTextError {
+                    if signUpVM.isNameTextError {
                         Text("이름은 2자리 이상 입력해주세요.")
                             .font(.caption03)
                             .foregroundColor(.error)
@@ -45,19 +40,19 @@ struct SignUpView: View {
                             .padding(.bottom, 12)
                     }
                     
-                    TextField("이메일을 입력해주세요", text: $signUpStore.signUpData.email)
+                    TextField("이메일을 입력해주세요", text: $signUpVM.signUpData.email)
                         .padding(16)
                         .font(.body04)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .frame(width: 351, height: 52)
                         .background(RoundedRectangle(cornerRadius: 12)
-                            .stroke(signUpStore.isEmailTextError || signUpStore.isEmailInUseError ? Color.error : Color.gray300, lineWidth: 2))
+                            .stroke(signUpVM.isEmailTextError || signUpVM.isEmailInUseError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
-                        .padding(.bottom, signUpStore.isEmailTextError || signUpStore.isEmailInUseError ? 0 : 12)
-                        .focused($isKeyboardUp)
+                        .padding(.bottom, signUpVM.isEmailTextError || signUpVM.isEmailInUseError ? 0 : 12)
+                        .focused(signUpVM.$isKeyboardUp)
                     
-                    if signUpStore.isEmailTextError {
+                    if signUpVM.isEmailTextError {
                         Text("정확한 이메일을 입력해주세요")
                             .font(.caption03)
                             .foregroundColor(.error)
@@ -65,7 +60,7 @@ struct SignUpView: View {
                             .padding(.bottom, 12)
                     }
                     
-                    if signUpStore.isEmailInUseError {
+                    if signUpVM.isEmailInUseError {
                         Text("이미 가입한 이메일 입니다.")
                             .font(.caption03)
                             .foregroundColor(.error)
@@ -73,18 +68,18 @@ struct SignUpView: View {
                             .padding(.bottom, 12)
                     }
                     
-                    SecureField("비밀번호를 입력해주세요", text: $signUpStore.signUpData.password)
+                    SecureField("비밀번호를 입력해주세요", text: $signUpVM.signUpData.password)
                         .padding(16)
                         .font(.body04)
                         .autocapitalization(.none)
                         .frame(width: 351, height: 52)
                         .background(RoundedRectangle(cornerRadius: 12)
-                            .stroke(signUpStore.isPasswordCountError ? Color.error : Color.gray300, lineWidth: 2))
+                            .stroke(signUpVM.isPasswordCountError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
-                        .padding(.bottom, signUpStore.isPasswordCountError ? 0 : 12)
-                        .focused($isKeyboardUp)
+                        .padding(.bottom, signUpVM.isPasswordCountError ? 0 : 12)
+                        .focused(signUpVM.$isKeyboardUp)
                     
-                    if signUpStore.isPasswordCountError {
+                    if signUpVM.isPasswordCountError {
                         Text("비밀번호는 6자리 이상 입력해주세요")
                             .font(.caption03)
                             .foregroundColor(.error)
@@ -92,18 +87,18 @@ struct SignUpView: View {
                             .padding(.bottom, 12)
                     }
                     
-                    SecureField("비밀번호 확인", text:$signUpStore.signUpData.passwordConfirm)
+                    SecureField("비밀번호 확인", text:$signUpVM.signUpData.passwordConfirm)
                         .padding(16)
                         .font(.body04)
                         .autocapitalization(.none)
                         .frame(width: 351, height: 52)
                         .background(RoundedRectangle(cornerRadius: 12)
-                            .stroke(signUpStore.isPasswordUnCorrectError ? Color.error : Color.gray300, lineWidth: 2))
+                            .stroke(signUpVM.isPasswordUnCorrectError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
-                        .padding(.bottom, signUpStore.isPasswordUnCorrectError ? 0 : 12)
-                        .focused($isKeyboardUp)
+                        .padding(.bottom, signUpVM.isPasswordUnCorrectError ? 0 : 12)
+                        .focused(signUpVM.$isKeyboardUp)
                     
-                    if signUpStore.isPasswordUnCorrectError {
+                    if signUpVM.isPasswordUnCorrectError {
                         Text("비밀번호가 서로 다릅니다")
                             .font(.caption03)
                             .foregroundColor(.error)
@@ -112,8 +107,8 @@ struct SignUpView: View {
                     }
                 }
                 
-                AgreementCheckButton(agreement: $signUpStore.signUpData.isTermOfUseAgree, text: "이용약관에 동의합니다.(필수)")
-                AgreementCheckButton(agreement: $signUpStore.signUpData.isPrivacyAgree, text: "개인정보 취급방침에 동의합니다.(필수)")
+                AgreementCheckButton(agreement: $signUpVM.signUpData.isTermOfUseAgree, text: "이용약관에 동의합니다.(필수)")
+                AgreementCheckButton(agreement: $signUpVM.signUpData.isPrivacyAgree, text: "개인정보 취급방침에 동의합니다.(필수)")
                 
                 Spacer()
             }
@@ -121,33 +116,33 @@ struct SignUpView: View {
             
             Group {
                 Button(action: {
-                    isShowingProgressView = true
+                    signUpVM.isShowingProgressView = true
                     
-                    let isNameValid = signUpStore.signUpData.name.count >= 2
-                    let isEmailValid = signUpStore.isValidEmailId(signUpStore.signUpData.email)
+                    let isNameValid = signUpVM.signUpData.name.count >= 2
+                    let isEmailValid = signUpVM.isValidEmailId(signUpVM.signUpData.email)
                     
-                    signUpStore.emailCheck(email: signUpStore.signUpData.email) { isEmailInUse in
-                        let isPasswordValid = signUpStore.signUpData.password.count >= 6
-                        let isPasswordConfirmed = signUpStore.signUpData.passwordConfirm == signUpStore.signUpData.password
-                        let isTermOfUseAgreeValid = signUpStore.signUpData.isTermOfUseAgree
-                        let isPrivacyAgreeValid = signUpStore.signUpData.isPrivacyAgree
+                    signUpVM.emailCheck(email: signUpVM.signUpData.email) { isEmailInUse in
+                        let isPasswordValid = signUpVM.signUpData.password.count >= 6
+                        let isPasswordConfirmed = signUpVM.signUpData.passwordConfirm == signUpVM.signUpData.password
+                        let isTermOfUseAgreeValid = signUpVM.signUpData.isTermOfUseAgree
+                        let isPrivacyAgreeValid = signUpVM.signUpData.isPrivacyAgree
                         
                         if isNameValid && isEmailValid && isEmailInUse && isPasswordValid && isPasswordConfirmed && isTermOfUseAgreeValid && isPrivacyAgreeValid {
-                            isShowingAlert = true
+                            signUpVM.isShowingCompleteJoinAlert = true
                             
                             Task {
-                                if await signUpStore.postSignUp() {
+                                if await signUpVM.postSignUp() {
                                     // Success
                                 } else {
                                     print("실패")
                                 }
                             }
                         } else {
-                            signUpStore.isNameTextError = !isNameValid
-                            signUpStore.isEmailTextError = !isEmailValid
-                            signUpStore.isEmailInUseError = !isEmailInUse
-                            signUpStore.isPasswordCountError = !isPasswordValid
-                            signUpStore.isPasswordUnCorrectError = !isPasswordConfirmed
+                            signUpVM.isNameTextError = !isNameValid
+                            signUpVM.isEmailTextError = !isEmailValid
+                            signUpVM.isEmailInUseError = !isEmailInUse
+                            signUpVM.isPasswordCountError = !isPasswordValid
+                            signUpVM.isPasswordUnCorrectError = !isPasswordConfirmed
                         }
                     }
                     
@@ -156,12 +151,12 @@ struct SignUpView: View {
                         .font(.body02)
                         .foregroundColor(.white)
                         .frame(width: 351, height: 52)
-                        .background(!signUpStore.checkSignUp() ? Color.gray400 : Color.myPrimary)
+                        .background(!signUpVM.checkSignUp() ? Color.gray400 : Color.myPrimary)
                         .cornerRadius(12)
                 })
                 .padding(.bottom, 20)
-                .disabled(!signUpStore.checkSignUp() ? true : false)
-                .alert("회원가입 완료", isPresented: $isShowingAlert) {
+                .disabled(!signUpVM.checkSignUp() ? true : false)
+                .alert("회원가입 완료", isPresented: $signUpVM.isShowingCompleteJoinAlert) {
                     Button("확인") {
                         dismiss()
                     }
@@ -169,7 +164,7 @@ struct SignUpView: View {
             }
         }
         .onTapGesture {
-            isKeyboardUp = false
+            signUpVM.isKeyboardUp = false
         }
         .padding(.horizontal, 24)
         .navigationBarBackButtonHidden(true)
@@ -185,15 +180,12 @@ struct SignUpView: View {
                 }
             }
         }
-        .onAppear {
-            signUpStore.signUpData = SignUpData()
-        }
         
     }
 }
 
 #Preview {
     NavigationStack {
-        SignUpView(signUpStore: SignUpStore())
+        SignUpView()
     }
 }

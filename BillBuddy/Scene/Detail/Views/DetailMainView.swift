@@ -94,8 +94,6 @@ struct DetailMainView: View {
             if detailMainVM.selectedDate == 0 {
                 Task {
                     if travelDetailStore.isFirstFetch {
-                        travelDetailStore.setTravel()
-
                         travelDetailStore.checkAndResaveToken()
                         detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                         travelDetailStore.isFirstFetch = false
@@ -245,8 +243,3 @@ struct DetailMainView: View {
         
     }
 }
-
-//#Preview {
-//    let travel = TravelCalculation(hostId: "", travelTitle: "서울 여행", managerId: "", startDate: <#T##Double#>, endDate: <#T##Double#>, updateContentDate: <#T##Double#>, members: <#T##[TravelCalculation.Member]#>)
-//    DetailMainView(paymentStore: PaymentStore(travel: <#T##TravelCalculation#>), travelDetailStore: TravelDetailStore(travel: <#T##TravelCalculation#>))
-//}

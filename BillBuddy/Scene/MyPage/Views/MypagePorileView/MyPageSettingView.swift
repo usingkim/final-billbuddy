@@ -10,9 +10,6 @@ import FirebaseAuth
 import WebKit
 
 struct MyPageSettingView: View {
-    
-    @EnvironmentObject private var signInStore: SignInStore
-    @EnvironmentObject private var signUpStore: SignUpStore
     @EnvironmentObject private var notificationStore: NotificationStore
     @EnvironmentObject private var userTravelStore: UserTravelStore
     
@@ -154,16 +151,16 @@ struct MyPageSettingView: View {
                     Button("취소", role: .cancel) {}
                     Button("탈퇴", role: .destructive) {
                         Task {
-                            let resultErrorCode = try await signInStore.deleteUser()
-                            if resultErrorCode == 0 {
-                                try await signUpStore.deleteUser()
+                            switch(try await deleteUser()) {
+                            case 0:
+                                try await deleteUserInDB()
                                 UserService.shared.isSignIn = false
                                 notificationStore.resetStore()
                                 userTravelStore.resetStore()
                                 AuthStore.shared.userUid = ""
-                            } else if resultErrorCode == AuthErrorCode.requiresRecentLogin.rawValue{
+                            case AuthErrorCode.requiresRecentLogin.rawValue:
                                 isReAuthAlert.toggle()
-                            } else {
+                            default:
                                 isErrorAlert.toggle()
                             }
                         }
@@ -181,13 +178,25 @@ struct MyPageSettingView: View {
             .padding(.horizontal, 24)
         }
     }
+    
+    func deleteUserInDB() async throws {
+        do {
+            try await UserService.shared.removeUserData(userId: AuthStore.shared.userUid)
+        } catch {
+            print("deleteUser \(error)")
+        }
+    }
+    
+    func deleteUser() async throws -> Int{
+        return try await AuthStore.shared.deleteUser()
+    }
 }
 
 #Preview {
     NavigationStack {
         MyPageSettingView()
-            .environmentObject(SignInStore())
-            .environmentObject(SignUpStore())
+            .environmentObject(SignInViewModel())
+            .environmentObject(SignUpViewModel())
             .environmentObject(NotificationStore.shared)
             .environmentObject(UserTravelStore())
     }
