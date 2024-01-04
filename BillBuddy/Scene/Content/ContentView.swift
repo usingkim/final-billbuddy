@@ -10,16 +10,16 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var userService: UserService = .shared
     @StateObject private var inviteTravelService: InviteTravelService = .shared
+    @StateObject private var notificationStore = NotificationStore.shared
+    @StateObject private var tabViewStore = TabViewStore.shared
+    
     @StateObject private var userTravelStore = UserTravelStore()
     @StateObject private var settlementExpensesStore = SettlementExpensesStore()
     @StateObject private var messageStore = MessageStore()
     @StateObject private var tabBarVisivilyStore = TabBarVisibilityStore()
-    @StateObject private var notificationStore = NotificationStore.shared
     @StateObject private var nativeViewModel = NativeAdViewModel()
     @StateObject private var myPageStore = MyPageStore()
     @StateObject private var adViewModel = AdViewModel()
-    @StateObject private var googleSignIn = GoogleSignInModel()
-    @StateObject private var tabViewStore = TabViewStore.shared
     
     var body: some View {
         if AuthStore.shared.userUid != "" {
@@ -54,7 +54,6 @@ struct ContentView: View {
                 SignInView()
             }
             .environmentObject(userService)
-            .environmentObject(googleSignIn)
         }
     }
     

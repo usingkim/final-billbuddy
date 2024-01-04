@@ -13,12 +13,12 @@ import GoogleSignIn
 import FirebaseCore
 
 struct GoogleSignInView: View {
-    private var googleSignInStore: GoogleSIgnInStore = GoogleSIgnInStore()
+    private var googleSignInVM: GoogleSignInViewModel = GoogleSignInViewModel()
     
     var body: some View {
         VStack {
             Button(action: {
-                googleSignInStore.handleSignInButton()
+                googleSignInVM.handleSignInButton()
             }) {
                 HStack {
                     Image(.google)

@@ -147,7 +147,7 @@
 		FFBA42A22B2C6D4F00915D2F /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBA42A12B2C6D4F00915D2F /* ForgotPasswordView.swift */; };
 		FFBA42A42B2C9A9400915D2F /* MessageAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBA42A32B2C9A9400915D2F /* MessageAlertView.swift */; };
 		FFCF22592B24500000B79BF9 /* SNSSignInService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFCF22582B24500000B79BF9 /* SNSSignInService.swift */; };
-		FFFFF4212B2F019F0040B72B /* GoogleSIgnInStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFFF4202B2F019F0040B72B /* GoogleSIgnInStore.swift */; };
+		FFFFF4212B2F019F0040B72B /* GoogleSignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFFF4202B2F019F0040B72B /* GoogleSignInViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -284,7 +284,7 @@
 		FFBA42A12B2C6D4F00915D2F /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		FFBA42A32B2C9A9400915D2F /* MessageAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAlertView.swift; sourceTree = "<group>"; };
 		FFCF22582B24500000B79BF9 /* SNSSignInService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNSSignInService.swift; sourceTree = "<group>"; };
-		FFFFF4202B2F019F0040B72B /* GoogleSIgnInStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSIgnInStore.swift; sourceTree = "<group>"; };
+		FFFFF4202B2F019F0040B72B /* GoogleSignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -862,7 +862,7 @@
 			children = (
 				D2940EF62AFFBAED00E74B0F /* GoogleSignInModel.swift */,
 				D26894162B2AF45400D37357 /* AppleSignInStore.swift */,
-				FFFFF4202B2F019F0040B72B /* GoogleSIgnInStore.swift */,
+				FFFFF4202B2F019F0040B72B /* GoogleSignInViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1107,7 +1107,7 @@
 				276648112ABD5549000F8A10 /* Color+Extension.swift in Sources */,
 				022B2EED2ADD394F001B8C4D /* EditTravelSheetView.swift in Sources */,
 				D2913E9B2B30391D00B373B1 /* TextFieldAlertView.swift in Sources */,
-				FFFFF4212B2F019F0040B72B /* GoogleSIgnInStore.swift in Sources */,
+				FFFFF4212B2F019F0040B72B /* GoogleSignInViewModel.swift in Sources */,
 				D26894172B2AF45400D37357 /* AppleSignInStore.swift in Sources */,
 				63EF15662B319FA50031F617 /* CustomAnnotation.swift in Sources */,
 				FF2974A62AD310D400E10AC4 /* NativeAdTestView.swift in Sources */,
