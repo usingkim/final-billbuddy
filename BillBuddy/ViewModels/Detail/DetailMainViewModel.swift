@@ -89,11 +89,13 @@ final class DetailMainViewModel: ObservableObject {
     }
     
     func refresh(travelDetailStore: TravelDetailStore, paymentStore: PaymentService) {
-        if travelDetailStore.isChangedTravel {
+//        if travelDetailStore.isChangedTravel {
             selectedCategory = nil
             selectedDate = 0
-            filteredPayments = paymentStore.resetFilter()
+        Task {
+            await filteredPayments = paymentStore.fetchAll()
         }
+//        }
     }
     
     func addForDeletePayments(payment: Payment) {
