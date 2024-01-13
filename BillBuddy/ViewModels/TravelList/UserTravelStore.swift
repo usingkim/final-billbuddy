@@ -142,6 +142,7 @@ final class UserTravelStore: ObservableObject {
     }
     
     @MainActor
+    // FIXME: 떠나기 시 무조건 내용 삭제됨(남은 멤버가 있는 경우에는 유지되어야함). Payment는 유지됨
     func leaveTravel(travel: TravelCalculation) {
         let userId = AuthStore.shared.userUid
         let travelId = travel.id
