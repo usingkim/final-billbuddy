@@ -144,6 +144,7 @@ struct MoreView: View {
                 userTravelStore.leaveTravel(travel: travel)
                 tabViewStore.popToRoow()
             }
+            .buttonStyle(.plain)
 
         }
     }
