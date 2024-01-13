@@ -35,17 +35,14 @@ struct Payment: Identifiable, Codable {
         var memo: String
     }
     
-    ///  case에 직접 String을 넣어주면 안된다는 멘토링을 들었던것같은데 저렇게 안하면 저장에문제가 생김
-    ///    하면 안좋은 이유가 궁금함.
-    enum PaymentType: String, CaseIterable, Codable {
-        case transportation = "교통"
-        case accommodation = "숙박"
-        case tourism = "관광"
-        case food = "식비"
-        case etc = "기타"
+    enum PaymentType: CaseIterable, Codable {
+        case transportation
+        case accommodation
+        case tourism
+        case food
+        case etc
         
-        
-        var typeString: String {
+        var string: String {
             switch self {
             case .transportation:
                 return "교통"

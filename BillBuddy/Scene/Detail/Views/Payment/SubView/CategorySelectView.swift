@@ -42,42 +42,29 @@ struct CategorySelectView: View {
                 .buttonStyle(.plain)
             }
                 
-            ForEach(Payment.PaymentType.allCases, id:\.self) { type in
+            ForEach(Payment.PaymentType.allCases, id:\.self) { category in
                 Button(action: {
-                        selectedCategory = type
+                        selectedCategory = category
                 }, label: {
                     VStack {
                         if let selected = selectedCategory {
-                            if selected == type {
-                                Image(type.getImageString(type: .thin))
-                                    .renderingMode(.template)
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundStyle(Color.myPrimary)
-                                Text(type.rawValue)
-                                    .font(.caption02)
-                                    .foregroundStyle(Color.myPrimary)
-                                    
-                            }
-                            else {
-                                Image(type.getImageString(type: .thin))
-                                    .renderingMode(.template)
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundStyle(Color.gray600)
-                                Text(type.rawValue)
-                                    .font(.caption02)
-                                    .foregroundStyle(Color.gray600)
+                            Image(category.getImageString(type: .thin))
+                                .renderingMode(.template)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .foregroundStyle(selected == category ? Color.myPrimary : Color.gray600)
+                            Text(category.string)
+                                .font(.caption02)
+                                .foregroundStyle(selected == category ? Color.myPrimary : Color.gray600)
                                 
-                            }
                         }
                         else {
-                            Image(type.getImageString(type: .thin))
+                            Image(category.getImageString(type: .thin))
                                 .renderingMode(.template)
                                 .resizable()
                                 .frame(width: 24, height: 24)
                                 .foregroundStyle(Color.gray600)
-                            Text(type.rawValue)
+                            Text(category.string)
                                 .font(.caption02)
                                 .foregroundStyle(Color.gray600)
                             

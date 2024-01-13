@@ -179,7 +179,7 @@ extension PaymentMainView {
                     detailMainVM.isShowingSelectCategorySheet = true
                 }, label: {
                     if let category = detailMainVM.selectedCategory {
-                        Text(category.rawValue)
+                        Text(category.string)
                             .font(.body04)
                             .foregroundStyle(Color.gray600)
                     }
