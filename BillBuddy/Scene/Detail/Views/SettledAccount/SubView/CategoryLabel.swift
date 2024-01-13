@@ -18,7 +18,7 @@ struct CategoryLabel: View {
                 .resizable()
                 .frame(width: 24, height: 24)
                 .foregroundStyle(Color.gray700)
-            Text(category.typeString)
+            Text(category.string)
                 .font(.body04)
                 .foregroundStyle(Color.gray700)
             Spacer()
