@@ -11,7 +11,7 @@ struct ProfileEditView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userService: UserService
-    @EnvironmentObject private var myPageStore: MyPageStore
+    @EnvironmentObject private var myPageStore: MyPageService
     
     @State private var tempEmail: String = ""
     @State private var emailLabel: String = ""
@@ -154,6 +154,6 @@ struct ProfileEditView: View {
     NavigationStack {
         ProfileEditView()
             .environmentObject(UserService.shared)
-            .environmentObject(MyPageStore())
+            .environmentObject(MyPageService())
     }
 }

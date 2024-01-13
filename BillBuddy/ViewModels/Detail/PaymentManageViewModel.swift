@@ -104,7 +104,7 @@ final class PaymentManageViewModel: ObservableObject {
         }
     }
     
-    func addPayment(paymentStore: PaymentService, settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationStore) {
+    func addPayment(paymentStore: PaymentService, settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationService) {
         let newPayment =
         Payment(type: selectedCategory ?? .etc, content: expandDetails, payment: Int(priceString) ?? 0, address: Payment.Address(address: locationManager.selectedAddress, latitude: locationManager.selectedLatitude, longitude: locationManager.selectedLongitude), participants: participants, paymentDate: paymentDate.timeIntervalSince1970)
         
@@ -117,7 +117,7 @@ final class PaymentManageViewModel: ObservableObject {
         notificationStore.sendNotification(members: travelCalculation.members, notification: UserNotification(type: .travel, content: "\(travelCalculation.travelTitle)여행방에서 확인하지 않은 지출", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travelCalculation.id)", addDate: Date(), isChecked: false))
     }
     
-    func mainAddPayment(paymentStore: PaymentService, settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationStore, userTravelStore: UserTravelStore) {
+    func mainAddPayment(paymentStore: PaymentService, settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationService, userTravelStore: UserTravelStore) {
         let newPayment =
         Payment(type: selectedCategory ?? .etc, content: expandDetails, payment: Int(priceString) ?? 0, address: Payment.Address(address: locationManager.selectedAddress, latitude: locationManager.selectedLatitude, longitude: locationManager.selectedLongitude), participants: participants, paymentDate: paymentDate.timeIntervalSince1970)
         userTravelStore.addPayment(travelCalculation: travelCalculation, payment: newPayment)
@@ -126,7 +126,7 @@ final class PaymentManageViewModel: ObservableObject {
         notificationStore.sendNotification(members: travelCalculation.members, notification: UserNotification(type: .travel, content: "\(travelCalculation.travelTitle)여행방에서 확인하지 않은 지출", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travelCalculation.id)", addDate: Date(), isChecked: false))
     }
     
-    func editPayment(paymentStore: PaymentService, settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationStore) {
+    func editPayment(paymentStore: PaymentService, settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationService) {
         if let payment = payment {
             let newPayment = Payment(id: payment.id, type: selectedCategory ?? .etc, content: expandDetails, payment: Int(priceString) ?? 0, address: Payment.Address(address: locationManager.selectedAddress, latitude: locationManager.selectedLatitude, longitude: locationManager.selectedLongitude), participants: participants, paymentDate: paymentDate.timeIntervalSince1970)
             Task {

@@ -11,10 +11,10 @@ import FirebaseStorage
 import _PhotosUI_SwiftUI
 
 
-final class MyPageStore: ObservableObject {
+final class MyPageService: ObservableObject {
     
     private let storage = Storage.storage().reference()
-    static let shared = MyPageStore()
+    static let shared = MyPageService()
     
     
     func isValidBankName(_ bankName: String) -> Bool {
@@ -49,7 +49,7 @@ final class MyPageStore: ObservableObject {
             
             guard let data = try await item.loadTransferable(type: Data.self) else { return }
     
-            let (path, name) = try await MyPageStore.shared.saveImage(data: data)
+            let (path, name) = try await MyPageService.shared.saveImage(data: data)
             let imageURL = try await storage.child(path).downloadURL()
             urlString = imageURL.absoluteString
             

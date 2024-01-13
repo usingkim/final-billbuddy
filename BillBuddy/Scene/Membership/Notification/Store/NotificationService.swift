@@ -8,9 +8,9 @@
 import Foundation
 import FirebaseFirestore
 
-final class NotificationStore: ObservableObject {
+final class NotificationService: ObservableObject {
     
-    static let shared = NotificationStore()
+    static let shared = NotificationService()
     
     enum NotificationReadState {
         case didRead

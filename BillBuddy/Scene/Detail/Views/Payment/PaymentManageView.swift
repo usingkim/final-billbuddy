@@ -12,10 +12,10 @@ struct PaymentManageView: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     @EnvironmentObject private var paymentService: PaymentService
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
     
     @FocusState private var focusedField: PaymentFocusField?
     
@@ -47,7 +47,7 @@ struct PaymentManageView: View {
             
             underButton
         }
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
@@ -64,7 +64,7 @@ struct PaymentManageView: View {
             }
         })
         .onAppear {
-            tabBarVisivilyStore.hideTabBar()
+            tabBarVisibilityStore.hideTabBar()
             paymentManageVM.setTitleString(userTravelStore: userTravelStore)
         }
         .navigationBarBackButtonHidden()

@@ -44,7 +44,7 @@ enum ListItem: String, CaseIterable {
 struct MoreView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var tabViewStore: TabViewModel
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var paymentStore: PaymentService
     @State var itemList: [ListItem] = ListItem.allCases

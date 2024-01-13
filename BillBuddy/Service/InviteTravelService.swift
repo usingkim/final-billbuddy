@@ -9,20 +9,6 @@ import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-/// 규칙
-/// billbuddybuddy://invite?travelId=\(travelid),memberId=\(memberid)
-enum URLSchemeBase: String {
-    case scheme = "billbuddybuddy"
-    case path = "path"
-    case query = "query"
-}
-
-struct PushData {
-    let scheme: String = "billbuddybuddy"
-    let host: NotiType
-    var querys: [String:String]
-}
-
 final class InviteTravelService: ObservableObject {
     @Published var isLoading = false
     @Published var isShowingAlert = false
@@ -189,5 +175,13 @@ final class InviteTravelService: ObservableObject {
             .document(AuthStore.shared.userUid)
             .collection(StoreCollection.notification.path)
             .document(notiId)
+    }
+}
+
+extension InviteTravelService {
+    struct PushData {
+        let scheme: String = "billbuddybuddy"
+        let host: NotiType
+        var querys: [String:String]
     }
 }

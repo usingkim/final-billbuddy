@@ -1,5 +1,5 @@
 //
-//  TabBarVisivilyStore.swift
+//  TabBarVisibilityStore.swift
 //  BillBuddy
 //
 //  Created by 윤지호 on 10/19/23.

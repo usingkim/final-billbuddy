@@ -10,7 +10,7 @@ import FirebaseAuth
 import WebKit
 
 struct MyPageSettingView: View {
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var userTravelStore: UserTravelStore
     
     @State private var isShowingLogoutAlert: Bool = false
@@ -197,7 +197,7 @@ struct MyPageSettingView: View {
         MyPageSettingView()
             .environmentObject(SignInViewModel())
             .environmentObject(SignUpViewModel())
-            .environmentObject(NotificationStore.shared)
+            .environmentObject(NotificationService.shared)
             .environmentObject(UserTravelStore())
     }
 }

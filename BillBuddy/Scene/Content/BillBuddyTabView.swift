@@ -14,7 +14,7 @@ struct BillBuddyTabView: View {
 
     @StateObject private var floatingButtonMenuStore = FloatingButtonMenuStore()
     @EnvironmentObject private var userService: UserService
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var tabViewStore: TabViewModel
     
     init() {
         UITabBarItem.appearance().setTitleTextAttributes([.font:UIFont(name: "Pretendard-Bold", size: 10)!], for: .normal)

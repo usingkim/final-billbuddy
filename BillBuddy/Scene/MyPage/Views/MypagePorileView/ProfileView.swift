@@ -12,7 +12,7 @@ import Kingfisher
 struct ProfileView: View {
     
     @EnvironmentObject var userService: UserService
-    @EnvironmentObject var myPageStore: MyPageStore
+    @EnvironmentObject var myPageStore: MyPageService
     @Environment(\.dismiss) var dismiss
     @State private var selectedItem: PhotosPickerItem? = nil
     
@@ -126,6 +126,6 @@ struct ProfileView: View {
     NavigationStack {
         ProfileView()
             .environmentObject(UserService.shared)
-            .environmentObject(MyPageStore())
+            .environmentObject(MyPageService())
     }
 }

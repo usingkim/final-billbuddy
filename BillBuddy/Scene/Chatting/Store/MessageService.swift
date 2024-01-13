@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import _PhotosUI_SwiftUI
 
-final class MessageStore: ObservableObject {
+final class MessageService: ObservableObject {
     private let db = Firestore.firestore().collection("TravelCalculation")
     private let storage = Storage.storage().reference()
     ///불러온 메시지 쿼리 중 마지막 쿼리스냅샷

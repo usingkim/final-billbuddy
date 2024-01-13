@@ -11,7 +11,7 @@ import UIKit
 struct MemberShareSheet: View {
     @Environment(\.dismiss) private var dismiss
     
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
     
     @ObservedObject var joinMemberStore: JoinMemberStore
     @ObservedObject var memberManagementVM: MemberManagementViewModel

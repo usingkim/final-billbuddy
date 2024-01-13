@@ -81,7 +81,7 @@ final class MemberManagementViewModel: ObservableObject {
         }
     }
     
-    func inviteMember(joinMemberStore: JoinMemberStore, notificationStore: NotificationStore) {
+    func inviteMember(joinMemberStore: JoinMemberStore, notificationStore: NotificationService) {
         Task {
             let noti = UserNotification(
                 type: .invite,

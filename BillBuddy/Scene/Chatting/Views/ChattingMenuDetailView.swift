@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct ChattingMenuDetailView: View {
-    @EnvironmentObject private var messageStore: MessageStore
+    @EnvironmentObject private var messageStore: MessageService
     @Environment(\.dismiss) private var dismiss
     @State var selection: String
     
@@ -159,5 +159,5 @@ struct ChattingMenuDetailView: View {
 
 #Preview {
     ChattingMenuDetailView(selection: "사진", travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
-        .environmentObject(MessageStore())
+        .environmentObject(MessageService())
 }
