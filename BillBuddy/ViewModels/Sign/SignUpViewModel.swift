@@ -4,12 +4,11 @@
 //
 //  Created by 박지현 on 2023/09/26.
 //
-
-import Foundation
 import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Combine
 
 final class SignUpViewModel: ObservableObject {
     @Published var signUpData = SignUpData()
@@ -23,7 +22,37 @@ final class SignUpViewModel: ObservableObject {
     @Published var isEmailValid = true
     @Published var isShowingProgressView: Bool = false
     
-    @FocusState var isKeyboardUp: Bool
+    func isValid() {
+        isShowingProgressView = true
+        
+        let isNameValid = signUpData.name.count >= 2
+        let isEmailValid = isValidEmailId(signUpData.email)
+        
+        emailCheck(email: signUpData.email) { isEmailInUse in
+            let isPasswordValid = self.signUpData.password.count >= 6
+            let isPasswordConfirmed = self.signUpData.passwordConfirm == self.signUpData.password
+            let isTermOfUseAgreeValid = self.signUpData.isTermOfUseAgree
+            let isPrivacyAgreeValid = self.signUpData.isPrivacyAgree
+            
+            if isNameValid && isEmailValid && isEmailInUse && isPasswordValid && isPasswordConfirmed && isTermOfUseAgreeValid && isPrivacyAgreeValid {
+                self.isShowingCompleteJoinAlert = true
+                
+                Task {
+                    if await self.postSignUp() {
+                        // Success
+                    } else {
+                        print("실패")
+                    }
+                }
+            } else {
+                self.isNameTextError = !isNameValid
+                self.isEmailTextError = !isEmailValid
+                self.isEmailInUseError = !isEmailInUse
+                self.isPasswordCountError = !isPasswordValid
+                self.isPasswordUnCorrectError = !isPasswordConfirmed
+            }
+        }
+    }
     
     func checkSignUp() -> Bool {
         if signUpData.name.isEmpty || signUpData.email.isEmpty || signUpData.password.isEmpty || signUpData.passwordConfirm.isEmpty || signUpData.isPrivacyAgree == false || signUpData.isTermOfUseAgree == false {
