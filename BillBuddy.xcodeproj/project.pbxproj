@@ -34,7 +34,6 @@
 		276647FD2ABD53F8000F8A10 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276647FC2ABD53F8000F8A10 /* ContentView.swift */; };
 		276647FF2ABD53F9000F8A10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 276647FE2ABD53F9000F8A10 /* Assets.xcassets */; };
 		276648092ABD54AE000F8A10 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276648082ABD54AE000F8A10 /* User.swift */; };
-		2766480E2ABD5509000F8A10 /* Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766480D2ABD5509000F8A10 /* Custom.swift */; };
 		276648112ABD5549000F8A10 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276648102ABD5549000F8A10 /* Color+Extension.swift */; };
 		276648142ABD5583000F8A10 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276648132ABD5583000F8A10 /* AuthService.swift */; };
 		276648222ABD5AC6000F8A10 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 276648212ABD5AC6000F8A10 /* FirebaseAppCheck */; };
@@ -102,6 +101,7 @@
 		9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */; };
 		9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */; };
 		9059FFF92B45DA3D002D2F9B /* ViewTypeEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF82B45DA3D002D2F9B /* ViewTypeEnums.swift */; };
+		90A9D12D2B569EAB003D1563 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */; };
 		90BA673D2B2ACABE002911DB /* PaymentAlertText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */; };
 		90C6079E2B3F5C2100D8AF5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */; };
 		90CE44EC2B443FA2003DD8FB /* DetailMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */; };
@@ -186,7 +186,6 @@
 		276647FC2ABD53F8000F8A10 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		276647FE2ABD53F9000F8A10 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		276648082ABD54AE000F8A10 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		2766480D2ABD5509000F8A10 /* Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Custom.swift; sourceTree = "<group>"; };
 		276648102ABD5549000F8A10 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		276648132ABD5583000F8A10 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		276648302ABD8B6E000F8A10 /* TravelCalculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelCalculation.swift; sourceTree = "<group>"; };
@@ -246,6 +245,7 @@
 		9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTravelViewModel.swift; sourceTree = "<group>"; };
 		9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManagementViewModel.swift; sourceTree = "<group>"; };
 		9059FFF82B45DA3D002D2F9B /* ViewTypeEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeEnums.swift; sourceTree = "<group>"; };
+		90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAlertText.swift; sourceTree = "<group>"; };
 		90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainViewModel.swift; sourceTree = "<group>"; };
@@ -504,7 +504,6 @@
 		2766480F2ABD550D000F8A10 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2766480D2ABD5509000F8A10 /* Custom.swift */,
 				FFBA42A32B2C9A9400915D2F /* MessageAlertView.swift */,
 				D2913E9A2B30391D00B373B1 /* TextFieldAlertView.swift */,
 			);
@@ -815,6 +814,7 @@
 				909D4D4B2B4576E300B59A14 /* Detail */,
 				90DD22922B52B49B00090ECB /* NativeAdViewModel.swift */,
 				90DD22942B52B51F00090ECB /* AdViewModel.swift */,
+				90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1136,7 +1136,6 @@
 				278266472AE2008400118C21 /* NotificationService.swift in Sources */,
 				D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */,
 				FFCF22592B24500000B79BF9 /* SNSSignInService.swift in Sources */,
-				2766480E2ABD5509000F8A10 /* Custom.swift in Sources */,
 				277A93632B354D9A002CB609 /* LicenseStore.swift in Sources */,
 				C4849A6F2AD3C50E00DFFF81 /* DetailMainView.swift in Sources */,
 				9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */,
@@ -1146,6 +1145,7 @@
 				276648372ABD8CFD000F8A10 /* SignInView.swift in Sources */,
 				FF17CCA72B2D7D5A000ACF72 /* ChangePasswordView.swift in Sources */,
 				90CE44EF2B445126003DD8FB /* PaymentManageViewModel.swift in Sources */,
+				90A9D12D2B569EAB003D1563 /* OnboardingViewModel.swift in Sources */,
 				278DDC1A2ACC3A3B00B2EC50 /* StoreCollection.swift in Sources */,
 				D2713EF72AD78C980020B2F4 /* ProfileEditView.swift in Sources */,
 				638A9F492ADA812100C931DD /* MapViewCoordinater.swift in Sources */,

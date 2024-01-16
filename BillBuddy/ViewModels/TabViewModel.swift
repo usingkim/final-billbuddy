@@ -8,6 +8,7 @@
 import Foundation
 
 final class TabViewModel: ObservableObject {
+    
     static let shared = TabViewModel()
     private init() { }
     

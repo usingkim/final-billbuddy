@@ -14,7 +14,7 @@ struct ContentView: View {
     @StateObject private var notificationStore = NotificationService.shared
     @StateObject private var userTravelStore = UserTravelStore()
     @StateObject private var messageStore = MessageService()
-    @StateObject private var myPageStore = MyPageService()
+    @StateObject private var myPageService = MyPageService()
     
     /* ViewModel */
     @StateObject private var settlementExpensesStore = SettlementExpensesStore()
@@ -36,7 +36,7 @@ struct ContentView: View {
                         .environmentObject(notificationStore)
                         .environmentObject(inviteTravelService)
                         .environmentObject(nativeViewModel)
-                        .environmentObject(myPageStore)
+                        .environmentObject(myPageService)
                         .environmentObject(adViewModel)
                         .environmentObject(tabViewStore)
                         .onAppear {

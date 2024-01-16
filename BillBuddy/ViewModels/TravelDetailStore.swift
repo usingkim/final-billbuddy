@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 import FirebaseFirestoreSwift
 
-// TODO: TravelDetailStore와 UserTravelStore가 유사한 Store이다. 이 부분 정리해야한다.
+// Firebase 결합 -> 다른데서 하도록 해야된당
 
 final class TravelDetailStore: ObservableObject {
     @Published var travel: TravelCalculation

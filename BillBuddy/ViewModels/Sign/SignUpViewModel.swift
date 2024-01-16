@@ -8,7 +8,6 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import Combine
 
 final class SignUpViewModel: ObservableObject {
     @Published var signUpData = SignUpData()
@@ -21,6 +20,15 @@ final class SignUpViewModel: ObservableObject {
     @Published var isShowingCompleteJoinAlert: Bool = false
     @Published var isEmailValid = true
     @Published var isShowingProgressView: Bool = false
+    
+    func isPasswordEqual(passwordConfirm: String) {
+        if signUpData.password == passwordConfirm {
+            isPasswordUnCorrectError = false
+        }
+        else {
+            isPasswordUnCorrectError = true
+        }
+    }
     
     func isValid() {
         isShowingProgressView = true
