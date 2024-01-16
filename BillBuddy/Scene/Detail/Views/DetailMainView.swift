@@ -14,17 +14,18 @@ struct DetailMainView: View {
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
 
-    @StateObject private var paymentService: PaymentService
+    @StateObject private var paymentService: PaymentServiceOrigin
     @StateObject private var travelDetailStore: TravelDetailStore
     @StateObject private var locationManager = LocationManager()
     
-    @StateObject private var detailMainVM = DetailMainViewModel()
+    @StateObject private var detailMainVM: DetailMainViewModel
     
     let menus: [String] = ["내역", "지도"]
     
     init(travel: TravelCalculation) {
-        _paymentService = StateObject(wrappedValue: PaymentService(travel: travel))
+        _paymentService = StateObject(wrappedValue: PaymentServiceOrigin(travel: travel))
         _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
+        _detailMainVM = StateObject(wrappedValue: DetailMainViewModel(travel: travel))
     }
     
     
@@ -95,13 +96,15 @@ struct DetailMainView: View {
                 Task {
                     if travelDetailStore.isFirstFetch {
                         travelDetailStore.checkAndResaveToken()
-                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+//                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                         travelDetailStore.isFirstFetch = false
                         
                     }
                 }
                 travelDetailStore.listenTravelDate()
             }
+            // MARK: detailMainVM.filtered로 값이 제대로 들어오지만 화면에 반영이 안된다
+            detailMainVM.fetchAll()
         }
         .onDisappear {
             travelDetailStore.stoplistening()

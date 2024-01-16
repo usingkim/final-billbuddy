@@ -13,7 +13,7 @@ struct PaymentManageView: View {
     
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
-    @EnvironmentObject private var paymentService: PaymentService
+    @EnvironmentObject private var paymentService: PaymentServiceOrigin
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationService
     

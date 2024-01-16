@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MapMainView: View {
     @EnvironmentObject private var locationManager: LocationManager
-    @EnvironmentObject private var paymentStore: PaymentService
+    @EnvironmentObject private var paymentStore: PaymentServiceOrigin
     
     @ObservedObject var detailMainVM: DetailMainViewModel
     

@@ -6,9 +6,17 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor
 final class DetailMainViewModel: ObservableObject {
+    init(travel: TravelCalculation) {
+        paymentService = PaymentService(travel: travel)
+    }
+    
+    var paymentService: PaymentService
+    private var cancellables: Set<AnyCancellable> = []
+    
     @Published var filteredPayments: [Payment] = []
     
     @Published var selectMenu: String = "내역"
@@ -23,7 +31,23 @@ final class DetailMainViewModel: ObservableObject {
     @Published var isShowingDeletePaymentAlert: Bool = false
     @Published var selectedPayment: Payment?
     
-    func fetchPaymentAndSettledAccount(paymentStore: PaymentService, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
+    func fetchAll() {
+        paymentService.fetchAll()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error fetching data: \(error.localizedDescription)")
+                }
+            } receiveValue: { payments in
+                self.filteredPayments = payments
+            }
+            .store(in: &cancellables)
+    }
+    
+    func fetchPaymentAndSettledAccount(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         Task {
             filteredPayments = await paymentStore.fetchAll()
             settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
@@ -31,7 +55,7 @@ final class DetailMainViewModel: ObservableObject {
         selectedDate = 0
     }
     
-    func deleteSelectedPayments(paymentStore: PaymentService, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
+    func deleteSelectedPayments(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         Task {
             if let deleted = await paymentStore.deletePayments(payment: forDeletePayments) {
                 filteredPayments = deleted
@@ -41,7 +65,7 @@ final class DetailMainViewModel: ObservableObject {
         }
     }
     
-    func whenChangeSelectedDate(paymentStore: PaymentService) {
+    func whenChangeSelectedDate(paymentStore: PaymentServiceOrigin) {
         if selectedDate == 0 {
             filteredPayments = paymentStore.resetFilter()
         }
@@ -50,7 +74,7 @@ final class DetailMainViewModel: ObservableObject {
         }
     }
     
-    func whenOpenView(paymentStore: PaymentService) {
+    func whenOpenView(paymentStore: PaymentServiceOrigin) {
         if selectedDate == 0 {
             filteredPayments = paymentStore.resetFilter()
         }
@@ -59,7 +83,7 @@ final class DetailMainViewModel: ObservableObject {
         }
     }
     
-    func whenChangeSelectedCategory(paymentStore: PaymentService) {
+    func whenChangeSelectedCategory(paymentStore: PaymentServiceOrigin) {
         
         // 날짜 전체일때
         if selectedDate == 0 {
@@ -88,7 +112,7 @@ final class DetailMainViewModel: ObservableObject {
         selectedCategory = nil
     }
     
-    func refresh(travelDetailStore: TravelDetailStore, paymentStore: PaymentService) {
+    func refresh(travelDetailStore: TravelDetailStore, paymentStore: PaymentServiceOrigin) {
 //        if travelDetailStore.isChangedTravel {
             selectedCategory = nil
             selectedDate = 0
@@ -106,7 +130,7 @@ final class DetailMainViewModel: ObservableObject {
         forDeletePayments = []
     }
     
-    func deleteAPayment(paymentStore: PaymentService, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
+    func deleteAPayment(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         Task {
             if let payment = selectedPayment {
                 if let deleted = await paymentStore.deletePayment(payment: payment) {

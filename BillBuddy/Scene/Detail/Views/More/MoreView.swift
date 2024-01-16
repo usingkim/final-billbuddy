@@ -46,7 +46,7 @@ struct MoreView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var tabViewStore: TabViewModel
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
-    @EnvironmentObject private var paymentStore: PaymentService
+    @EnvironmentObject private var paymentStore: PaymentServiceOrigin
     @State var itemList: [ListItem] = ListItem.allCases
     @State var isPresentedLeaveAlert: Bool = false
     

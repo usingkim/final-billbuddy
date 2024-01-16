@@ -1,150 +1,111 @@
 //
-//  PaymentStore.swift
+//  PaymentService.swift
 //  BillBuddy
 //
-//  Created by 김유진 on 2023/09/25.
+//  Created by 김유진 on 1/16/24.
 //
 
 import Foundation
 import FirebaseFirestore
+import Combine
 
-@MainActor
-final class PaymentService: ObservableObject {
+final class PaymentService: ObservableObject, FirebaseService {
     
-    @Published var payments: [Payment] = []
-    @Published var isFetchingList: Bool = false
-    public var updateContentDate: Double = 0
-    
-    private var members: [TravelCalculation.Member]
-    private var travelCalculationId: String
-    private var dbRef: CollectionReference
-    private var isPaymentSettled: Bool
-    private var sumAllPayment: Int = 0
-    
-    var paymentDates: [Date] {
-        payments.map { $0.paymentDate.toDate() }
-    }
+    var dbRef: CollectionReference
+    typealias DBData = Payment
     
     init(travel: TravelCalculation) {
-        self.travelCalculationId = travel.id
-        self.dbRef = Firestore.firestore()
-            .collection("TravelCalculation")
-            .document(travel.id)
-            .collection("Payment")
-        self.members = travel.members
-        self.updateContentDate = travel.updateContentDate
-        self.isPaymentSettled = travel.isPaymentSettled
+        self.dbRef = Firestore.firestore().collection("TravelCalculation")
+            .document(travel.id).collection("Payment")
     }
     
-    func fetchAll() async -> [Payment] {
-        payments.removeAll()
-        sumAllPayment = 0
-        
-        var tempPayment: [Payment] = []
-        do {
-            self.isFetchingList = true
-            let snapshot = try await dbRef.order(by: "paymentDate").getDocuments()
-            for document in snapshot.documents {
-                let newPayment = try document.data(as: Payment.self)
-                tempPayment.append(newPayment)
+    func fetchAll() -> AnyPublisher<[DBData], Error> {
+        return Future { promise in
+            self.dbRef.order(by: "paymentDate")
+                .getDocuments { querySnapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                    } else {
+                        do {
+                            let documents = try querySnapshot?.documents
+                                .map { try $0.data(as: Payment.self) }
+                            promise(.success(documents ?? []))
+                        } catch {
+                            promise(.failure(error))
+                        }
+                    }
             }
-            self.payments = tempPayment
-            self.isFetchingList = false
-        } catch {
-            print("payment fetch false \(error)")
         }
-        
-        return tempPayment
+        .eraseToAnyPublisher()
     }
     
-    func resetFilter() -> [Payment] {
-        return payments
-    }
-    
-    func filterDate(date: Double) -> [Payment] {
-        return payments.filter({ (payment: Payment) in
-            print(payment.content, payment.paymentDate, date.todayRange(), date.todayRange() ~= payment.paymentDate)
-            return date.todayRange() ~= payment.paymentDate
-        })
-    }
-    
-    func filterDateCategory(date: Double, category: Payment.PaymentType) -> [Payment] {
-        return payments.filter({ (payment: Payment) in
-            return date.todayRange() ~= payment.paymentDate && payment.type == category
-        })
-    }
-    
-    func filterCategory(category: Payment.PaymentType) -> [Payment] {
-        return payments.filter({ (payment: Payment) in
-            return payment.type == category
-        })
-    }
-    
-    func addPayment(newPayment: Payment) async -> [Payment]? {
-        if isPaymentSettled { return nil }
-        try! dbRef.addDocument(from: newPayment.self)
-        await saveUpdateDate()
-        return await fetchAll()
-    }
-    
-    func editPayment(payment: Payment) async -> [Payment]? {
-        if isPaymentSettled { return nil }
-        if let id = payment.id {
-            self.isFetchingList = true
-            await saveUpdateDate()
-            try? dbRef.document(id).setData(from: payment)
-            if let index = payments.firstIndex(where: { $0.id == payment.id }) {
-                payments[index] = payment
-            }
-            self.isFetchingList = false
-            return payments
-        }
-        return nil
-    }
-    
-    func deletePayment(payment: Payment) async -> [Payment]? {
-        if isPaymentSettled { return nil }
-        if let id = payment.id {
-            self.isFetchingList = true
+    func addData(newData: Payment) -> AnyPublisher<DBData, Error> {
+        return Future { promise in
             do {
-                await saveUpdateDate()
-                if let index = payments.firstIndex(where: { $0.id == payment.id }) {
-                    payments.remove(at: index)
+                try self.dbRef.addDocument(from: newData.self) { error in
+                    if let error = error {
+                        promise(.failure(error))
+                    } else {
+                        promise(.success(newData))
+                    }
                 }
-                
-                
-                try await dbRef.document(id).delete()
             } catch {
-                print("delete payment false")
+                promise(.failure(error))
             }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func editData(editData: Payment) -> AnyPublisher<DBData, Error> {
+        return Future { promise in
+            if let id = editData.id {
+                do {
+                    try self.dbRef.document(id).setData(from: editData) { error in
+                        if let error = error {
+                            promise(.failure(error))
+                        } else {
+                            promise(.success(editData))
+                        }
+                    }
+                } catch {
+                    promise(.failure(error))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func deleteData(deleteData: Payment) -> AnyPublisher<Void, Error> {
+        return Future { promise in
+            if let id = deleteData.id {
+                self.dbRef.document(id).delete { error in
+                    if let error = error {
+                        promise(.failure(error))
+                    } else {
+                        promise(.success(()))
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func deleteDatas(deleteDatas: [Payment]) -> AnyPublisher<Void, Error> {
+        return Future { promise in
             
-            self.isFetchingList = false
-            return payments
+            for data in deleteDatas {
+                if let id = data.id {
+                    self.dbRef.document(id).delete { error in
+                        if let error = error {
+                            promise(.failure(error))
+                        } else {
+                            promise(.success(()))
+                        }
+                    }
+                }
+            }
         }
-        return nil
-    }
-    
-    func deletePayments(payment: [Payment]) async -> [Payment]? {
-        if isPaymentSettled { return nil }
-        var result: [Payment]?
-        for p in payment {
-            result = await self.deletePayment(payment: p)
-        }
-        return result
-    }
-    
-    func saveUpdateDate() async {
-        if isPaymentSettled { return }
-        do {
-            let newUpdateDate = Date.now.timeIntervalSince1970
-            try await Firestore.firestore()
-                .collection(StoreCollection.travel.path)
-                .document(self.travelCalculationId)
-                .setData(["updateContentDate": newUpdateDate], merge: true)
-            self.updateContentDate = newUpdateDate
-        } catch {
-            print("save date false")
-        }
+        .eraseToAnyPublisher()
     }
     
 }

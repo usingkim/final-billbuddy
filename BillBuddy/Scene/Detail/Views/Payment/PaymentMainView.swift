@@ -12,7 +12,7 @@ struct PaymentMainView: View {
     
     @ObservedObject var detailMainVM: DetailMainViewModel
     
-    @EnvironmentObject private var paymentStore: PaymentService
+    @EnvironmentObject private var paymentStore: PaymentServiceOrigin
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
