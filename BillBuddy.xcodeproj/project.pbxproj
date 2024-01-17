@@ -108,6 +108,8 @@
 		90C6079E2B3F5C2100D8AF5C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */; };
 		90CE44EC2B443FA2003DD8FB /* DetailMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */; };
 		90CE44EF2B445126003DD8FB /* PaymentManageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CE44EE2B445126003DD8FB /* PaymentManageViewModel.swift */; };
+		90D2C11A2B583E19002B6575 /* UserTravelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D2C1192B583E19002B6575 /* UserTravelService.swift */; };
+		90D2C11C2B5840DC002B6575 /* TravelCalculationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D2C11B2B5840DC002B6575 /* TravelCalculationService.swift */; };
 		90DD22912B52B3B000090ECB /* URLSchemeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DD22902B52B3B000090ECB /* URLSchemeBase.swift */; };
 		90DD22932B52B49B00090ECB /* NativeAdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DD22922B52B49B00090ECB /* NativeAdViewModel.swift */; };
 		90DD22952B52B51F00090ECB /* AdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DD22942B52B51F00090ECB /* AdViewModel.swift */; };
@@ -254,6 +256,8 @@
 		90C6079D2B3F5C2000D8AF5C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		90CE44EB2B443FA2003DD8FB /* DetailMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainViewModel.swift; sourceTree = "<group>"; };
 		90CE44EE2B445126003DD8FB /* PaymentManageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManageViewModel.swift; sourceTree = "<group>"; };
+		90D2C1192B583E19002B6575 /* UserTravelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTravelService.swift; sourceTree = "<group>"; };
+		90D2C11B2B5840DC002B6575 /* TravelCalculationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelCalculationService.swift; sourceTree = "<group>"; };
 		90DD22902B52B3B000090ECB /* URLSchemeBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeBase.swift; sourceTree = "<group>"; };
 		90DD22922B52B49B00090ECB /* NativeAdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdViewModel.swift; sourceTree = "<group>"; };
 		90DD22942B52B51F00090ECB /* AdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdViewModel.swift; sourceTree = "<group>"; };
@@ -537,6 +541,8 @@
 				FFCF22582B24500000B79BF9 /* SNSSignInService.swift */,
 				90A9D1302B56CF05003D1563 /* PaymentService.swift */,
 				90A9D1322B56DFF2003D1563 /* FirestoreService.swift */,
+				90D2C1192B583E19002B6575 /* UserTravelService.swift */,
+				90D2C11B2B5840DC002B6575 /* TravelCalculationService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1079,6 +1085,7 @@
 				278563022B08A5F500B465DB /* TabViewModel.swift in Sources */,
 				2766484B2ABD8E34000F8A10 /* PaymentListView.swift in Sources */,
 				0266B7392ADA6A1500DBF07D /* CalendarSheetView.swift in Sources */,
+				90D2C11C2B5840DC002B6575 /* TravelCalculationService.swift in Sources */,
 				FFBA42A22B2C6D4F00915D2F /* ForgotPasswordView.swift in Sources */,
 				276648312ABD8B6E000F8A10 /* TravelCalculation.swift in Sources */,
 				9059FFF92B45DA3D002D2F9B /* ViewTypeEnums.swift in Sources */,
@@ -1106,6 +1113,7 @@
 				27499B742B2DABB800DE1BB3 /* DateManagementCalendar.swift in Sources */,
 				023EF9242ACC0334005C3F30 /* UserTravelStore.swift in Sources */,
 				63A3F1762ADF78B1006EE206 /* CustomAnnotationView.swift in Sources */,
+				90D2C11A2B583E19002B6575 /* UserTravelService.swift in Sources */,
 				27933F722AD3402300E6A545 /* SettledAccountView.swift in Sources */,
 				277C99A22AC08F9C006DFCFC /* UserTravel.swift in Sources */,
 				273FD6A92AC1A407007BF7D4 /* Font+Extension.swift in Sources */,

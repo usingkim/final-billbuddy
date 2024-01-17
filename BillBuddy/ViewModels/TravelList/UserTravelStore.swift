@@ -8,6 +8,10 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+
+/// 현재 UserTravelStore에 UserTravel이랑 TravelCalculation이 함께 있다.
+/// UserTravelService랑 TravelCalculationService 따로 두고 보는게 좋을듯
+
 final class UserTravelStore: ObservableObject {
     @Published var userTravels: [UserTravel] = []
     @Published var travels: [TravelCalculation] = []
