@@ -10,7 +10,7 @@ import FirebaseAuth
 import WebKit
 
 struct MyPageSettingView: View {
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var userTravelStore: UserTravelStore
     
     @State private var isShowingLogoutAlert: Bool = false
@@ -26,17 +26,17 @@ struct MyPageSettingView: View {
         ScrollView {
             VStack(alignment: .leading) {
                 Group {
-//                    NavigationLink(destination: MembershipView()){
-//                        HStack {
-//                            Text("프리미엄 멤버십")
-//                            Spacer()
-//                            Image("chevron_right")
-//                                .resizable()
-//                                .frame(width: 24, height: 24)
-//                        }
-//                    }
-//                    .padding(.top, 32)
-//                    .padding(.bottom, 36)
+                    NavigationLink(destination: MembershipView()){
+                        HStack {
+                            Text("프리미엄 멤버십")
+                            Spacer()
+                            Image("chevron_right")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                        }
+                    }
+                    .padding(.top, 32)
+                    .padding(.bottom, 36)
                     Button(action: {
                         UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                     }, label: {
@@ -48,7 +48,6 @@ struct MyPageSettingView: View {
                                 .frame(width: 24, height: 24)
                         }
                     })
-                    .padding(.top, 32)
                     .padding(.bottom, 36)
                    
                     Button(action: {
@@ -197,7 +196,7 @@ struct MyPageSettingView: View {
         MyPageSettingView()
             .environmentObject(SignInViewModel())
             .environmentObject(SignUpViewModel())
-            .environmentObject(NotificationStore.shared)
+            .environmentObject(NotificationService.shared)
             .environmentObject(UserTravelStore())
     }
 }

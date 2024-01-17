@@ -9,9 +9,9 @@ import SwiftUI
 
 struct ChattingView: View {
     @EnvironmentObject private var travelStore: UserTravelStore
-    @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var notificationStore: NotificationService
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
+    @EnvironmentObject private var tabViewStore: TabViewModel
     
     var body: some View {
         VStack {
@@ -31,12 +31,12 @@ struct ChattingView: View {
             }
         }
         .onAppear {
-            tabBarVisivilyStore.showTabBar()
+            tabBarVisibilityStore.showTabBar()
             if !AuthStore.shared.userUid.isEmpty {
                 travelStore.fetchTravelCalculation()
             }
         }
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Text("채팅")
@@ -150,7 +150,7 @@ struct ChattingView: View {
         ChattingView()
             .environmentObject(UserTravelStore())
             .environmentObject(TabBarVisibilityStore())
-            .environmentObject(NotificationStore.shared)
+            .environmentObject(NotificationService.shared)
     }
 }
 

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MapMainView: View {
     @EnvironmentObject private var locationManager: LocationManager
-    @EnvironmentObject private var paymentStore: PaymentService
     
     @ObservedObject var detailMainVM: DetailMainViewModel
     
@@ -45,19 +44,19 @@ struct MapMainView: View {
             }
         }
         .onChange(of: detailMainVM.selectedDate, perform: { _ in
-            detailMainVM.whenChangeSelectedDate(paymentStore: paymentStore)
+            detailMainVM.whenChangeSelectedDate()
             
             locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
         })
         .onAppear {
-            detailMainVM.whenOpenView(paymentStore: paymentStore)
+            detailMainVM.whenOpenView()
             locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
         }
     }
     
     var bottomList: some View {
         VStack {
-            ForEach(Array(zip(0..<paymentStore.payments.count, detailMainVM.filteredPayments)), id: \.0) { index, payment in
+            ForEach(Array(zip(0..<detailMainVM.filteredPayments.count, detailMainVM.filteredPayments)), id: \.0) { index, payment in
                 HStack(spacing: 12) {
                     ZStack {
                         Circle()

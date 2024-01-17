@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddTravelView: View {
     
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     @EnvironmentObject var userTravelStore: UserTravelStore
     @Environment(\.dismiss) private var dismiss
     
@@ -167,7 +167,7 @@ struct AddTravelView: View {
         .navigationBarTitle("여행 추가하기")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -181,7 +181,7 @@ struct AddTravelView: View {
             }
         }
         .onAppear {
-            tabBarVisivilyStore.hideTabBar()
+            tabBarVisibilityStore.hideTabBar()
         }
         .onTapGesture {
             hideKeyboard()

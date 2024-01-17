@@ -12,10 +12,9 @@ struct PaymentManageView: View {
     @Environment(\.dismiss) private var dismiss
     
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
-    @EnvironmentObject private var paymentService: PaymentService
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
     
     @FocusState private var focusedField: PaymentFocusField?
     
@@ -47,7 +46,7 @@ struct PaymentManageView: View {
             
             underButton
         }
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
@@ -64,7 +63,7 @@ struct PaymentManageView: View {
             }
         })
         .onAppear {
-            tabBarVisivilyStore.hideTabBar()
+            tabBarVisibilityStore.hideTabBar()
             paymentManageVM.setTitleString(userTravelStore: userTravelStore)
         }
         .navigationBarBackButtonHidden()
@@ -195,17 +194,17 @@ extension PaymentManageView {
                 switch(paymentManageVM.mode) {
                 case .add:
                     return Alert(title: Text(PaymentAlertText.add), primaryButton: .cancel(Text("아니오")), secondaryButton: .default(Text("네"), action: {
-                        paymentManageVM.addPayment(paymentStore: paymentService, settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
+                        paymentManageVM.addPayment(settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
                         dismiss()
                     }))
                 case .mainAdd:
                     return Alert(title: Text(PaymentAlertText.add), primaryButton: .cancel(Text("아니오")), secondaryButton: .default(Text("네"), action: {
-                        paymentManageVM.mainAddPayment(paymentStore: paymentService, settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore, userTravelStore: userTravelStore)
+                        paymentManageVM.mainAddPayment(settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore, userTravelStore: userTravelStore)
                         dismiss()
                     }))
                 case .edit:
                     return Alert(title: Text(PaymentAlertText.edit), primaryButton: .cancel(Text("아니오")), secondaryButton: .default(Text("네"), action: {
-                        paymentManageVM.editPayment(paymentStore: paymentService, settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
+                        paymentManageVM.editPayment(settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
                         dismiss()
                     }))
                 }

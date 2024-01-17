@@ -91,13 +91,13 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         let userInfo = notification.request.content.userInfo
         
         // TODO: fetch -> 받아온 데이터로 add만 해주는 형식으로 바꿔야한다.
-        NotificationStore.shared.fetchNotification()
+        NotificationService.shared.fetchNotification()
         
         if let senderToken = userInfo["senderToken"] as? String {
             let currentUserToken = UserService.shared.reciverToken
             
             if senderToken != currentUserToken {
-                if TabViewStore.shared.isPresentedView {
+                if TabViewModel.shared.isPresentedView {
                     completionHandler([])
                 } else {
                     completionHandler([.banner, .sound, .badge])
@@ -118,7 +118,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         
         print("didReceivet: userInfo: ", userInfo)
-        TabViewStore.shared.pushNotificationListView()
+        TabViewModel.shared.pushNotificationListView()
         completionHandler()
         
     }

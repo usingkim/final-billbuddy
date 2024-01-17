@@ -44,13 +44,22 @@ enum ListItem: String, CaseIterable {
 struct MoreView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var tabViewStore: TabViewModel
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
-    @EnvironmentObject private var paymentStore: PaymentService
     @State var itemList: [ListItem] = ListItem.allCases
     @State var isPresentedLeaveAlert: Bool = false
     
     let travel: TravelCalculation
+    var paymentDates: [Date] = []
+    
+    init(travel: TravelCalculation) {
+        self.travel = travel
+    }
+    
+    init(travel: TravelCalculation, paymentDates: [Date]) {
+        self.travel = travel
+        self.paymentDates = paymentDates
+    }
 
     var body: some View {
         VStack {
@@ -67,7 +76,7 @@ struct MoreView: View {
                             case .editDate:
                                 DateManagementView(
                                     travel: travelDetailStore.travel,
-                                    paymentDates: paymentStore.paymentDates, 
+                                    paymentDates: paymentDates,
                                     entryViewtype: .more
                                 )
                                 .environmentObject(travelDetailStore)
@@ -144,6 +153,7 @@ struct MoreView: View {
                 userTravelStore.leaveTravel(travel: travel)
                 tabViewStore.popToRoow()
             }
+            .buttonStyle(.plain)
 
         }
     }

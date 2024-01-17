@@ -12,9 +12,9 @@ import Kingfisher
 struct ChattingRoomView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userService: UserService
-    @EnvironmentObject private var messageStore: MessageStore
-    @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
+    @EnvironmentObject private var messageStore: MessageService
+    @EnvironmentObject private var notificationStore: NotificationService
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     var travel: TravelCalculation
     ///pagination 적용 시 스크롤 올릴 때 몇개의 데이터를 가져올 지 갯수
     @State private var leadingCount: Int = 20
@@ -42,7 +42,7 @@ struct ChattingRoomView: View {
             chattingInputBar
         }
         .onAppear {
-            tabBarVisivilyStore.hideTabBar()
+            tabBarVisibilityStore.hideTabBar()
             messageStore.getChatRoomData(travelCalculation: travel)
             //처음에 leadingCount 수만큼 메시지 데이터 불러옴
             messageStore.fetchMessages(travelCalculation: travel, count: leadingCount)
@@ -74,7 +74,7 @@ struct ChattingRoomView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
@@ -428,8 +428,8 @@ struct ChattingRoomView: View {
 #Preview {
     NavigationStack {
         ChattingRoomView(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
-            .environmentObject(MessageStore())
+            .environmentObject(MessageService())
             .environmentObject(TabBarVisibilityStore())
-            .environmentObject(NotificationStore.shared)
+            .environmentObject(NotificationService.shared)
     }
 }

@@ -10,9 +10,8 @@ import SwiftUI
 
 struct PaymentMainView: View {
     
-    @ObservedObject var detailMainVM: DetailMainViewModel
+    @StateObject var detailMainVM: DetailMainViewModel
     
-    @EnvironmentObject private var paymentStore: PaymentService
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
@@ -33,7 +32,7 @@ struct PaymentMainView: View {
             }
         }
         .onChange(of: detailMainVM.selectedDate, perform: { _ in
-            detailMainVM.whenChangeSelectedDate(paymentStore: paymentStore)
+            detailMainVM.whenChangeSelectedDate()
         })
     }
 }
@@ -97,7 +96,7 @@ extension PaymentMainView {
         })
         .alert(isPresented: $detailMainVM.isShowingDeletePayment) {
             return Alert(title: Text(PaymentAlertText.selectedPaymentDelete), primaryButton: .destructive(Text("네"), action: {
-                detailMainVM.deleteSelectedPayments(paymentStore: paymentStore, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                detailMainVM.deleteSelectedPayments(travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
             }), secondaryButton: .cancel(Text("아니오"), action: {
                 detailMainVM.isEditing.toggle()
             }))
@@ -107,9 +106,8 @@ extension PaymentMainView {
     var addPaymentButton: some View {
         NavigationLink {
             PaymentManageView(mode: .add, travelCalculation: travelDetailStore.travel)
-                .environmentObject(paymentStore)
                 .onDisappear {
-                    detailMainVM.refresh(travelDetailStore: travelDetailStore, paymentStore: paymentStore)
+                    detailMainVM.refresh(travelDetailStore: travelDetailStore)
                 }
         } label: {
             HStack(spacing: 12) {
@@ -138,7 +136,7 @@ extension PaymentMainView {
     
     var paymentList: some View {
         VStack(spacing: 0) {
-            if paymentStore.isFetchingList {
+            if detailMainVM.isFetchingList {
                 HStack {
                     Spacer()
                     ProgressView()
@@ -147,7 +145,7 @@ extension PaymentMainView {
                 }
                 Spacer()
             }
-            else if paymentStore.payments.isEmpty {
+            else if detailMainVM.payments.isEmpty {
                 HStack {
                     Spacer()
                     Text("지출을 추가해주세요")
@@ -158,10 +156,20 @@ extension PaymentMainView {
                 }
                 Spacer()
             }
+            else if detailMainVM.filteredPayments.isEmpty {
+                HStack {
+                    Spacer()
+                    Text("해당하는 지출이 없습니다")
+                        .foregroundStyle(Color.gray600)
+                        .font(.body02)
+                        .padding(.top, 59)
+                    Spacer()
+                }
+                Spacer()
+            }
             else {
                 List {
                     PaymentListView(detailMainVM: detailMainVM)
-                        .environmentObject(paymentStore)
                         .padding(.bottom, 12)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets())
@@ -200,7 +208,7 @@ extension PaymentMainView {
                 }
                 
                 .onChange(of: detailMainVM.selectedCategory, perform: { category in
-                    detailMainVM.whenChangeSelectedCategory(paymentStore: paymentStore)
+                    detailMainVM.whenChangeSelectedCategory()
                 })
                 
                 Spacer()

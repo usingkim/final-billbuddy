@@ -9,7 +9,6 @@ import SwiftUI
 
 
 struct PaymentListView: View {
-    @EnvironmentObject private var paymentService: PaymentService
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
@@ -99,9 +98,8 @@ struct PaymentListView: View {
                     
                     NavigationLink {
                         PaymentManageView(mode: .edit, payment: payment, travelCalculation: travelDetailStore.travel)
-                            .environmentObject(paymentService)
                             .onDisappear {
-                                detailMainVM.refresh(travelDetailStore: travelDetailStore, paymentStore: paymentService)
+                                detailMainVM.refresh(travelDetailStore: travelDetailStore)
                             }
                     } label: {
                         Text("수정")
@@ -119,10 +117,9 @@ struct PaymentListView: View {
         }
         .alert(isPresented: $detailMainVM.isShowingDeletePaymentAlert) {
             return Alert(title: Text(PaymentAlertText.paymentDelete), primaryButton: .destructive(Text("네"), action: {
-                detailMainVM.deleteAPayment(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                detailMainVM.deleteAPayment(travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
             }), secondaryButton: .cancel(Text("아니오")))
         }
         .listRowInsets(nil)
-        
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct SignUpView: View {
     @Environment(\.dismiss) private var dismiss
     
+    @FocusState var isKeyboardUp: Bool
     @StateObject private var signUpVM: SignUpViewModel = SignUpViewModel()
     
     var body: some View {
@@ -30,7 +31,7 @@ struct SignUpView: View {
                             .stroke(signUpVM.isNameTextError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
                         .padding(.bottom, signUpVM.isNameTextError ? 0 : 12)
-                        .focused(signUpVM.$isKeyboardUp)
+                        .focused($isKeyboardUp)
                     
                     if signUpVM.isNameTextError {
                         Text("이름은 2자리 이상 입력해주세요.")
@@ -50,7 +51,7 @@ struct SignUpView: View {
                             .stroke(signUpVM.isEmailTextError || signUpVM.isEmailInUseError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
                         .padding(.bottom, signUpVM.isEmailTextError || signUpVM.isEmailInUseError ? 0 : 12)
-                        .focused(signUpVM.$isKeyboardUp)
+                        .focused($isKeyboardUp)
                     
                     if signUpVM.isEmailTextError {
                         Text("정확한 이메일을 입력해주세요")
@@ -77,7 +78,7 @@ struct SignUpView: View {
                             .stroke(signUpVM.isPasswordCountError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
                         .padding(.bottom, signUpVM.isPasswordCountError ? 0 : 12)
-                        .focused(signUpVM.$isKeyboardUp)
+                        .focused($isKeyboardUp)
                     
                     if signUpVM.isPasswordCountError {
                         Text("비밀번호는 6자리 이상 입력해주세요")
@@ -96,7 +97,7 @@ struct SignUpView: View {
                             .stroke(signUpVM.isPasswordUnCorrectError ? Color.error : Color.gray300, lineWidth: 2))
                         .cornerRadius(12)
                         .padding(.bottom, signUpVM.isPasswordUnCorrectError ? 0 : 12)
-                        .focused(signUpVM.$isKeyboardUp)
+                        .focused($isKeyboardUp)
                     
                     if signUpVM.isPasswordUnCorrectError {
                         Text("비밀번호가 서로 다릅니다")
@@ -116,36 +117,7 @@ struct SignUpView: View {
             
             Group {
                 Button(action: {
-                    signUpVM.isShowingProgressView = true
-                    
-                    let isNameValid = signUpVM.signUpData.name.count >= 2
-                    let isEmailValid = signUpVM.isValidEmailId(signUpVM.signUpData.email)
-                    
-                    signUpVM.emailCheck(email: signUpVM.signUpData.email) { isEmailInUse in
-                        let isPasswordValid = signUpVM.signUpData.password.count >= 6
-                        let isPasswordConfirmed = signUpVM.signUpData.passwordConfirm == signUpVM.signUpData.password
-                        let isTermOfUseAgreeValid = signUpVM.signUpData.isTermOfUseAgree
-                        let isPrivacyAgreeValid = signUpVM.signUpData.isPrivacyAgree
-                        
-                        if isNameValid && isEmailValid && isEmailInUse && isPasswordValid && isPasswordConfirmed && isTermOfUseAgreeValid && isPrivacyAgreeValid {
-                            signUpVM.isShowingCompleteJoinAlert = true
-                            
-                            Task {
-                                if await signUpVM.postSignUp() {
-                                    // Success
-                                } else {
-                                    print("실패")
-                                }
-                            }
-                        } else {
-                            signUpVM.isNameTextError = !isNameValid
-                            signUpVM.isEmailTextError = !isEmailValid
-                            signUpVM.isEmailInUseError = !isEmailInUse
-                            signUpVM.isPasswordCountError = !isPasswordValid
-                            signUpVM.isPasswordUnCorrectError = !isPasswordConfirmed
-                        }
-                    }
-                    
+                    signUpVM.isValid()
                 }, label: {
                     Text("가입하기")
                         .font(.body02)
@@ -164,7 +136,7 @@ struct SignUpView: View {
             }
         }
         .onTapGesture {
-            signUpVM.isKeyboardUp = false
+            isKeyboardUp = false
         }
         .padding(.horizontal, 24)
         .navigationBarBackButtonHidden(true)

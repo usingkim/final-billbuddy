@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditTravelSheetView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
 
     @Binding var isPresentedSheet: Bool
     @Binding var isPresentedDateView: Bool
@@ -22,7 +22,7 @@ struct EditTravelSheetView: View {
         VStack {
             Button {
                 isPresentedSheet = false
-                tabBarVisivilyStore.hideTabBar()
+                tabBarVisibilityStore.hideTabBar()
                 isPresentedDateView = true
             } label: {
                 HStack {
@@ -41,7 +41,7 @@ struct EditTravelSheetView: View {
             
             Button {
                 isPresentedSheet = false
-                tabBarVisivilyStore.hideTabBar()
+                tabBarVisibilityStore.hideTabBar()
                 isPresentedMemeberView = true
             } label: {
                 
@@ -61,7 +61,7 @@ struct EditTravelSheetView: View {
             
             Button {
                 isPresentedSheet = false
-                tabBarVisivilyStore.hideTabBar()
+                tabBarVisibilityStore.hideTabBar()
                 isPresentedSpendingView = true
             } label: {
                 HStack {

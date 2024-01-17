@@ -10,21 +10,20 @@ import SwiftUI
 struct DetailMainView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
 
-    @StateObject private var paymentService: PaymentService
     @StateObject private var travelDetailStore: TravelDetailStore
     @StateObject private var locationManager = LocationManager()
     
-    @StateObject private var detailMainVM = DetailMainViewModel()
+    @StateObject private var detailMainVM: DetailMainViewModel
     
     let menus: [String] = ["내역", "지도"]
     
     init(travel: TravelCalculation) {
-        _paymentService = StateObject(wrappedValue: PaymentService(travel: travel))
         _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
+        _detailMainVM = StateObject(wrappedValue: DetailMainViewModel(travel: travel))
     }
     
     
@@ -43,15 +42,12 @@ struct DetailMainView: View {
                 ZStack {
                     PaymentMainView(detailMainVM: detailMainVM)
                         .environmentObject(travelDetailStore)
-                        .environmentObject(paymentService)
                     
-                    if travelDetailStore.isChangedTravel &&
-                        paymentService.updateContentDate != travelDetailStore.travel.updateContentDate &&
-                        !paymentService.isFetchingList
+                    if detailMainVM.isUpdated(travelDetailStore: travelDetailStore)
                     {
                         
                         Button {
-                            detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                            detailMainVM.fetchPaymentAndSettledAccount(travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                             travelDetailStore.isChangedTravel = false
                         } label: {
                             HStack(spacing: 8) {
@@ -85,21 +81,18 @@ struct DetailMainView: View {
             else if detailMainVM.selectMenu == "지도" {
                 MapMainView(detailMainVM: detailMainVM)
                     .environmentObject(locationManager)
-                    .environmentObject(paymentService)
             }
         }
         
         .onAppear {
-            tabBarVisivilyStore.hideTabBar()
+            tabBarVisibilityStore.hideTabBar()
+            // FIXME: 바로 정산 금액이 업데이트 되지 않음
             if detailMainVM.selectedDate == 0 {
-                Task {
-                    if travelDetailStore.isFirstFetch {
-                        travelDetailStore.checkAndResaveToken()
-                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
-                        travelDetailStore.isFirstFetch = false
-                        
-                    }
-                }
+//                if travelDetailStore.isFirstFetch {
+                    travelDetailStore.checkAndResaveToken()
+                    detailMainVM.fetchPaymentAndSettledAccount(travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                    travelDetailStore.isFirstFetch = false
+//                }
                 travelDetailStore.listenTravelDate()
             }
         }
@@ -108,7 +101,7 @@ struct DetailMainView: View {
         }
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         .toolbar(content: {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
@@ -144,9 +137,8 @@ struct DetailMainView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink {
-                    MoreView(travel: travelDetailStore.travel)
+                    MoreView(travel: travelDetailStore.travel, paymentDates: detailMainVM.payments.map { $0.paymentDate.toDate() })
                         .environmentObject(travelDetailStore)
-                        .environmentObject(paymentService)
                 } label: {
                     Image("steps-1 3")
                         .resizable()

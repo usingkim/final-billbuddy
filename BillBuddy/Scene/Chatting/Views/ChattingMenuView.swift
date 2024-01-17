@@ -11,8 +11,8 @@ import Kingfisher
 struct ChattingMenuView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var messageStore: MessageStore
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var messageStore: MessageService
+    @EnvironmentObject private var tabViewStore: TabViewModel
     @State private var isPresentedLeaveAlert: Bool = false
     var travel: TravelCalculation
     
@@ -201,6 +201,6 @@ struct ChattingMenuView: View {
 #Preview {
     ChattingMenuView(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
         .environmentObject(UserTravelStore())
-        .environmentObject(MessageStore())
-        .environmentObject(TabViewStore.shared)
+        .environmentObject(MessageService())
+        .environmentObject(TabViewModel.shared)
 }

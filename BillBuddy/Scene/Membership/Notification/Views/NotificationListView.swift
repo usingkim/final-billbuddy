@@ -17,8 +17,8 @@ struct NotificationListView: View {
 //        }
 //    } 
     @State private var isPresentedAlert: Bool = false
-    @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var notificationStore: NotificationService
+    @EnvironmentObject private var tabViewStore: TabViewModel
     @EnvironmentObject private var userTravelStore: UserTravelStore
 
     private var db = Firestore.firestore()
@@ -128,6 +128,6 @@ struct NotificationListView: View {
 
 #Preview {
     NotificationListView()
-        .environmentObject(NotificationStore.shared)
-        .environmentObject(TabViewStore.shared)
+        .environmentObject(NotificationService.shared)
+        .environmentObject(TabViewModel.shared)
 }

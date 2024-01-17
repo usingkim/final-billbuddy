@@ -9,11 +9,11 @@ import SwiftUI
 
 struct TravelListView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
-    @EnvironmentObject private var notificationStore: NotificationStore
-    @EnvironmentObject private var tabBarVisivilyStore: TabBarVisibilityStore
+    @EnvironmentObject private var notificationStore: NotificationService
+    @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     @EnvironmentObject private var nativeAdViewModel: NativeAdViewModel
     @EnvironmentObject private var userService: UserService
-    @EnvironmentObject private var tabViewStore: TabViewStore
+    @EnvironmentObject private var tabViewStore: TabViewModel
     
     @StateObject private var travelDetailStore: TravelDetailStore = TravelDetailStore()
     @ObservedObject var floatingButtonMenuStore: FloatingButtonMenuStore
@@ -204,10 +204,10 @@ struct TravelListView: View {
                 }
         )
         
-        .toolbar(tabBarVisivilyStore.visibility, for: .tabBar)
+        .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
         
         .onAppear {
-            tabBarVisivilyStore.showTabBar()
+            tabBarVisibilityStore.showTabBar()
             if let isPremium = userService.currentUser?.isPremium {
                 if !isPremium {
                     nativeAdViewModel.refreshAd()
@@ -326,7 +326,7 @@ extension TravelListView {
 //    NavigationStack {
 //        TravelListView(floatingButtonMenuStore: FloatingButtonMenuStore())
 //            .environmentObject(UserTravelStore())
-//            .environmentObject(TabBarVisivilyStore())
+//            .environmentObject(tabBarVisibilityStore())
 //            .environmentObject(NotificationStore())
 //            .environmentObject(UserService.shared)
 //            .environmentObject(NativeAdViewModel())

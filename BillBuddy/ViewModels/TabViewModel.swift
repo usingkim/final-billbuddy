@@ -7,8 +7,9 @@
 
 import Foundation
 
-final class TabViewStore: ObservableObject {
-    static let shared = TabViewStore()
+final class TabViewModel: ObservableObject {
+    
+    static let shared = TabViewModel()
     private init() { }
     
     @Published var selectedTab: Int = 0 {

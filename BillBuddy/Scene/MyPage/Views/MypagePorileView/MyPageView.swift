@@ -10,7 +10,7 @@ import SwiftUI
 struct MyPageView: View {
     
     @EnvironmentObject private var userService: UserService
-    @EnvironmentObject private var notificationStore: NotificationStore
+    @EnvironmentObject private var notificationStore: NotificationService
 
     var body: some View {
         VStack {
@@ -48,6 +48,6 @@ struct MyPageView: View {
     NavigationStack {
         MyPageView()
             .environmentObject(UserService.shared)
-            .environmentObject(NotificationStore.shared)
+            .environmentObject(NotificationService.shared)
     }
 }

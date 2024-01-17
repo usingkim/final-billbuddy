@@ -7,44 +7,7 @@
 
 import Foundation
 
-enum SpendingType: CaseIterable {
-    case totalExpenditure
-    /// 오늘의 총 지출
-    case todayExpenditure
-    /// 총교통비
-    case totalTransportation
-    /// 총숙박비
-    case totalAccommodation
-    /// 총관광비
-    case totalTourism
-    /// 총식비
-    case totalFood
-    /// 총기타비용
-    case totalEtc
-    /// 인원별 정산
-    case personalSettlement
-    
-    var string: String {
-        switch self {
-        case .totalExpenditure:
-            return "전체 총 지출"
-        case .todayExpenditure:
-            return "오늘의 총 지출"
-        case .totalTransportation:
-            return "오늘의 총 지출"
-        case .totalAccommodation:
-            return "교통 총 지출"
-        case .totalTourism:
-            return "관광 총 지출"
-        case .totalFood:
-            return "식비 총 지출"
-        case .totalEtc:
-            return "기타 총 지출"
-        case .personalSettlement:
-            return "인원별 정산"
-        }
-    }
-}
+
 
 final class SettlementExpensesStore: ObservableObject {
     @Published var settlementExpenses = SettlementExpenses()
@@ -181,4 +144,42 @@ final class SettlementExpensesStore: ObservableObject {
         addExpenses(payment: modified)
     }
     
+    enum SpendingType: CaseIterable {
+        case totalExpenditure
+        /// 오늘의 총 지출
+        case todayExpenditure
+        /// 총교통비
+        case totalTransportation
+        /// 총숙박비
+        case totalAccommodation
+        /// 총관광비
+        case totalTourism
+        /// 총식비
+        case totalFood
+        /// 총기타비용
+        case totalEtc
+        /// 인원별 정산
+        case personalSettlement
+        
+        var string: String {
+            switch self {
+            case .totalExpenditure:
+                return "전체 총 지출"
+            case .todayExpenditure:
+                return "오늘의 총 지출"
+            case .totalTransportation:
+                return "오늘의 총 지출"
+            case .totalAccommodation:
+                return "교통 총 지출"
+            case .totalTourism:
+                return "관광 총 지출"
+            case .totalFood:
+                return "식비 총 지출"
+            case .totalEtc:
+                return "기타 총 지출"
+            case .personalSettlement:
+                return "인원별 정산"
+            }
+        }
+    }
 }
