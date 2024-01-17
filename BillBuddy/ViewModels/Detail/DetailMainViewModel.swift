@@ -64,7 +64,6 @@ final class DetailMainViewModel: ObservableObject {
                 self.resetFilter()
             }
             .store(in: &cancellables)
-        updateDate()
         self.isFetchingList = false
     }
     
