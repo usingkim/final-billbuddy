@@ -13,7 +13,6 @@ struct PaymentManageView: View {
     
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
-    @EnvironmentObject private var paymentService: PaymentServiceOrigin
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationService
     
@@ -195,17 +194,17 @@ extension PaymentManageView {
                 switch(paymentManageVM.mode) {
                 case .add:
                     return Alert(title: Text(PaymentAlertText.add), primaryButton: .cancel(Text("아니오")), secondaryButton: .default(Text("네"), action: {
-                        paymentManageVM.addPayment(paymentStore: paymentService, settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
+                        paymentManageVM.addPayment(settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
                         dismiss()
                     }))
                 case .mainAdd:
                     return Alert(title: Text(PaymentAlertText.add), primaryButton: .cancel(Text("아니오")), secondaryButton: .default(Text("네"), action: {
-                        paymentManageVM.mainAddPayment(paymentStore: paymentService, settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore, userTravelStore: userTravelStore)
+                        paymentManageVM.mainAddPayment(settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore, userTravelStore: userTravelStore)
                         dismiss()
                     }))
                 case .edit:
                     return Alert(title: Text(PaymentAlertText.edit), primaryButton: .cancel(Text("아니오")), secondaryButton: .default(Text("네"), action: {
-                        paymentManageVM.editPayment(paymentStore: paymentService, settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
+                        paymentManageVM.editPayment(settlementExpensesStore: settlementExpensesStore, locationManager: locationManager, notificationStore: notificationStore)
                         dismiss()
                     }))
                 }

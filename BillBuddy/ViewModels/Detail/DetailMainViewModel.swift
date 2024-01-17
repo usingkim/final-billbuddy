@@ -15,9 +15,13 @@ final class DetailMainViewModel: ObservableObject {
     
     init(travel: TravelCalculation) {
         paymentService = PaymentService(travel: travel)
+        self.updateContentDate = travel.updateContentDate
     }
     
+    @Published var isFetchingList: Bool = false
+    
     private var cancellables: Set<AnyCancellable> = []
+    private var updateContentDate: Double
     
     @Published var payments: [Payment] = []
     @Published var filteredPayments: [Payment] = []
@@ -34,7 +38,18 @@ final class DetailMainViewModel: ObservableObject {
     @Published var isShowingDeletePaymentAlert: Bool = false
     @Published var selectedPayment: Payment?
     
+    var paymentDates: [Date] {
+        payments.map { $0.paymentDate.toDate() }
+    }
+    
+    func isUpdated(travelDetailStore: TravelDetailStore) -> Bool {
+        return travelDetailStore.isChangedTravel &&
+            updateContentDate != travelDetailStore.travel.updateContentDate &&
+            !isFetchingList
+    }
+    
     func fetchAll() {
+        self.isFetchingList = true
         paymentService.fetchAll()
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -49,9 +64,12 @@ final class DetailMainViewModel: ObservableObject {
                 self.resetFilter()
             }
             .store(in: &cancellables)
+        updateDate()
+        self.isFetchingList = false
     }
     
     func deleteData(deleteData: Payment) {
+        self.isFetchingList = true
         paymentService.deleteData(deleteData: deleteData)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -69,6 +87,8 @@ final class DetailMainViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        updateDate()
+        self.isFetchingList = false
     }
     
     func fetchPaymentAndSettledAccount(travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
@@ -153,12 +173,12 @@ final class DetailMainViewModel: ObservableObject {
         })
     }
     
-    func refresh(travelDetailStore: TravelDetailStore, paymentStore: PaymentServiceOrigin) {
-//        if travelDetailStore.isChangedTravel {
+    func refresh(travelDetailStore: TravelDetailStore) {
+        if travelDetailStore.isChangedTravel {
             selectedCategory = nil
             selectedDate = 0
         self.fetchAll()
-//        }
+        }
     }
     
     func addForDeletePayments(payment: Payment) {
@@ -169,9 +189,10 @@ final class DetailMainViewModel: ObservableObject {
         forDeletePayments = []
     }
     
-    func deleteAPayment(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
+    func deleteAPayment(travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
         if let payment = selectedPayment {
             deleteData(deleteData: payment)
+            updateDate()
             Task {
                 settlementExpensesStore.setSettlementExpenses(payments: self.payments, members: travelDetailStore.travel.members)
             }
@@ -182,5 +203,21 @@ final class DetailMainViewModel: ObservableObject {
         selectedDate = 0
         selectedCategory = nil
         filteredPayments = payments
+    }
+    
+    func updateDate() {
+        paymentService.updateDate()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error fetching data: \(error.localizedDescription)")
+                }
+            } receiveValue: { date in
+                self.updateContentDate = date
+            }
+            .store(in: &cancellables)
     }
 }

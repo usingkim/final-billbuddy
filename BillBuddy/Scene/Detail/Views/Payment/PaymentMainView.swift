@@ -12,7 +12,6 @@ struct PaymentMainView: View {
     
     @StateObject var detailMainVM: DetailMainViewModel
     
-    @EnvironmentObject private var paymentStore: PaymentServiceOrigin
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var settlementExpensesStore: SettlementExpensesStore
     
@@ -107,9 +106,8 @@ extension PaymentMainView {
     var addPaymentButton: some View {
         NavigationLink {
             PaymentManageView(mode: .add, travelCalculation: travelDetailStore.travel)
-                .environmentObject(paymentStore)
                 .onDisappear {
-                    detailMainVM.refresh(travelDetailStore: travelDetailStore, paymentStore: paymentStore)
+                    detailMainVM.refresh(travelDetailStore: travelDetailStore)
                 }
         } label: {
             HStack(spacing: 12) {
@@ -138,7 +136,7 @@ extension PaymentMainView {
     
     var paymentList: some View {
         VStack(spacing: 0) {
-            if paymentStore.isFetchingList {
+            if detailMainVM.isFetchingList {
                 HStack {
                     Spacer()
                     ProgressView()
@@ -172,7 +170,6 @@ extension PaymentMainView {
             else {
                 List {
                     PaymentListView(detailMainVM: detailMainVM)
-                        .environmentObject(paymentStore)
                         .padding(.bottom, 12)
                         .listRowSeparator(.hidden)
                         .listRowInsets(EdgeInsets())

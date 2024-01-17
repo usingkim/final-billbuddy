@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MapMainView: View {
     @EnvironmentObject private var locationManager: LocationManager
-    @EnvironmentObject private var paymentStore: PaymentServiceOrigin
     
     @ObservedObject var detailMainVM: DetailMainViewModel
     
@@ -57,7 +56,7 @@ struct MapMainView: View {
     
     var bottomList: some View {
         VStack {
-            ForEach(Array(zip(0..<paymentStore.payments.count, detailMainVM.filteredPayments)), id: \.0) { index, payment in
+            ForEach(Array(zip(0..<detailMainVM.filteredPayments.count, detailMainVM.filteredPayments)), id: \.0) { index, payment in
                 HStack(spacing: 12) {
                     ZStack {
                         Circle()

@@ -14,9 +14,12 @@ final class PaymentService: ObservableObject, FirebaseService {
     var dbRef: CollectionReference
     typealias DBData = Payment
     
+    var travelId: String
+    
     init(travel: TravelCalculation) {
         self.dbRef = Firestore.firestore().collection("TravelCalculation")
             .document(travel.id).collection("Payment")
+        self.travelId = travel.id
     }
     
     func fetchAll() -> AnyPublisher<[DBData], Error> {
@@ -75,18 +78,21 @@ final class PaymentService: ObservableObject, FirebaseService {
         .eraseToAnyPublisher()
     }
     
-    func updateDate(updateData: Payment) -> AnyPublisher<DBData, Error> {
+    func updateDate() -> AnyPublisher<Double, Error> {
         return Future { promise in
-            if let id = updateData.id {
                 let newUpdateDate = Date.now.timeIntervalSince1970
-                self.dbRef.document(id).setData(["updateContentDate": newUpdateDate], merge: true) { error in
+                Firestore.firestore()
+                    .collection(StoreCollection.travel.path)
+                    .document(self.travelId)
+                    .setData(["updateContentDate": newUpdateDate], merge: true) { error in
                     if let error = error {
                         promise(.failure(error))
-                    } else {
-                        promise(.success(updateData))
                     }
+                        else {
+                            promise(.success(newUpdateDate))
+                        }
                 }
-            }
+            
         }
         .eraseToAnyPublisher()
     }
