@@ -48,7 +48,7 @@ final class DetailMainViewModel: ObservableObject {
             !isFetchingList
     }
     
-    func fetchAll() {
+    func fetchAll(completion: @escaping ([Payment]) -> Void) {
         self.isFetchingList = true
         paymentService.fetchAll()
             .receive(on: DispatchQueue.main)
@@ -62,6 +62,7 @@ final class DetailMainViewModel: ObservableObject {
             } receiveValue: { payments in
                 self.payments = payments
                 self.resetFilter()
+                completion(payments)
             }
             .store(in: &cancellables)
         self.isFetchingList = false
@@ -91,11 +92,11 @@ final class DetailMainViewModel: ObservableObject {
     }
     
     func fetchPaymentAndSettledAccount(travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
-        
-        self.fetchAll()
-        resetFilter()
-        settlementExpensesStore.setSettlementExpenses(payments: self.payments, members: travelDetailStore.travel.members)
-        selectedDate = 0
+        self.fetchAll { payments in
+            self.resetFilter()
+            settlementExpensesStore.setSettlementExpenses(payments: payments, members: travelDetailStore.travel.members)
+            self.selectedDate = 0
+        }
     }
     
     func deleteSelectedPayments(travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
@@ -176,7 +177,7 @@ final class DetailMainViewModel: ObservableObject {
         if travelDetailStore.isChangedTravel {
             selectedCategory = nil
             selectedDate = 0
-        self.fetchAll()
+            self.fetchAll(completion: {_ in })
         }
     }
     
