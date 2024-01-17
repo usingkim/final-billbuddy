@@ -41,7 +41,7 @@ final class OnboardingViewModel: ObservableObject {
             nowState = .fourthTab
             return isFirstEntry
         case .fourthTab:
-            AuthStore.shared.isFirstEntry = false
+            AuthService.shared.isFirstEntry = false
             return false
         }
     }

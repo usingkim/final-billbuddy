@@ -43,7 +43,7 @@ struct ForgotPasswordView: View {
             
             Button(action: {
                 Task {
-                    if try await AuthStore.shared.sendEmailPasswordReset(email: email) {
+                    if try await AuthService.shared.sendEmailPasswordReset(email: email) {
                         self.firstLineMessage = "\(email)로 메일이 발송되었어요"
                         self.secondLineMessage = "메일에 기재된 링크를 클릭하여 변경해주세요"
                     } else {

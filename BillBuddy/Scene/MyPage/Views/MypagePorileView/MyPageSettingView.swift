@@ -17,7 +17,7 @@ struct MyPageSettingView: View {
     @State private var isPresentedAlert: Bool = false
     @State private var isReAuthAlert: Bool = false
     @State private var isErrorAlert: Bool = false
-    @State private var isCheckingProvider: Bool = AuthStore.shared.checkCurrentUserProviderId()
+    @State private var isCheckingProvider: Bool = AuthService.shared.checkCurrentUserProviderId()
     
     @State private var isShowingSafari: Bool = false
     private var termsWebView = "https://cut-hospital-213.notion.site/5e186613d1024010ad528f6ade1f09ae?pvs=4"
@@ -126,7 +126,7 @@ struct MyPageSettingView: View {
                     Button("취소", role: .cancel) {}
                     Button("로그아웃", role: .destructive) {
                         do {
-                            if try AuthStore.shared.signOut() {
+                            if try AuthService.shared.signOut() {
                                 UserService.shared.isSignIn = false
                                 notificationStore.resetStore()
                                 userTravelStore.resetStore()
@@ -156,7 +156,7 @@ struct MyPageSettingView: View {
                                 UserService.shared.isSignIn = false
                                 notificationStore.resetStore()
                                 userTravelStore.resetStore()
-                                AuthStore.shared.userUid = ""
+                                AuthService.shared.userUid = ""
                             case AuthErrorCode.requiresRecentLogin.rawValue:
                                 isReAuthAlert.toggle()
                             default:
@@ -180,14 +180,14 @@ struct MyPageSettingView: View {
     
     func deleteUserInDB() async throws {
         do {
-            try await UserService.shared.removeUserData(userId: AuthStore.shared.userUid)
+            try await UserService.shared.removeUserData(userId: AuthService.shared.userUid)
         } catch {
             print("deleteUser \(error)")
         }
     }
     
     func deleteUser() async throws -> Int{
-        return try await AuthStore.shared.deleteUser()
+        return try await AuthService.shared.deleteUser()
     }
 }
 

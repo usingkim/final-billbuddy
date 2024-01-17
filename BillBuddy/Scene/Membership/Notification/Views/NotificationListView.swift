@@ -89,7 +89,7 @@ struct NotificationListView: View {
     }
     
     private func fetchNotifications() {
-        db.collection("User").document(AuthStore.shared.userUid).collection("Notification").getDocuments { (querySnapshot, error) in
+        db.collection("User").document(AuthService.shared.userUid).collection("Notification").getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error fetching notifications: \(error)")
             } else {

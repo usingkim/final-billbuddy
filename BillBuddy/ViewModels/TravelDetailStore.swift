@@ -63,7 +63,7 @@ final class TravelDetailStore: ObservableObject {
     }
     
     func checkAndResaveToken() {
-        guard let index = travelTmp.members.firstIndex(where: { $0.userId == AuthStore.shared.userUid }) else { return }
+        guard let index = travelTmp.members.firstIndex(where: { $0.userId == AuthService.shared.userUid }) else { return }
         if travelTmp.members[index].reciverToken != UserService.shared.reciverToken {
             travelTmp.members[index].reciverToken = UserService.shared.reciverToken
             travelTmp.updateContentDate = Date.now.timeIntervalSince1970

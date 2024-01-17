@@ -108,7 +108,7 @@ final class SignUpViewModel: ObservableObject {
     @MainActor
     public func postSignUp() async -> Bool {
         do {
-            let authResult = try await AuthStore.shared.createUser(email: signUpData.email, password: signUpData.password )
+            let authResult = try await AuthService.shared.createUser(email: signUpData.email, password: signUpData.password )
             var user = signUpData.changeToUserModel(id: authResult.user.uid)
             user.reciverToken = UserService.shared.reciverToken
             try await saveUserData(user: user)

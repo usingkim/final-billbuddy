@@ -15,7 +15,7 @@ class PushNotificationManager {
             let _ = db.collection("TravelCalculation").document(travel.id)
             
             let members = travel.members.filter { member in
-                return member.userId != nil && !member.reciverToken.isEmpty && member.userId != AuthStore.shared.userUid
+                return member.userId != nil && !member.reciverToken.isEmpty && member.userId != AuthService.shared.userUid
             }
             
             for member in members {

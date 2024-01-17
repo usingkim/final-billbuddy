@@ -26,14 +26,14 @@ final class UserTravelStore: ObservableObject {
     
     @MainActor
     func fetchFirstInit() {
-        if AuthStore.shared.userUid.isEmpty == false && isFetchedFirst == false {
+        if AuthService.shared.userUid.isEmpty == false && isFetchedFirst == false {
             fetchTravelCalculation()
         }
     }
     
     @MainActor
     func fetchTravelCalculation() {
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         
         Task {
             self.isFetching = true
@@ -93,7 +93,7 @@ final class UserTravelStore: ObservableObject {
                 }
             }
         }
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         
         let tempTravel = TravelCalculation(
             hostId: userId,
@@ -144,7 +144,7 @@ final class UserTravelStore: ObservableObject {
     @MainActor
     // FIXME: 떠나기 시 무조건 내용 삭제됨(남은 멤버가 있는 경우에는 유지되어야함). Payment는 유지됨
     func leaveTravel(travel: TravelCalculation) {
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         let travelId = travel.id
         guard let userTravelArrayIndex = userTravels.firstIndex(where: { $0.travelId == travelId }) else { return }
         let userTravel = userTravels[userTravelArrayIndex]

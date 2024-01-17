@@ -24,7 +24,7 @@ struct ContentView: View {
     @StateObject private var tabBarVisibiltyStore = TabBarVisibilityStore()
     
     var body: some View {
-        if AuthStore.shared.userUid != "" {
+        if AuthService.shared.userUid != "" {
             if userService.isSignIn {
                 if inviteTravelService.isLoading == false {
                     BillBuddyTabView()

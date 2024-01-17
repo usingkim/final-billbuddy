@@ -4,35 +4,16 @@
 //
 //  Created by 윤지호 on 2023/09/22.
 //
-
-import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 import SwiftUI
 
-enum SignInCase {
-    case signIn
-    case signInFalse
-    case fetchFalse
-    
-    var description: String {
-        switch self {
-        case .signIn:
-            return ""
-        case .signInFalse:
-            return "아이디와 비밀번호를 확인해주세요"
-        case .fetchFalse:
-            return "유저정보 불러오기에 실패하였습니다."
-        }
-    }
-}
-
-public class AuthStore {
+public class AuthService {
     @AppStorage("userId") var userUid: String = ""
     @AppStorage("isFirstEntry") var isFirstEntry: Bool = true
     @Published var currentUser: User?
     
-    static let shared = AuthStore()
+    static let shared = AuthService()
     private init() { }
     
     // 신규 사용자
@@ -141,5 +122,25 @@ public class AuthStore {
             }
         }
         return false
+    }
+    
+}
+
+extension AuthService {
+    enum SignInCase {
+        case signIn
+        case signInFalse
+        case fetchFalse
+        
+        var description: String {
+            switch self {
+            case .signIn:
+                return ""
+            case .signInFalse:
+                return "아이디와 비밀번호를 확인해주세요"
+            case .fetchFalse:
+                return "유저정보 불러오기에 실패하였습니다."
+            }
+        }
     }
 }

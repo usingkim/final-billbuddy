@@ -153,7 +153,7 @@ struct ChattingRoomView: View {
                     .id("last")
                 LazyVStack {
                     ForEach(messageStore.messages) { message in
-                        if message.senderId == AuthStore.shared.userUid {
+                        if message.senderId == AuthService.shared.userUid {
                             HStack {
                                 Spacer()
                                 VStack(alignment: .trailing) {
@@ -403,7 +403,7 @@ struct ChattingRoomView: View {
             Task {
                 imagePath = await messageStore.getImagePath(item: photoItem, travelCalculation: travel)
                 let newMessage = Message(
-                    senderId: AuthStore.shared.userUid,
+                    senderId: AuthService.shared.userUid,
                     imageString: imagePath,
                     sendDate: Date().timeIntervalSince1970,
                     isRead: false
@@ -415,7 +415,7 @@ struct ChattingRoomView: View {
         } else {
             imageData?.removeAll()
             let newMessage = Message(
-                senderId: AuthStore.shared.userUid,
+                senderId: AuthService.shared.userUid,
                 message: inputText,
                 sendDate: Date().timeIntervalSince1970,
                 isRead: false

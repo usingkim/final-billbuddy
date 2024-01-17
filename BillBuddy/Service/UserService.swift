@@ -4,8 +4,6 @@
 //
 //  Created by 박지현 on 10/6/23.
 //
-
-import Foundation
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
@@ -30,13 +28,13 @@ final class UserService: ObservableObject {
     func getReciverToken(_ token: String) {
         reciverToken = token
         currentUser?.reciverToken = token
-        AuthStore.shared.currentUser?.reciverToken = token
+        AuthService.shared.currentUser?.reciverToken = token
     }
     
     // 현재 유저 패치작업
     @MainActor
     func fetchUser() async throws  {
-        let uid: String = AuthStore.shared.userUid
+        let uid: String = AuthService.shared.userUid
         if uid == "" {
             return
         }
@@ -69,7 +67,7 @@ final class UserService: ObservableObject {
             return
         }
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection("User").document(AuthService.shared.userUid)
             let updatedData = [
                 "email": user.email,
                 "bankName": user.bankName,
@@ -89,7 +87,7 @@ final class UserService: ObservableObject {
             return
         }
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection("User").document(AuthService.shared.userUid)
             let updatedData = [
                 "reciverToken": self.reciverToken
             ]
@@ -105,7 +103,7 @@ final class UserService: ObservableObject {
     func updateUserPremium() async throws {
         guard let user = currentUser else { return }
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection("User").document(AuthService.shared.userUid)
             let updatedData = [
                 "isPremium": user.isPremium,
                 "premiumDueDate": user.premiumDueDate
@@ -134,7 +132,7 @@ final class UserService: ObservableObject {
         currentUser?.userImage = name
         
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection("User").document(AuthService.shared.userUid)
             let updatedData = [
                 "userImage" : name/*user.userImage*/
             ]

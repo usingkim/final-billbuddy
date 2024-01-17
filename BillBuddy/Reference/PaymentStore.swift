@@ -8,8 +8,11 @@
 import Foundation
 import FirebaseFirestore
 
+/// Payment DB 관련 구버전 Store
+/// 참고할 부분이 있을거같아서 남겨둔다.
+
 @MainActor
-final class PaymentServiceOrigin: ObservableObject {
+final class PaymentStore: ObservableObject {
     @Published var payments: [Payment] = []
     @Published var isFetchingList: Bool = false
     public var updateContentDate: Double = 0

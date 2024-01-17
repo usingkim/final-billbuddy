@@ -112,7 +112,7 @@ struct SignInView: View {
         })
         .padding(24)
         .onAppear {
-            self.signInVM.isFirstEntry = AuthStore.shared.isFirstEntry
+            self.signInVM.isFirstEntry = AuthService.shared.isFirstEntry
             signInVM.emailText = ""
             signInVM.passwordText = ""
         }

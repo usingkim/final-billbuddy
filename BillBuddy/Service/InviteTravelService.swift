@@ -58,7 +58,7 @@ final class InviteTravelService: ObservableObject {
     
     private func removeNoti(_ notiId: String?) {
         guard let notiId = notiId else { return }
-        dbRef.collection(StoreCollection.user.path).document(AuthStore.shared.userUid).collection(StoreCollection.notification.path).document(notiId).delete()
+        dbRef.collection(StoreCollection.user.path).document(AuthService.shared.userUid).collection(StoreCollection.notification.path).document(notiId).delete()
     }
     
     private func changeMemberInvitingBoolean(_ push: PushData) {
@@ -123,7 +123,7 @@ final class InviteTravelService: ObservableObject {
                 var members = travel.members
                 var newMember = members[index]
                 
-                newMember.userId = AuthStore.shared.userUid
+                newMember.userId = AuthService.shared.userUid
                 newMember.name = user.name
                 newMember.bankName = user.bankName
                 newMember.bankAccountNum = user.bankAccountNum
@@ -148,7 +148,7 @@ final class InviteTravelService: ObservableObject {
                 
                 do {
                     try dbRef.collection(StoreCollection.user.path)
-                        .document(AuthStore.shared.userUid).collection(StoreCollection.userTravel.path)
+                        .document(AuthService.shared.userUid).collection(StoreCollection.userTravel.path)
                         .addDocument(from: userTravel)
                     
                 } catch {
@@ -172,7 +172,7 @@ final class InviteTravelService: ObservableObject {
     func deleteNotification() {
         guard let notiId = pushData?.querys["notiId"] else { return }
         dbRef.collection(StoreCollection.user.path)
-            .document(AuthStore.shared.userUid)
+            .document(AuthService.shared.userUid)
             .collection(StoreCollection.notification.path)
             .document(notiId)
     }

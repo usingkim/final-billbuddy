@@ -129,7 +129,7 @@ class JoinMemberStore: ObservableObject {
                         searchResult.append(user)
                     }
                 }
-                self.searchResult = searchResult.filter { $0.id != AuthStore.shared.userUid }
+                self.searchResult = searchResult.filter { $0.id != AuthService.shared.userUid }
                 self.isSearching = false
                 self.isfinishsearched = false
             } catch {

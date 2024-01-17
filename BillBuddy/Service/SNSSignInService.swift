@@ -36,7 +36,7 @@ class SNSSignInService {
             tempUid = userId
             
             if tempUser == nil {
-                AuthStore.shared.userUid = tempUid
+                AuthService.shared.userUid = tempUid
                 try await UserService.shared.fetchUser()
                 UserDefaults.standard.setValue(tempUid, forKey: "User")
                 tempUid = ""
@@ -50,7 +50,7 @@ class SNSSignInService {
             if await !checkUserInFirestore(userId: tempUid) {
                 try await FirestoreService.shared.saveDocument(collection: .user, documentId: tempUid, data: tempUser)
             }
-            AuthStore.shared.userUid = tempUid
+            AuthService.shared.userUid = tempUid
             try await UserService.shared.fetchUser()
             UserDefaults.standard.setValue(tempUid, forKey: "User")
             tempUid = ""

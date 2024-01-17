@@ -101,7 +101,7 @@
 		9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */; };
 		9059FFF92B45DA3D002D2F9B /* ViewTypeEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF82B45DA3D002D2F9B /* ViewTypeEnums.swift */; };
 		90A9D12D2B569EAB003D1563 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */; };
-		90A9D12F2B56C3C5003D1563 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A9D12E2B56C3C5003D1563 /* FirebaseService.swift */; };
+		90A9D12F2B56C3C5003D1563 /* FirebaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A9D12E2B56C3C5003D1563 /* FirebaseProtocol.swift */; };
 		90A9D1312B56CF05003D1563 /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A9D1302B56CF05003D1563 /* PaymentService.swift */; };
 		90A9D1332B56DFF2003D1563 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A9D1322B56DFF2003D1563 /* FirestoreService.swift */; };
 		90BA673D2B2ACABE002911DB /* PaymentAlertText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */; };
@@ -120,7 +120,7 @@
 		C4849A712AD3D49900DFFF81 /* DateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4849A702AD3D49900DFFF81 /* DateSheet.swift */; };
 		C493894D2ACD2EE5008115FA /* MoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C493894C2ACD2EE5008115FA /* MoreView.swift */; };
 		C4F433B22ADE41AC00C8D20C /* PaymentManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F433B12ADE41AC00C8D20C /* PaymentManageView.swift */; };
-		C4F87C0C2AC160FE00472876 /* PaymentServiceOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F87C0B2AC160FE00472876 /* PaymentServiceOrigin.swift */; };
+		C4F87C0C2AC160FE00472876 /* PaymentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F87C0B2AC160FE00472876 /* PaymentStore.swift */; };
 		D21BD5EF2AD62E590074FA80 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD5EE2AD62E590074FA80 /* ProfileView.swift */; };
 		D26894172B2AF45400D37357 /* AppleSignInStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894162B2AF45400D37357 /* AppleSignInStore.swift */; };
 		D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894182B2AF67200D37357 /* AppleSignInView.swift */; };
@@ -247,7 +247,7 @@
 		9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManagementViewModel.swift; sourceTree = "<group>"; };
 		9059FFF82B45DA3D002D2F9B /* ViewTypeEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTypeEnums.swift; sourceTree = "<group>"; };
 		90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
-		90A9D12E2B56C3C5003D1563 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		90A9D12E2B56C3C5003D1563 /* FirebaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseProtocol.swift; sourceTree = "<group>"; };
 		90A9D1302B56CF05003D1563 /* PaymentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		90A9D1322B56DFF2003D1563 /* FirestoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAlertText.swift; sourceTree = "<group>"; };
@@ -266,7 +266,7 @@
 		C4849A702AD3D49900DFFF81 /* DateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSheet.swift; sourceTree = "<group>"; };
 		C493894C2ACD2EE5008115FA /* MoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreView.swift; sourceTree = "<group>"; };
 		C4F433B12ADE41AC00C8D20C /* PaymentManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManageView.swift; sourceTree = "<group>"; };
-		C4F87C0B2AC160FE00472876 /* PaymentServiceOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentServiceOrigin.swift; sourceTree = "<group>"; };
+		C4F87C0B2AC160FE00472876 /* PaymentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStore.swift; sourceTree = "<group>"; };
 		D21BD5EE2AD62E590074FA80 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D26894162B2AF45400D37357 /* AppleSignInStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInStore.swift; sourceTree = "<group>"; };
 		D26894182B2AF67200D37357 /* AppleSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInView.swift; sourceTree = "<group>"; };
@@ -450,14 +450,16 @@
 			isa = PBXGroup;
 			children = (
 				2766480C2ABD54F2000F8A10 /* Config */,
+				90CE44ED2B4450C9003DD8FB /* Constant */,
 				2766480A2ABD54BD000F8A10 /* Model */,
+				90D2C1172B583BD8002B6575 /* Protocols */,
 				276648152ABD5586000F8A10 /* Service */,
 				909D4D4A2B456A2300B59A14 /* ViewModels */,
 				2766480B2ABD54DD000F8A10 /* Scene */,
 				2766480F2ABD550D000F8A10 /* Common */,
 				276648122ABD5550000F8A10 /* Extension */,
-				90CE44ED2B4450C9003DD8FB /* Constant */,
 				278BA5F92AC25C4C00761B0B /* Resource */,
+				90D2C1182B583C89002B6575 /* Reference */,
 			);
 			path = BillBuddy;
 			sourceTree = "<group>";
@@ -529,13 +531,10 @@
 		276648152ABD5586000F8A10 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				278DDC192ACC3A3B00B2EC50 /* StoreCollection.swift */,
 				276648132ABD5583000F8A10 /* AuthService.swift */,
 				2785446A2AC41CE0009032CE /* InviteTravelService.swift */,
 				D279D1172ACFE6670087712F /* UserService.swift */,
 				FFCF22582B24500000B79BF9 /* SNSSignInService.swift */,
-				C4F87C0B2AC160FE00472876 /* PaymentServiceOrigin.swift */,
-				90A9D12E2B56C3C5003D1563 /* FirebaseService.swift */,
 				90A9D1302B56CF05003D1563 /* PaymentService.swift */,
 				90A9D1322B56DFF2003D1563 /* FirestoreService.swift */,
 			);
@@ -844,8 +843,25 @@
 				90BA673C2B2ACABE002911DB /* PaymentAlertText.swift */,
 				9059FFF82B45DA3D002D2F9B /* ViewTypeEnums.swift */,
 				90DD22902B52B3B000090ECB /* URLSchemeBase.swift */,
+				278DDC192ACC3A3B00B2EC50 /* StoreCollection.swift */,
 			);
 			path = Constant;
+			sourceTree = "<group>";
+		};
+		90D2C1172B583BD8002B6575 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				90A9D12E2B56C3C5003D1563 /* FirebaseProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		90D2C1182B583C89002B6575 /* Reference */ = {
+			isa = PBXGroup;
+			children = (
+				C4F87C0B2AC160FE00472876 /* PaymentStore.swift */,
+			);
+			path = Reference;
 			sourceTree = "<group>";
 		};
 		C48F7C392ACE8F4300466308 /* Views */ = {
@@ -1112,7 +1128,7 @@
 				2729F3312AD427960089147E /* MemberCell.swift in Sources */,
 				2766483C2ABD8D29000F8A10 /* TravelListView.swift in Sources */,
 				2766484E2ABD8E4D000F8A10 /* MyPageView.swift in Sources */,
-				C4F87C0C2AC160FE00472876 /* PaymentServiceOrigin.swift in Sources */,
+				C4F87C0C2AC160FE00472876 /* PaymentStore.swift in Sources */,
 				FFBA42A42B2C9A9400915D2F /* MessageAlertView.swift in Sources */,
 				278193C42ADBDD900041A6BF /* MoreListCell.swift in Sources */,
 				2663484B2AD8DD6C002CCCF4 /* NotificationListView.swift in Sources */,
@@ -1144,7 +1160,7 @@
 				D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */,
 				FFCF22592B24500000B79BF9 /* SNSSignInService.swift in Sources */,
 				277A93632B354D9A002CB609 /* LicenseStore.swift in Sources */,
-				90A9D12F2B56C3C5003D1563 /* FirebaseService.swift in Sources */,
+				90A9D12F2B56C3C5003D1563 /* FirebaseProtocol.swift in Sources */,
 				C4849A6F2AD3C50E00DFFF81 /* DetailMainView.swift in Sources */,
 				9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */,
 				D2EF00B22AE787D400ABD4F0 /* InquiryView.swift in Sources */,

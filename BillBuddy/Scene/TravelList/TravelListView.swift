@@ -214,7 +214,7 @@ struct TravelListView: View {
                 }
             }
             userTravelStore.fetchFirstInit()
-            if !AuthStore.shared.userUid.isEmpty {
+            if !AuthService.shared.userUid.isEmpty {
                 if notificationStore.didFetched == false {
                     notificationStore.getUserUid()
                 }

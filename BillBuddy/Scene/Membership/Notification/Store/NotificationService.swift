@@ -33,7 +33,7 @@ final class NotificationService: ObservableObject {
     private var dbRef: CollectionReference?
     
     private init() {
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         if !userId.isEmpty {
             self.dbRef = Firestore.firestore().collection(StoreCollection.user.path).document(userId).collection(StoreCollection.notification.path)
             self.didFetched = true
@@ -167,7 +167,7 @@ final class NotificationService: ObservableObject {
     }
     
     func getUserUid() {
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         self.dbRef = Firestore.firestore().collection(StoreCollection.user.path).document(userId).collection(StoreCollection.notification.path)
         self.didFetched = true
         self.fetchNotification()

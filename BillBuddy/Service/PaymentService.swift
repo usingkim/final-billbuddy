@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import Combine
 
-final class PaymentService: ObservableObject, FirebaseService {
+final class PaymentService: ObservableObject, FirebaseProtocol {
     
     var dbRef: CollectionReference
     typealias DBData = Payment
