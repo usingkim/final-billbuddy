@@ -10,13 +10,16 @@ import Combine
 
 @MainActor
 final class DetailMainViewModel: ObservableObject {
+    
+    var paymentService: PaymentService
+    
     init(travel: TravelCalculation) {
         paymentService = PaymentService(travel: travel)
     }
     
-    var paymentService: PaymentService
     private var cancellables: Set<AnyCancellable> = []
     
+    @Published var payments: [Payment] = []
     @Published var filteredPayments: [Payment] = []
     
     @Published var selectMenu: String = "내역"
@@ -42,68 +45,87 @@ final class DetailMainViewModel: ObservableObject {
                     print("Error fetching data: \(error.localizedDescription)")
                 }
             } receiveValue: { payments in
-                self.filteredPayments = payments
+                self.payments = payments
+                self.resetFilter()
             }
             .store(in: &cancellables)
     }
     
-    func fetchPaymentAndSettledAccount(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
-        Task {
-            filteredPayments = await paymentStore.fetchAll()
-            settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
-        }
+    func deleteData(deleteData: Payment) {
+        paymentService.deleteData(deleteData: deleteData)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Error fetching data: \(error.localizedDescription)")
+                }
+            } receiveValue: { _ in
+                if let idx = self.payments.firstIndex(where: { find in
+                    find.id == deleteData.id
+                }) {
+                    self.payments.remove(at: idx)
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    func fetchPaymentAndSettledAccount(travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
+        
+        self.fetchAll()
+        resetFilter()
+        settlementExpensesStore.setSettlementExpenses(payments: self.payments, members: travelDetailStore.travel.members)
         selectedDate = 0
     }
     
-    func deleteSelectedPayments(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
-        Task {
-            if let deleted = await paymentStore.deletePayments(payment: forDeletePayments) {
-                filteredPayments = deleted
-            }
-            settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
-            isEditing.toggle()
+    func deleteSelectedPayments(travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
+        for payment in forDeletePayments {
+            deleteData(deleteData: payment)
         }
+        settlementExpensesStore.setSettlementExpenses(payments: self.payments, members: travelDetailStore.travel.members)
+        isEditing.toggle()
     }
     
-    func whenChangeSelectedDate(paymentStore: PaymentServiceOrigin) {
+    func whenChangeSelectedDate() {
         if selectedDate == 0 {
-            filteredPayments = paymentStore.resetFilter()
+            resetFilter()
         }
         else {
-            filteredPayments = paymentStore.filterDate(date: selectedDate)
+            filterDate(date: selectedDate)
         }
     }
     
-    func whenOpenView(paymentStore: PaymentServiceOrigin) {
+    func whenOpenView() {
         if selectedDate == 0 {
-            filteredPayments = paymentStore.resetFilter()
+            resetFilter()
         }
         else {
-            filteredPayments = paymentStore.filterDate(date: selectedDate)
+            filterDate(date: selectedDate)
         }
     }
     
-    func whenChangeSelectedCategory(paymentStore: PaymentServiceOrigin) {
+    func whenChangeSelectedCategory() {
         
         // 날짜 전체일때
         if selectedDate == 0 {
             // 선택된 카테고리가 있을때
             if let category = selectedCategory {
-                filteredPayments = paymentStore.filterCategory(category: category)
+                filterCategory(category: category)
             }
             // 카테고리 전체
             else {
-                filteredPayments = paymentStore.resetFilter()
+                resetFilter()
                 selectedCategory = nil
             }
         }
         else {
             if let category = selectedCategory{
-                filteredPayments = paymentStore.filterDateCategory(date: selectedDate, category: category)
+                filterDateCategory(date: selectedDate, category: category)
             }
             else {
                 selectedCategory = nil
-                filteredPayments = paymentStore.filterDate(date: selectedDate)
+                filterDate(date: selectedDate)
             }
         }
     }
@@ -112,13 +134,30 @@ final class DetailMainViewModel: ObservableObject {
         selectedCategory = nil
     }
     
+    private func filterDate(date: Double) {
+        filteredPayments = payments.filter({ (payment: Payment) in
+            print(payment.content, payment.paymentDate, date.todayRange(), date.todayRange() ~= payment.paymentDate)
+            return date.todayRange() ~= payment.paymentDate
+        })
+    }
+    
+    private func filterDateCategory(date: Double, category: Payment.PaymentType){
+        filteredPayments =  payments.filter({ (payment: Payment) in
+            return date.todayRange() ~= payment.paymentDate && payment.type == category
+        })
+    }
+    
+    private func filterCategory(category: Payment.PaymentType) {
+        filteredPayments = payments.filter({ (payment: Payment) in
+            return payment.type == category
+        })
+    }
+    
     func refresh(travelDetailStore: TravelDetailStore, paymentStore: PaymentServiceOrigin) {
 //        if travelDetailStore.isChangedTravel {
             selectedCategory = nil
             selectedDate = 0
-        Task {
-            await filteredPayments = paymentStore.fetchAll()
-        }
+        self.fetchAll()
 //        }
     }
     
@@ -131,13 +170,17 @@ final class DetailMainViewModel: ObservableObject {
     }
     
     func deleteAPayment(paymentStore: PaymentServiceOrigin, travelDetailStore: TravelDetailStore, settlementExpensesStore: SettlementExpensesStore) {
-        Task {
-            if let payment = selectedPayment {
-                if let deleted = await paymentStore.deletePayment(payment: payment) {
-                    filteredPayments = deleted
-                }
-                settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelDetailStore.travel.members)
+        if let payment = selectedPayment {
+            deleteData(deleteData: payment)
+            Task {
+                settlementExpensesStore.setSettlementExpenses(payments: self.payments, members: travelDetailStore.travel.members)
             }
         }
+    }
+    
+    func resetFilter() {
+        selectedDate = 0
+        selectedCategory = nil
+        filteredPayments = payments
     }
 }

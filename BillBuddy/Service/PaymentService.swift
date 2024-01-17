@@ -75,6 +75,22 @@ final class PaymentService: ObservableObject, FirebaseService {
         .eraseToAnyPublisher()
     }
     
+    func updateDate(updateData: Payment) -> AnyPublisher<DBData, Error> {
+        return Future { promise in
+            if let id = updateData.id {
+                let newUpdateDate = Date.now.timeIntervalSince1970
+                self.dbRef.document(id).setData(["updateContentDate": newUpdateDate], merge: true) { error in
+                    if let error = error {
+                        promise(.failure(error))
+                    } else {
+                        promise(.success(updateData))
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
     func deleteData(deleteData: Payment) -> AnyPublisher<Void, Error> {
         return Future { promise in
             if let id = deleteData.id {
@@ -83,24 +99,6 @@ final class PaymentService: ObservableObject, FirebaseService {
                         promise(.failure(error))
                     } else {
                         promise(.success(()))
-                    }
-                }
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    func deleteDatas(deleteDatas: [Payment]) -> AnyPublisher<Void, Error> {
-        return Future { promise in
-            
-            for data in deleteDatas {
-                if let id = data.id {
-                    self.dbRef.document(id).delete { error in
-                        if let error = error {
-                            promise(.failure(error))
-                        } else {
-                            promise(.success(()))
-                        }
                     }
                 }
             }

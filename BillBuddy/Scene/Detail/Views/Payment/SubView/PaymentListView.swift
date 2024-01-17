@@ -123,6 +123,5 @@ struct PaymentListView: View {
             }), secondaryButton: .cancel(Text("아니오")))
         }
         .listRowInsets(nil)
-        
     }
 }

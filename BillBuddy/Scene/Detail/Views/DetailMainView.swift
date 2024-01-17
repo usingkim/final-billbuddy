@@ -52,7 +52,7 @@ struct DetailMainView: View {
                     {
                         
                         Button {
-                            detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                            detailMainVM.fetchPaymentAndSettledAccount(travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
                             travelDetailStore.isChangedTravel = false
                         } label: {
                             HStack(spacing: 8) {
@@ -92,19 +92,15 @@ struct DetailMainView: View {
         
         .onAppear {
             tabBarVisibilityStore.hideTabBar()
+            // FIXME: 바로 정산 금액이 업데이트 되지 않음
             if detailMainVM.selectedDate == 0 {
-                Task {
-                    if travelDetailStore.isFirstFetch {
-                        travelDetailStore.checkAndResaveToken()
-//                        detailMainVM.fetchPaymentAndSettledAccount(paymentStore: paymentService, travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
-                        travelDetailStore.isFirstFetch = false
-                        
-                    }
+                if travelDetailStore.isFirstFetch {
+                    travelDetailStore.checkAndResaveToken()
+                    detailMainVM.fetchPaymentAndSettledAccount(travelDetailStore: travelDetailStore, settlementExpensesStore: settlementExpensesStore)
+                    travelDetailStore.isFirstFetch = false
                 }
                 travelDetailStore.listenTravelDate()
             }
-            // MARK: detailMainVM.filtered로 값이 제대로 들어오지만 화면에 반영이 안된다
-            detailMainVM.fetchAll()
         }
         .onDisappear {
             travelDetailStore.stoplistening()

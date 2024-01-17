@@ -45,12 +45,12 @@ struct MapMainView: View {
             }
         }
         .onChange(of: detailMainVM.selectedDate, perform: { _ in
-            detailMainVM.whenChangeSelectedDate(paymentStore: paymentStore)
+            detailMainVM.whenChangeSelectedDate()
             
             locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
         })
         .onAppear {
-            detailMainVM.whenOpenView(paymentStore: paymentStore)
+            detailMainVM.whenOpenView()
             locationManager.setAnnotations(filteredPayments: detailMainVM.filteredPayments)
         }
     }

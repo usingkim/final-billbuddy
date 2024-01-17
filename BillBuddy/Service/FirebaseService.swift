@@ -18,6 +18,5 @@ protocol FirebaseService {
     func addData(newData: DBData) -> AnyPublisher<DBData, Error>
     func editData(editData: DBData) -> AnyPublisher<DBData, Error>
     func deleteData(deleteData: DBData) -> AnyPublisher<Void, Error>
-    func deleteDatas(deleteDatas: [DBData]) -> AnyPublisher<Void, Error>
     
 }
