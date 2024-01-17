@@ -84,7 +84,4 @@ final class UserTravelService: ObservableObject, FirebaseProtocol {
         }
         .eraseToAnyPublisher()
     }
-    
-    
-    
 }

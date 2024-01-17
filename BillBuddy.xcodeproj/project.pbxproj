@@ -539,10 +539,8 @@
 				2785446A2AC41CE0009032CE /* InviteTravelService.swift */,
 				D279D1172ACFE6670087712F /* UserService.swift */,
 				FFCF22582B24500000B79BF9 /* SNSSignInService.swift */,
-				90A9D1302B56CF05003D1563 /* PaymentService.swift */,
 				90A9D1322B56DFF2003D1563 /* FirestoreService.swift */,
-				90D2C1192B583E19002B6575 /* UserTravelService.swift */,
-				90D2C11B2B5840DC002B6575 /* TravelCalculationService.swift */,
+				90D2C11D2B5849B3002B6575 /* DB */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -868,6 +866,16 @@
 				C4F87C0B2AC160FE00472876 /* PaymentStore.swift */,
 			);
 			path = Reference;
+			sourceTree = "<group>";
+		};
+		90D2C11D2B5849B3002B6575 /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				90A9D1302B56CF05003D1563 /* PaymentService.swift */,
+				90D2C1192B583E19002B6575 /* UserTravelService.swift */,
+				90D2C11B2B5840DC002B6575 /* TravelCalculationService.swift */,
+			);
+			path = DB;
 			sourceTree = "<group>";
 		};
 		C48F7C392ACE8F4300466308 /* Views */ = {
