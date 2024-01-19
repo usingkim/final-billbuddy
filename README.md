@@ -6,11 +6,12 @@
 ## 프로젝트 소개
 > 깔끔한 정산 시스템과 편리한 채팅 기능을 통해 친구와의 여행을 더 즐겁게 만들어 주는 iOS 앱 입니다.
 - 개발 기간
-  - 기획 : 2023.9.19 ~ 2023.9.25
-  - 개발 : 2023.9.26 ~ 2023.10.24
+  - 기획 : 2023.9.19 ~ 2023.9.25 (돈독)
+  - 개발 : 2023.9.26 ~ 2023.12.22 (돈독)
+  - 리팩토링 : 2023.12.27 ~ (개인 김유진)
 - 기술 스택
   - Swift 5, iOS 16.0, XCode 15.0
-  - 라이브러리 : Firebase, TossPayments, Google AbMob
+  - 라이브러리 : Firebase
   - 협업 도구 : Github, Figma, Notion, Discord
   - 다크모드 미지원, 가로모드 미지원 
 <br>
@@ -42,11 +43,11 @@
 <br>
 
 ## Architecture
-MV
+MV -> MVVM Structure로 리팩토링 진행중
 <br>
 <br>
 
-## Folder Structure -> MVVM Structure로 수정 진행중
+## Folder Structure
 ```
 📦BillBuddy
  ┣ 🗂Common
