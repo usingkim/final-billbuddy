@@ -94,9 +94,8 @@
 		90039B8A2B5AEEA10061A6F8 /* TravelListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */; };
 		90039B8C2B5B0F740061A6F8 /* DateManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */; };
 		90039B8E2B5B185F0061A6F8 /* DateManagementModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */; };
-		90039B912B5B1F290061A6F8 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8F2B5B1F290061A6F8 /* NotificationCell.swift */; };
-		90039B922B5B1F290061A6F8 /* NotificationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B902B5B1F290061A6F8 /* NotificationListView.swift */; };
 		90039B942B5B20FA0061A6F8 /* PakageLicense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B932B5B20FA0061A6F8 /* PakageLicense.swift */; };
+		90039B982B5B22C60061A6F8 /* Notification in Resources */ = {isa = PBXBuildFile; fileRef = 90039B972B5B22C60061A6F8 /* Notification */; };
 		900B97CF2B31DFD300A89464 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */; };
 		9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */; };
 		9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */; };
@@ -242,9 +241,8 @@
 		90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelListViewModel.swift; sourceTree = "<group>"; };
 		90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementViewModel.swift; sourceTree = "<group>"; };
 		90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementModifier.swift; sourceTree = "<group>"; };
-		90039B8F2B5B1F290061A6F8 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationCell.swift; path = BillBuddy/Scene/Notification/NotificationCell.swift; sourceTree = SOURCE_ROOT; };
-		90039B902B5B1F290061A6F8 /* NotificationListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationListView.swift; path = BillBuddy/Scene/Notification/NotificationListView.swift; sourceTree = SOURCE_ROOT; };
 		90039B932B5B20FA0061A6F8 /* PakageLicense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakageLicense.swift; sourceTree = "<group>"; };
+		90039B972B5B22C60061A6F8 /* Notification */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notification; path = BillBuddy/Scene/Notification; sourceTree = SOURCE_ROOT; };
 		900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTravelViewModel.swift; sourceTree = "<group>"; };
 		9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManagementViewModel.swift; sourceTree = "<group>"; };
@@ -463,7 +461,7 @@
 				2766484C2ABD8E37000F8A10 /* Detail */,
 				2766483D2ABD8D30000F8A10 /* TravelList */,
 				276648382ABD8D02000F8A10 /* Sign */,
-				276648462ABD8DD7000F8A10 /* Notification */,
+				90039B972B5B22C60061A6F8 /* Notification */,
 				276648492ABD8E22000F8A10 /* Chatting */,
 				2766484F2ABD8E51000F8A10 /* MyPage */,
 				27B7AC3B2B324F7900D15972 /* Onboarding */,
@@ -581,16 +579,6 @@
 				2717D0F42ACD77C90002D620 /* Views */,
 			);
 			path = Membership;
-			sourceTree = "<group>";
-		};
-		276648462ABD8DD7000F8A10 /* Notification */ = {
-			isa = PBXGroup;
-			children = (
-				90039B8F2B5B1F290061A6F8 /* NotificationCell.swift */,
-				90039B902B5B1F290061A6F8 /* NotificationListView.swift */,
-			);
-			name = Notification;
-			path = Membership/Notification;
 			sourceTree = "<group>";
 		};
 		276648492ABD8E22000F8A10 /* Chatting */ = {
@@ -991,6 +979,7 @@
 				278BA60B2AC25EA800761B0B /* Pretendard-Thin.otf in Resources */,
 				278BA6092AC25EA800761B0B /* Pretendard-ExtraBold.otf in Resources */,
 				278BA6052AC25EA800761B0B /* Pretendard-Regular.otf in Resources */,
+				90039B982B5B22C60061A6F8 /* Notification in Resources */,
 				278BA6062AC25EA800761B0B /* Pretendard-Black.otf in Resources */,
 				278BA6082AC25EA800761B0B /* Pretendard-Light.otf in Resources */,
 			);
@@ -1035,7 +1024,6 @@
 				FF635D272AD81EEF002C0B67 /* TossPaymentsView.swift in Sources */,
 				C47F6C772AD51878006B77D6 /* PaymentMainView.swift in Sources */,
 				27933F702AD3402300E6A545 /* CategoryLabel.swift in Sources */,
-				90039B922B5B1F290061A6F8 /* NotificationListView.swift in Sources */,
 				C478B1942AC6C5BD005EE427 /* Double+Extension.swift in Sources */,
 				90039B8C2B5B0F740061A6F8 /* DateManagementViewModel.swift in Sources */,
 				C45E24EE2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift in Sources */,
@@ -1064,7 +1052,6 @@
 				273FD6A92AC1A407007BF7D4 /* Font+Extension.swift in Sources */,
 				D2EF00B42AE78DBF00ABD4F0 /* LicenseView.swift in Sources */,
 				FF635D2B2AD8228C002C0B67 /* MembershipView.swift in Sources */,
-				90039B912B5B1F290061A6F8 /* NotificationCell.swift in Sources */,
 				D2C95AE62AD7A16D00DFCB03 /* MyPageDetailView.swift in Sources */,
 				C478B1922AC6BAE8005EE427 /* FillInPaymentInfoView.swift in Sources */,
 				D279D1182ACFE6670087712F /* UserService.swift in Sources */,
