@@ -10,61 +10,49 @@ import Firebase
 import FirebaseFirestore
 
 struct DateManagementModifier: ViewModifier {
-    @Binding var isPresented: Bool
-    @State private var isPresentedAlert: Bool = false
-
-    @Binding var startDate: Double
-    @Binding var endDate: Double
-    let travelId: String
-    let paymentDates: [Date]
-    var saveAction: (Date, Date) -> Void
+    @StateObject var dateManagementVM: DateManagementViewModel
+    
+    init(dateManagementVM: DateManagementViewModel) {
+        _dateManagementVM = StateObject(wrappedValue: dateManagementVM)
+    }
 
     func body(content: Content) -> some View {
         ZStack(alignment: .bottom) {
             content
             
-            if isPresented {
+            if dateManagementVM.isPresentedDateSheet {
                 Rectangle()
                     .fill(.black.opacity(0.7))
                     .ignoresSafeArea()
                     .onTapGesture {
-                        self.isPresented = false
+                        dateManagementVM.isPresentedDateSheet = false
                     }
                 
                 DateManagementCalendar(
-                    isPresentedAlert: $isPresentedAlert,
-                    isShowingCalendarView: $isPresented,
-                    startDate: $startDate,
-                    endDate: $endDate,
-                    travelId: travelId,
-                    paymentDates: paymentDates,
-                    saveAction: saveAction
+                    dateManagementVM: dateManagementVM
                 )
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .modifier(
-            CheckDateModifier(isPresented: $isPresentedAlert)
+            CheckDateModifier(isPresented: $dateManagementVM.isPresentedAlert)
         )
         .animation(
-            isPresented ? .spring(response: 0.25) : .none,
-            value: isPresented
+            dateManagementVM.isPresentedDateSheet ? .spring(response: 0.25) : .none,
+            value: dateManagementVM.isPresentedDateSheet
         )
         
     }
 }
 
 struct DateManagementCalendar: View {
-    @StateObject private var calendarStore = EditDateCalenderStore()
-    @Binding var isPresentedAlert: Bool
-    @Binding var isShowingCalendarView: Bool
     
-    @Binding var startDate: Double
-    @Binding var endDate: Double
-    let travelId: String
-    let paymentDates: [Date]
-    var saveAction: (Date, Date) -> Void
-
+    @ObservedObject var dateManagementVM: DateManagementViewModel
+    @StateObject private var calendarStore = EditDateCalenderStore()
+    
+    init(dateManagementVM: DateManagementViewModel) {
+        self.dateManagementVM = dateManagementVM
+    }
     
     var body: some View {
         VStack(spacing: 8) {
@@ -110,42 +98,42 @@ struct DateManagementCalendar: View {
             VStack(spacing: 6) {
               VStack(spacing: 6) {
                 ForEach(calendarStore.weeks, id: \.self) { week in
-                  ZStack {
-                    HStack(spacing: 0) {
-                      ForEach(week, id: \.self) { day in
-                        let isCurrentMonth = calendarStore.calendar.isDate(day, equalTo: calendarStore.date, toGranularity: .month)
-                            ZStack {
-                              fillRange(day: day, week: week, index: week.firstIndex(of: day)!)
-                                Button(action: {
-                                  calendarStore.selectDay(day)
-                                }) {
-                                  ZStack {
-                                    Text("\(calendarStore.calendar.component(.day, from: day))")
-                                      .foregroundColor(isCurrentMonth ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.black) : Color.gray500)
-                                      .foregroundColor(calendarStore.isDateSelected(day: day) ? Color.white : Color.black)
-                                                
-                                        Circle()
-                                          .frame(width: 4, height: 4)
-                                          .foregroundColor(calendarStore.isToday(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.myPrimary) : Color.clear)
-                                          .offset(y: 11.5)
-                                  }
-                                  .frame(width: 30, height: 30)
-                                  .clipShape(Circle())
+                    ZStack {
+                        HStack(spacing: 0) {
+                            ForEach(week, id: \.self) { day in
+                                let isCurrentMonth = calendarStore.calendar.isDate(day, equalTo: calendarStore.date, toGranularity: .month)
+                                ZStack {
+                                    fillRange(day: day, week: week, index: week.firstIndex(of: day)!)
+                                    Button(action: {
+                                        calendarStore.selectDay(day)
+                                    }) {
+                                        ZStack {
+                                            Text("\(calendarStore.calendar.component(.day, from: day))")
+                                                .foregroundColor(isCurrentMonth ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.black) : Color.gray500)
+                                                .foregroundColor(calendarStore.isDateSelected(day: day) ? Color.white : Color.black)
+                                            
+                                            Circle()
+                                                .frame(width: 4, height: 4)
+                                                .foregroundColor(calendarStore.isToday(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.myPrimary) : Color.clear)
+                                                .offset(y: 11.5)
+                                        }
+                                        .frame(width: 30, height: 30)
+                                        .clipShape(Circle())
+                                    }
+                                    .background(calendarStore.isDateInRange(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.myPrimary.cornerRadius(30) : Color.clear.cornerRadius(30)) : Color.clear.cornerRadius(30))
                                 }
-                                .background(calendarStore.isDateInRange(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.myPrimary.cornerRadius(30) : Color.clear.cornerRadius(30)) : Color.clear.cornerRadius(30))
+                                .frame(height: 36)
+                                .frame(maxWidth: .infinity)
                             }
-                            .frame(height: 36)
-                            .frame(maxWidth: .infinity)
-                      }
-                      .font(.caption02)
+                            .font(.caption02)
+                        }
                     }
-                  }
                 }
               }
             }
             Spacer()
             Button(action: {
-                checkPaymentsDate()
+                dateManagementVM.checkPaymentsDate(calendarStore: calendarStore)
             }) {
                 Text(calendarStore.seletedState.labelText)
                     .foregroundColor(calendarStore.isSelectedAll ? Color.white : Color.gray600)
@@ -172,7 +160,7 @@ struct DateManagementCalendar: View {
             )
         )
         .onAppear {
-            calendarStore.setDate(startDate.toDate(), endDate.toDate())
+            calendarStore.setDate(dateManagementVM.getStartDate(), dateManagementVM.getEndDate())
         }
     } //MARK: BODY
     
@@ -233,38 +221,6 @@ struct DateManagementCalendar: View {
         }
     }
     
-    func checkPaymentsDate() {
-        switch calendarStore.isDatesInRange(days: paymentDates) {
-        case true:
-            saveSelectedDate()
-            isShowingCalendarView = false
-        case false:
-            isPresentedAlert = true
-        }
-        
-    }
-    
-    func saveSelectedDate() {
-        guard let firstDate = calendarStore.firstDate,
-              let secondDate = calendarStore.secondDate else { return }
-        
-        Task {
-            do {
-                try await Firestore.firestore().collection(StoreCollection.travel.path).document(travelId)
-                    .setData([
-                        "startDate" : firstDate.timeIntervalSince1970,
-                        "endDate" : secondDate.timeIntervalSince1970
-                    ], merge: true)
-                saveAction(firstDate, secondDate)
-                DispatchQueue.main.async {
-                    self.startDate = firstDate.timeIntervalSince1970
-                    self.endDate = secondDate.timeIntervalSince1970
-                }
-            } catch {
-                print("false save date - \(error)")
-            }
-        }
-    }
 }
 
 

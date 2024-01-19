@@ -32,7 +32,7 @@ final class TravelCalculationService: ObservableObject, FirebaseProtocol {
     
     func fetchAll() -> AnyPublisher<[TravelCalculation], Error> {
         return Future { promise in
-            var travels: [TravelCalculation] = []
+            let travels: [TravelCalculation] = []
             
             promise(.success(travels))
         }

@@ -91,11 +91,7 @@ struct TravelListView: View {
                                                 }
                                             }
                                             .navigationDestination(isPresented: $travelListVM.isPresentedDateView) {
-                                                DateManagementView(
-                                                    travel: travel,
-                                                    paymentDates: [],
-                                                    entryViewtype: .list
-                                                )
+                                                DateManagementView(entryViewType: .list, travel: travel, paymentDates: [])
                                                 .environmentObject(travelDetailStore)
                                             }
                                             .navigationDestination(isPresented: $travelListVM.isPresentedMemeberView) {

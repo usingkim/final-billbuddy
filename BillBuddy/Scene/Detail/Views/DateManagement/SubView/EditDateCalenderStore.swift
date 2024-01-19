@@ -6,40 +6,24 @@
 //
 import SwiftUI
 
-enum SeletedState {
-    case none
-    case first
-    case second
-    
-    var labelText: String {
-        switch self {
-        case .none:
-            return "시작일을 선택해주세요"
-        case .first:
-            return "종료일을 선택해주세요"
-        case .second:
-            return "여행 일정 수정 완료"
-        }
-    }
-}
-
 final class EditDateCalenderStore: ObservableObject {
+    
     
     var calendar = Calendar.current
     
     @Published var date: Date = Date()
     @Published var firstDate: Date?
     @Published var secondDate: Date?
-    @Published var seletedState: SeletedState = .none
+    @Published var seletedState: CalendarViewAlertText = .noStartDate
     
     var isSelectedAll: Bool {
-        seletedState == .second
+        seletedState == .complete
     }
     
     func setDate(_ startDate: Date,_ endDate: Date) {
         selectDay(startDate)
         selectDay(endDate)
-        seletedState = .none
+        seletedState = .noStartDate
     }
     
     var weeks: [[Date]] {
@@ -75,12 +59,12 @@ final class EditDateCalenderStore: ObservableObject {
     // 날짜 선택
     func selectDay(_ day: Date) {
         switch seletedState {
-        case .none:
+        case .noStartDate:
             secondDate = nil
             firstDate = day
             
-            seletedState = .first
-        case .first:
+            seletedState = .noEndDate
+        case .noEndDate:
             if let first = firstDate {
                 if first > day {
                     secondDate = first
@@ -89,11 +73,11 @@ final class EditDateCalenderStore: ObservableObject {
                     secondDate = day
                 }
             }
-            seletedState = .second
-        case .second:
+            seletedState = .complete
+        case .complete:
             firstDate = day
             secondDate = nil
-            seletedState = .first
+            seletedState = .noEndDate
         }
 
     }
@@ -179,5 +163,22 @@ final class EditDateCalenderStore: ObservableObject {
     /// 다음 달로 이동
     func selectForwardMonth() {
         date = calendar.date(byAdding: .month, value: 1, to: date) ?? Date()
+    }
+    
+    enum CalendarViewAlertText {
+        case noStartDate
+        case noEndDate
+        case complete
+        
+        var labelText: String {
+            switch self {
+            case .noStartDate:
+                return "시작일을 선택해주세요"
+            case .noEndDate:
+                return "종료일을 선택해주세요"
+            case .complete:
+                return "여행 일정 수정 완료"
+            }
+        }
     }
 }

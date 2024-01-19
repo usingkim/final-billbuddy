@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseFirestore
 
 struct DateManagementView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     
-    @State private var isPresentedSheet: Bool = false
-    @State private var isPresentedSettledAlert: Bool = false
-    @State var travel: TravelCalculation
-    @State var paymentDates: [Date]
-    let entryViewtype: EntryViewType
+    @StateObject private var dateManagementVM: DateManagementViewModel
+    
+    init(entryViewType: EntryViewType, travel: TravelCalculation, paymentDates: [Date]) {
+        _dateManagementVM = StateObject(wrappedValue: 
+                                            DateManagementViewModel(
+                                                entryViewType: entryViewType,
+                                                travel: travel,
+                                                paymentDates: paymentDates
+                                            ))
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -35,11 +38,11 @@ struct DateManagementView: View {
                         Text("날짜")
                             .font(.body02)
                         Spacer()
-                        Button("\(travel.startDate.toFormattedMonthAndDate()) - \(travel.endDate.toFormattedMonthAndDate())") {
-                            if travel.isPaymentSettled {
-                                isPresentedSettledAlert = true
+                        Button(dateManagementVM.getDatesString()) {
+                            if dateManagementVM.travel.isPaymentSettled {
+                                dateManagementVM.isPresentedSettledAlert = true
                             } else {
-                                isPresentedSheet = true
+                                dateManagementVM.isPresentedDateSheet = true
                             }
                         }
                         .frame(width: 100, height: 30)
@@ -55,26 +58,16 @@ struct DateManagementView: View {
                 .padding(.top, 16)
             
         }
-        .alert("정산된 여행입니다.", isPresented: $isPresentedSettledAlert) {
+        .alert("정산된 여행입니다.", isPresented: $dateManagementVM.isPresentedSettledAlert) {
             Button("확인") {
-                isPresentedSettledAlert = false
+                dateManagementVM.isPresentedSettledAlert = false
             }
         }
         .onAppear {
-            getPaymentDates()
+            dateManagementVM.getPaymentDates()
         }
         .modifier(
-            DateManagementModifier(
-                isPresented: $isPresentedSheet,
-                startDate: $travel.startDate,
-                endDate: $travel.endDate,
-                travelId: travel.id,
-                paymentDates: paymentDates,
-                saveAction: { startDate, endDate in
-                    userTravelStore.setTravelDate(travelId: travel.id, startDate: startDate, endDate: endDate)
-                    travelDetailStore.setTravelDates(startDate, endDate)
-                }
-            )
+            DateManagementModifier(dateManagementVM: dateManagementVM)
         )
         .ignoresSafeArea(.all, edges: .bottom)
         .navigationBarBackButtonHidden()
@@ -96,21 +89,5 @@ struct DateManagementView: View {
         }
     }
     
-    func getPaymentDates()  {
-        if entryViewtype == .list {
-            Task {
-                do {
-                    let snapshot = try await Firestore.firestore()
-                        .collection(StoreCollection.travel.path).document(travel.id)
-                        .collection(StoreCollection.payment.path).getDocuments()
-                    
-                    let result = try snapshot.documents.map { try $0.data(as: Payment.self) }.map { $0.paymentDate.toDate() }
-                    self.paymentDates = result
-                    
-                } catch {
-                    print("false fetch payments - \(error)")
-                }
-            }
-        }
-    }
+    
 }

@@ -75,9 +75,9 @@ struct MoreView: View {
                                 ChattingRoomView(travel: travel)
                             case .editDate:
                                 DateManagementView(
+                                    entryViewType: .more,
                                     travel: travelDetailStore.travel,
-                                    paymentDates: paymentDates,
-                                    entryViewtype: .more
+                                    paymentDates: paymentDates
                                 )
                                 .environmentObject(travelDetailStore)
                             case .mamberManagement:
