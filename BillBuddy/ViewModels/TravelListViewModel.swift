@@ -11,10 +11,10 @@ import Combine
 final class TravelListViewModel: ObservableObject {
     private var userTravelService: UserTravelService = UserTravelService()
     
-    @Published var travels: [TravelCalculation] = []
-    @Published var filteredTravels: [TravelCalculation] = []
+    @Published var travels: [Travel] = []
+    @Published var filteredTravels: [Travel] = []
     
-    @Published var selectedTravel: TravelCalculation?
+    @Published var selectedTravel: Travel?
     @Published var selectedFilter: TravelFilter = .paymentInProgress
     
     @Published var isShowingEditSheet = false
@@ -27,7 +27,7 @@ final class TravelListViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    func fetchMyTravel(completion: @escaping ([UserTravel]) -> Void) {
+    func fetchMyTravel(completion: @escaping ([MyTravel]) -> Void) {
         self.isFetchingList = true
         userTravelService.fetchAll()
             .receive(on: DispatchQueue.main)
@@ -46,7 +46,7 @@ final class TravelListViewModel: ObservableObject {
         self.isFetchingList = false
     }
     
-    func fetchAll(completion: @escaping ([TravelCalculation]) -> Void) {
+    func fetchAll(completion: @escaping ([Travel]) -> Void) {
         let travelService = TravelCalculationService()
         
         fetchMyTravel { myTravels in

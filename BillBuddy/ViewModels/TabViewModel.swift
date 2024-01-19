@@ -27,7 +27,7 @@ final class TabViewModel: ObservableObject {
         return isPresentedChat || isPresentedDetail
     }
     
-    var seletedTravel: TravelCalculation?
+    var seletedTravel: Travel?
     
     private func switchTab() {
         DispatchQueue.main.async {
@@ -38,7 +38,7 @@ final class TabViewModel: ObservableObject {
     }
     
     @MainActor
-    func pushView(type: NotiType, travel: TravelCalculation? = nil) {
+    func pushView(type: NotiType, travel: Travel? = nil) {
         if let travel {
             seletedTravel = travel
         }

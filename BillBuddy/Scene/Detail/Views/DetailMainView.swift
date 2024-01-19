@@ -21,7 +21,7 @@ struct DetailMainView: View {
     
     let menus: [String] = ["내역", "지도"]
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
         _detailMainVM = StateObject(wrappedValue: DetailMainViewModel(travel: travel))
     }

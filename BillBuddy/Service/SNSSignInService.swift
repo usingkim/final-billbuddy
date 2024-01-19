@@ -11,7 +11,7 @@ import FirebaseFirestore
 class SNSSignInService {
     @Published var tempUser: User?
     var tempUid: String = ""
-    private let db = Firestore.firestore().collection("User")
+    private let db = Firestore.firestore().collection(StoreCollection.user.path)
     
     static let shared = SNSSignInService()
     
@@ -38,7 +38,7 @@ class SNSSignInService {
             if tempUser == nil {
                 AuthService.shared.userUid = tempUid
                 try await UserService.shared.fetchUser()
-                UserDefaults.standard.setValue(tempUid, forKey: "User")
+                UserDefaults.standard.setValue(tempUid, forKey: StoreCollection.user.path)
                 tempUid = ""
                 tempUser = nil
             }
@@ -52,7 +52,7 @@ class SNSSignInService {
             }
             AuthService.shared.userUid = tempUid
             try await UserService.shared.fetchUser()
-            UserDefaults.standard.setValue(tempUid, forKey: "User")
+            UserDefaults.standard.setValue(tempUid, forKey: StoreCollection.user.path)
             tempUid = ""
             tempUser = nil
         }

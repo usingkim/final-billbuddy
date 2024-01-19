@@ -9,17 +9,17 @@ import Combine
 import FirebaseFirestore
 
 final class TravelCalculationService: ObservableObject, FirebaseProtocol {
-    typealias DBData = TravelCalculation
+    typealias DBData = Travel
     var dbRef: CollectionReference = Firestore.firestore().collection(StoreCollection.travel.path)
     
-    func fetchTravel(travel: UserTravel) -> AnyPublisher<TravelCalculation, Error> {
+    func fetchTravel(travel: MyTravel) -> AnyPublisher<Travel, Error> {
         return Future { promise in
             self.dbRef.document(travel.travelId).getDocument { doc, error in
                 if let error = error {
                     promise(.failure(error))
                 } else {
                     do {
-                        let travel = try doc?.data(as: TravelCalculation.self)
+                        let travel = try doc?.data(as: Travel.self)
                         promise(.success(travel!))
                     } catch {
                         promise(.failure(error))
@@ -30,16 +30,16 @@ final class TravelCalculationService: ObservableObject, FirebaseProtocol {
         .eraseToAnyPublisher()
     }
     
-    func fetchAll() -> AnyPublisher<[TravelCalculation], Error> {
+    func fetchAll() -> AnyPublisher<[Travel], Error> {
         return Future { promise in
-            let travels: [TravelCalculation] = []
+            let travels: [Travel] = []
             
             promise(.success(travels))
         }
         .eraseToAnyPublisher()
     }
     
-    func addData(newData: TravelCalculation) -> AnyPublisher<TravelCalculation, Error> {
+    func addData(newData: Travel) -> AnyPublisher<Travel, Error> {
         return Future { promise in
             do {
                 try self.dbRef.document(newData.id).setData(from: newData) { error in
@@ -56,7 +56,7 @@ final class TravelCalculationService: ObservableObject, FirebaseProtocol {
         .eraseToAnyPublisher()
     }
     
-    func editData(editData: TravelCalculation) -> AnyPublisher<TravelCalculation, Error> {
+    func editData(editData: Travel) -> AnyPublisher<Travel, Error> {
         return Future { promise in
             do {
                 try self.dbRef.document(editData.id).setData(from: editData) { error in
@@ -73,7 +73,7 @@ final class TravelCalculationService: ObservableObject, FirebaseProtocol {
         .eraseToAnyPublisher()
     }
     
-    func deleteData(deleteData: TravelCalculation) -> AnyPublisher<Void, Error> {
+    func deleteData(deleteData: Travel) -> AnyPublisher<Void, Error> {
         return Future { promise in
             self.dbRef.document(deleteData.id).delete { error in
                 if let error = error {

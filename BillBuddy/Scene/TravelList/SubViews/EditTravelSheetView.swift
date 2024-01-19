@@ -13,7 +13,7 @@ struct EditTravelSheetView: View {
     
     @ObservedObject var travelListVM: TravelListViewModel
 
-    let travel: TravelCalculation
+    let travel: Travel
     
     var body: some View {
         VStack {

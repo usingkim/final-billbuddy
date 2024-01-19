@@ -21,11 +21,11 @@ struct PaymentManageView: View {
     @StateObject private var paymentManageVM: PaymentManageViewModel
     @StateObject var locationManager = LocationManager()
     
-    init(mode: PaymentManageMode, payment: Payment?, travelCalculation: TravelCalculation) {
+    init(mode: PaymentManageMode, payment: Payment?, travelCalculation: Travel) {
         _paymentManageVM = StateObject(wrappedValue: PaymentManageViewModel(mode: mode, payment: payment, travelCalculation: travelCalculation))
     }
     
-    init(mode: PaymentManageMode, travelCalculation: TravelCalculation) {
+    init(mode: PaymentManageMode, travelCalculation: Travel) {
         _paymentManageVM = StateObject(wrappedValue: PaymentManageViewModel(mode: mode, payment: nil, travelCalculation: travelCalculation))
     }
     

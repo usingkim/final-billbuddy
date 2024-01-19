@@ -17,7 +17,7 @@ final class PaymentStore: ObservableObject {
     @Published var isFetchingList: Bool = false
     public var updateContentDate: Double = 0
     
-    private var members: [TravelCalculation.Member]
+    private var members: [Travel.Member]
     private var travelCalculationId: String
     private var dbRef: CollectionReference
     private var isPaymentSettled: Bool
@@ -27,12 +27,12 @@ final class PaymentStore: ObservableObject {
         payments.map { $0.paymentDate.toDate() }
     }
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         self.travelCalculationId = travel.id
         self.dbRef = Firestore.firestore()
-            .collection("TravelCalculation")
+            .collection(StoreCollection.travel.path)
             .document(travel.id)
-            .collection("Payment")
+            .collection(StoreCollection.payment.path)
         self.members = travel.members
         self.updateContentDate = travel.updateContentDate
         self.isPaymentSettled = travel.isPaymentSettled

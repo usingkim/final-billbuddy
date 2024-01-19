@@ -18,7 +18,7 @@ struct MemberManagementView: View {
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
     @EnvironmentObject private var userTravelStore: UserTravelStore
     
-    init(travel: TravelCalculation, entryViewType: EntryViewType) {
+    init(travel: Travel, entryViewType: EntryViewType) {
         _memberManagementVM = StateObject(wrappedValue: MemberManagementViewModel(travel: travel, entryViewType: entryViewType))
     }
     

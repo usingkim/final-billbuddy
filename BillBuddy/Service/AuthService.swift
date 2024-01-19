@@ -99,7 +99,7 @@ public class AuthService {
     }
     
     func sendEmailPasswordReset(email: String) async throws -> Bool {
-        let documents = try await Firestore.firestore().collection("User").whereField("email", isEqualTo: email).getDocuments()
+        let documents = try await Firestore.firestore().collection(StoreCollection.user.path).whereField("email", isEqualTo: email).getDocuments()
         if !documents.isEmpty {
             do {
                 Auth.auth().languageCode = "ko"

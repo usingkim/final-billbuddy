@@ -49,14 +49,14 @@ struct MoreView: View {
     @State var itemList: [ListItem] = ListItem.allCases
     @State var isPresentedLeaveAlert: Bool = false
     
-    let travel: TravelCalculation
+    let travel: Travel
     var paymentDates: [Date] = []
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         self.travel = travel
     }
     
-    init(travel: TravelCalculation, paymentDates: [Date]) {
+    init(travel: Travel, paymentDates: [Date]) {
         self.travel = travel
         self.paymentDates = paymentDates
     }

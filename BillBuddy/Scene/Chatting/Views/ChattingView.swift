@@ -124,7 +124,7 @@ struct ChattingView: View {
         .padding(2)
     }
     
-    private func sortedList() -> [TravelCalculation] {
+    private func sortedList() -> [Travel] {
         let sortedItems = travelStore.travels.sorted { (firstTravel, secondTravel) in
                 if let firstDate = firstTravel.lastMessageDate, let secondDate = secondTravel.lastMessageDate {
                     // 1. lastMessageDate 최신순

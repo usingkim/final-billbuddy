@@ -61,6 +61,6 @@ final class MyPageService: ObservableObject {
     }
     
     func getData(name: String) async throws -> Data {
-        try await storage.child("user").data(maxSize: 3 * 1024 * 1024)
+        try await storage.child(StoreCollection.user.path).data(maxSize: 3 * 1024 * 1024)
     }
 }

@@ -13,7 +13,7 @@ final class DetailMainViewModel: ObservableObject {
     
     var paymentService: PaymentService
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         paymentService = PaymentService(travel: travel)
         self.updateContentDate = travel.updateContentDate
     }

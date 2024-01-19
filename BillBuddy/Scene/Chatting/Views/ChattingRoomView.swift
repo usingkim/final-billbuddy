@@ -15,7 +15,7 @@ struct ChattingRoomView: View {
     @EnvironmentObject private var messageStore: MessageService
     @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
-    var travel: TravelCalculation
+    var travel: Travel
     ///pagination 적용 시 스크롤 올릴 때 몇개의 데이터를 가져올 지 갯수
     @State private var leadingCount: Int = 20
     @State private var inputText: String = ""
@@ -188,7 +188,7 @@ struct ChattingRoomView: View {
                                                             Task {
                                                                 await messageStore.updateChatRoomNotice(travelCalculation: travel, message: message)
                                                                 PushNotificationManager.sendPushNotification(toTravel: travel, title: "\(travel.travelTitle)여행방", body: "\(travel.travelTitle)에 공지가 등록되었습니다.", senderToken: "senderToken")
-                                                                notificationStore.sendNotification(members: travel.members, notification: UserNotification(type: .chatting, content: "\(travel.travelTitle)에 공지가 등록되었습니다.", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travel.id)", addDate: Date(), isChecked: false))
+                                                                notificationStore.sendNotification(members: travel.members, notification: Notification(type: .chatting, content: "\(travel.travelTitle)에 공지가 등록되었습니다.", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travel.id)", addDate: Date(), isChecked: false))
                                                             }
                                                         } label: {
                                                             HStack {
@@ -270,7 +270,7 @@ struct ChattingRoomView: View {
                                                             Task {
                                                                 await messageStore.updateChatRoomNotice(travelCalculation: travel, message: message)
                                                                 PushNotificationManager.sendPushNotification(toTravel: travel, title: "\(travel.travelTitle)여행방", body: "\(travel.travelTitle)에 공지가 등록되었습니다.", senderToken: "senderToken")
-                                                                notificationStore.sendNotification(members: travel.members, notification: UserNotification(type: .chatting, content: "\(travel.travelTitle)에 공지가 등록되었습니다.", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travel.id)", addDate: Date(), isChecked: false))
+                                                                notificationStore.sendNotification(members: travel.members, notification: Notification(type: .chatting, content: "\(travel.travelTitle)에 공지가 등록되었습니다.", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travel.id)", addDate: Date(), isChecked: false))
                                                             }
                                                         } label: {
                                                             HStack {
@@ -370,7 +370,7 @@ struct ChattingRoomView: View {
                     if !inputText.isEmpty || selectedPhoto != nil {
                         sendChat()
                         PushNotificationManager.sendPushNotification(toTravel: travel, title: "\(travel.travelTitle) 채팅방", body: "읽지 않은 메세지를 확인해보세요.", senderToken: "senderToken")
-                        notificationStore.sendNotification(members: travel.members, notification: UserNotification(type: .chatting, content: "\(travel.travelTitle) 채팅방에서 읽지 않은 메세지", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travel.id)", addDate: Date(), isChecked: false))
+                        notificationStore.sendNotification(members: travel.members, notification: Notification(type: .chatting, content: "\(travel.travelTitle) 채팅방에서 읽지 않은 메세지", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travel.id)", addDate: Date(), isChecked: false))
                         selectedPhoto = nil
                         imageData?.removeAll()
                         inputText.removeAll()
@@ -427,7 +427,7 @@ struct ChattingRoomView: View {
 
 #Preview {
     NavigationStack {
-        ChattingRoomView(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
+        ChattingRoomView(travel: Travel(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
             .environmentObject(MessageService())
             .environmentObject(TabBarVisibilityStore())
             .environmentObject(NotificationService.shared)

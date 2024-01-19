@@ -14,11 +14,11 @@ final class DateManagementViewModel: ObservableObject {
     @Published var isPresentedDateSheet: Bool = false
     @Published var isPresentedSettledAlert: Bool = false
     @Published var isPresentedAlert: Bool = false
-    @Published var travel: TravelCalculation
+    @Published var travel: Travel
     @Published var paymentDates: [Date]
     let entryViewType: EntryViewType
     
-    init(entryViewType: EntryViewType, travel: TravelCalculation, paymentDates: [Date]) {
+    init(entryViewType: EntryViewType, travel: Travel, paymentDates: [Date]) {
         self.travel = travel
         self.paymentDates = paymentDates
         self.entryViewType = entryViewType

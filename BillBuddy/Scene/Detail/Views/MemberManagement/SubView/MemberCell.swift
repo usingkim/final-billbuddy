@@ -12,7 +12,7 @@ struct MemberCell: View {
     @ObservedObject var memberManagementVM: MemberManagementViewModel
     @ObservedObject var joinMemberStore: JoinMemberStore
     
-    var member: TravelCalculation.Member
+    var member: Travel.Member
     
     var onEditing: () -> Void
     var onRemove: () -> Void

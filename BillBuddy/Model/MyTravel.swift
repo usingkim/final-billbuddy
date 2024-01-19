@@ -8,9 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-// MyTravel로 renaming하기
-
-struct UserTravel: Identifiable, Codable {
+struct MyTravel: Identifiable, Codable {
     @DocumentID var id: String?
     var travelId: String
 }

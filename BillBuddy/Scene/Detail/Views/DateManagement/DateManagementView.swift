@@ -14,7 +14,7 @@ struct DateManagementView: View {
     
     @StateObject private var dateManagementVM: DateManagementViewModel
     
-    init(entryViewType: EntryViewType, travel: TravelCalculation, paymentDates: [Date]) {
+    init(entryViewType: EntryViewType, travel: Travel, paymentDates: [Date]) {
         _dateManagementVM = StateObject(wrappedValue: 
                                             DateManagementViewModel(
                                                 entryViewType: entryViewType,

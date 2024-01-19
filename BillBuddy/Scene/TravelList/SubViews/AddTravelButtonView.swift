@@ -11,7 +11,7 @@ struct AddTravelButtonView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @ObservedObject var floatingButtonMenuStore: FloatingButtonMenuStore
     @State private var backgroundColor: Color = .gray700
-    @State private var travelCalculation = TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
+    @State private var travelCalculation = Travel(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
     @State private var isShowingNoTravelAlert: Bool = false
     
     var body: some View {

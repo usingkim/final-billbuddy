@@ -13,8 +13,8 @@ import FirebaseFirestoreSwift
 /// UserTravelService랑 TravelCalculationService 따로 두고 보는게 좋을듯
 
 final class UserTravelStore: ObservableObject {
-    @Published var userTravels: [UserTravel] = []
-    @Published var travels: [TravelCalculation] = []
+    @Published var userTravels: [MyTravel] = []
+    @Published var travels: [Travel] = []
     @Published var isFetchedFirst: Bool = false
     @Published var isFetching: Bool = false
         
@@ -44,11 +44,11 @@ final class UserTravelStore: ObservableObject {
             userTravels.removeAll()
             do {
                 let snapshot = try await
-                self.service.collection("User").document (userId).collection("UserTravel").getDocuments()
+                self.service.collection(StoreCollection.user.path).document (userId).collection(StoreCollection.userTravel.path).getDocuments()
                 var travelIds: Set<String> = []
                 for document in snapshot.documents {
                     do {
-                        let snapshot = try document.data(as: UserTravel.self)
+                        let snapshot = try document.data(as: MyTravel.self)
                         userTravels.append(snapshot)
                         travelIds.insert(snapshot.travelId)
                     } catch {
@@ -56,11 +56,11 @@ final class UserTravelStore: ObservableObject {
                     }
                 }
                 
-                var newTravels: [TravelCalculation] = []
+                var newTravels: [Travel] = []
                 for travelId in travelIds {
                     do {
-                        let snapshotData = try await self.service.collection("TravelCalculation").document(travelId).getDocument()
-                        let travel = try snapshotData.data(as: TravelCalculation.self)
+                        let snapshotData = try await self.service.collection(StoreCollection.travel.path).document(travelId).getDocument()
+                        let travel = try snapshotData.data(as: Travel.self)
                         newTravels.append(travel)
                     } catch {
                         print(error)
@@ -77,29 +77,29 @@ final class UserTravelStore: ObservableObject {
         }
     }
     
-    func getTravel(id: String) -> TravelCalculation? {
+    func getTravel(id: String) -> Travel? {
         guard let contentId = id.split(separator: "=").last else { return nil }
         guard let travelIndex = travels.firstIndex(where: { $0.id == contentId }) else { return nil }
         return travels[travelIndex]
     }
     
     func addTravel(_ title: String, memberCount: Int, startDate: Date, endDate: Date) {
-        var tempMembers: [TravelCalculation.Member] = []
+        var tempMembers: [Travel.Member] = []
         if memberCount > 0 {
             for index in 1...memberCount {
                 if index == 1 {
                     guard let user = UserService.shared.currentUser else { return }
-                    let member = TravelCalculation.Member(userId: user.id, name: user.name, isExcluded: false, isInvited: true, advancePayment: 0, payment: 0, userImage: user.userImage ?? "",bankName: user.bankName, bankAccountNum: user.bankAccountNum, reciverToken: user.reciverToken)
+                    let member = Travel.Member(userId: user.id, name: user.name, isExcluded: false, isInvited: true, advancePayment: 0, payment: 0, userImage: user.userImage ?? "",bankName: user.bankName, bankAccountNum: user.bankAccountNum, reciverToken: user.reciverToken)
                     tempMembers.append(member)
                 } else {
-                    let member = TravelCalculation.Member(name: "인원\(index)", advancePayment: 0, payment: 0)
+                    let member = Travel.Member(name: "인원\(index)", advancePayment: 0, payment: 0)
                     tempMembers.append(member)
                 }
             }
         }
         let userId = AuthService.shared.userUid
         
-        let tempTravel = TravelCalculation(
+        let tempTravel = Travel(
             hostId: userId,
             travelTitle: title,
             managerId: userId,
@@ -110,24 +110,24 @@ final class UserTravelStore: ObservableObject {
             members: tempMembers
         )
         
-        let userTravel = UserTravel(
+        let userTravel = MyTravel(
             travelId: tempTravel.id
         )
         
         do {
-            try service.collection("TravelCalculation").document(tempTravel.id).setData(from: tempTravel)
-            try service.collection("User").document(userId).collection("UserTravel").addDocument(from: userTravel)
+            try service.collection(StoreCollection.travel.path).document(tempTravel.id).setData(from: tempTravel)
+            try service.collection(StoreCollection.user.path).document(userId).collection(StoreCollection.userTravel.path).addDocument(from: userTravel)
             Task { await fetchTravelCalculation() }
         } catch {
             print("Error adding travel: \(error)")
         }
     }
     
-    func addPayment(travelCalculation: TravelCalculation, payment: Payment) {
-        try! service.collection("TravelCalculation").document(travelCalculation.id).collection("Payment").addDocument(from: payment.self)
+    func addPayment(travelCalculation: Travel, payment: Payment) {
+        try! service.collection(StoreCollection.travel.path).document(travelCalculation.id).collection(StoreCollection.payment.path).addDocument(from: payment.self)
     }
     
-    func findTravelCalculation(userTravel: UserTravel) -> TravelCalculation? {
+    func findTravelCalculation(userTravel: MyTravel) -> Travel? {
         return travels.first { travel in
             userTravel.travelId == travel.id
         }
@@ -140,14 +140,14 @@ final class UserTravelStore: ObservableObject {
 
     }
     
-    func setTravelMember(travelId: String, members: [TravelCalculation.Member]) {
+    func setTravelMember(travelId: String, members: [Travel.Member]) {
         guard let index = travels.firstIndex(where: { $0.id == travelId }) else { return }
         travels[index].members = members
     }
     
     @MainActor
     // FIXME: 떠나기 시 무조건 내용 삭제됨(남은 멤버가 있는 경우에는 유지되어야함). Payment는 유지됨
-    func leaveTravel(travel: TravelCalculation) {
+    func leaveTravel(travel: Travel) {
         let userId = AuthService.shared.userUid
         let travelId = travel.id
         guard let userTravelArrayIndex = userTravels.firstIndex(where: { $0.travelId == travelId }) else { return }
@@ -161,8 +161,8 @@ final class UserTravelStore: ObservableObject {
         Task {
             do {
                 try await Firestore.firestore()
-                    .collection("User").document(userId)
-                    .collection("UserTravel").document(userTravel.id ?? "").delete()
+                    .collection(StoreCollection.user.path).document(userId)
+                    .collection(StoreCollection.userTravel.path).document(userTravel.id ?? "").delete()
                 
                 if members.filter({ $0.userId != nil }).isEmpty {
                     try await Firestore.firestore().collection(StoreCollection.travel.path).document(travelId).delete()
