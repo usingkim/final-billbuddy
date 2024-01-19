@@ -11,12 +11,7 @@ import FirebaseFirestore
 
 struct NotificationListView: View {
     @Environment(\.dismiss) private var dismiss
-//    @State private var isAllRead = false {
-//        didSet {
-//            updateAllReadStatus()
-//        }
-//    } 
-    @State private var isPresentedAlert: Bool = false
+    
     @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var tabViewStore: TabViewModel
     @EnvironmentObject private var userTravelStore: UserTravelStore
@@ -24,6 +19,7 @@ struct NotificationListView: View {
     private var db = Firestore.firestore()
     @State private var notifications: [Notification] = []
     @State private var selectedNotification: Notification?
+    @State private var isPresentedAlert: Bool = false
     
     var body: some View {
         ScrollView {
@@ -109,12 +105,6 @@ struct NotificationListView: View {
         notificationStore.deleteNotification(notification)
     }
     
-//    private func updateAllReadStatus() {
-//        for index in notifications.indices {
-//            notifications[index].isChecked = isAllRead
-//        }
-//    }
-          
     private func getInvited(accept: Bool, selectedNotification: Notification?) {
         guard let selectedNotification else { return }
         switch accept {

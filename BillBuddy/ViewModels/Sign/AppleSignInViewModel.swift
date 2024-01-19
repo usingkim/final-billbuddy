@@ -5,13 +5,12 @@
 //  Created by 박지현 on 12/14/23.
 //
 
-import Foundation
 import SwiftUI
 import FirebaseAuth
 import CryptoKit
 import AuthenticationServices
 
-class AppleSignInStore: NSObject {
+class AppleSignInViewModel: NSObject {
     var current: String?
     
     let window: UIWindow?
@@ -78,7 +77,7 @@ class AppleSignInStore: NSObject {
     }
 }
 
-extension AppleSignInStore: ASAuthorizationControllerDelegate {
+extension AppleSignInViewModel: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = current else {
@@ -114,7 +113,7 @@ extension AppleSignInStore: ASAuthorizationControllerDelegate {
     }
 }
 
-extension AppleSignInStore: ASAuthorizationControllerPresentationContextProviding {
+extension AppleSignInViewModel: ASAuthorizationControllerPresentationContextProviding {
     public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         window!
     }

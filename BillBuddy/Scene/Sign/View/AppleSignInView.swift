@@ -11,7 +11,7 @@ import FirebaseAuth
 
 struct AppleSignInView: View {
     @Environment(\.window) var window: UIWindow?
-    @State private var appleLoginCoordinator: AppleSignInStore?
+    @State private var appleSignInVM: AppleSignInViewModel?
     
     var body: some View {
         HStack{
@@ -27,13 +27,9 @@ struct AppleSignInView: View {
         .background(Color.systemBlack)
         .cornerRadius(12)
         .onTapGesture {
-            appleSignin()
+            appleSignInVM = AppleSignInViewModel(window: window)
+            appleSignInVM?.startAppleSignIn()
         }
-    }
-    
-    func appleSignin() {
-        appleLoginCoordinator = AppleSignInStore(window: window)
-        appleLoginCoordinator?.startAppleSignIn()
     }
 }
 

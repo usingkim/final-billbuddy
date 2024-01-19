@@ -18,12 +18,12 @@ struct NotificationCell: View {
             callBack()
         } label: {
             HStack(spacing: 12) {
-                getImage(for: notification.type, isRead: notification.isChecked)
+                Image(isRead ? notification.type.alreadyReadImageString : notification.type.notReadImageString)
                     .frame(width: 40, height: 40)
                     .padding(.trailing, 12)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(getTitle(for: notification.type))
+                    Text(notification.type.title)
                         .font(.caption02)
                         .foregroundColor(notification.isChecked ? Color(hex: "AFB0B7") : Color.gray)
                     
@@ -64,32 +64,7 @@ struct NotificationCell: View {
         }
     }
     
-    private func getImage(for type: NotiType, isRead: Bool) -> Image {
-        switch type {
-        case .chatting:
-            return Image(isRead ? "chat-read-badge" : "chat-badge")
-        case .travel:
-            return Image(isRead ? "notification-read-badge" : "notification-badge")
-        case .notice:
-            return Image(isRead ? "announcement-read-badge" : "announcement-badge")
-        case .invite:
-            return Image(isRead ? "notification-read-badge" : "notification-badge")
-        }
-    }
 
-    private func getTitle(for type: NotiType) -> String {
-        switch type {
-        case .chatting:
-            return "채팅"
-        case .travel:
-            return "지출"
-        case .notice:
-            return "공지사항"
-        case .invite:
-            return "초대"
-        }
-    }
-    
     private func getRelativeTime(_ date: Date) -> String {
         let calendar = Calendar.current
         let now = Date()

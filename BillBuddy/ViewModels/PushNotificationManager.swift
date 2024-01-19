@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class PushNotificationManager {
+final class PushNotificationManager {
     static func sendPushNotification(toTravel travel: Travel, title: String, body: String, senderToken: String) {
         if let serverKey = ServerKeyManager.loadServerKey() {
             let db = Firestore.firestore()

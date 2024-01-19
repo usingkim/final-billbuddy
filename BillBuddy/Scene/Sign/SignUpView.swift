@@ -108,8 +108,8 @@ struct SignUpView: View {
                     }
                 }
                 
-                AgreementCheckButton(agreement: $signUpVM.signUpData.isTermOfUseAgree, text: "이용약관에 동의합니다.(필수)")
-                AgreementCheckButton(agreement: $signUpVM.signUpData.isPrivacyAgree, text: "개인정보 취급방침에 동의합니다.(필수)")
+                AgreementCheckButtonView(agreement: $signUpVM.signUpData.isTermOfUseAgree, text: "이용약관에 동의합니다.(필수)")
+                AgreementCheckButtonView(agreement: $signUpVM.signUpData.isPrivacyAgree, text: "개인정보 취급방침에 동의합니다.(필수)")
                 
                 Spacer()
             }

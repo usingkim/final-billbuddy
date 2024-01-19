@@ -5,7 +5,6 @@
 //  Created by 박지현 on 11/11/23.
 //
 
-import Foundation
 import SwiftUI
 import Firebase
 import GoogleSignIn

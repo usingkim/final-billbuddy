@@ -8,7 +8,7 @@
 import SwiftUI
 import WebKit
 
-struct AgreementCheckButton: View {
+struct AgreementCheckButtonView: View {
     @Binding var agreement: Bool
     @State var text: String
     
@@ -67,5 +67,5 @@ struct WebView: UIViewRepresentable {
 
 
 #Preview {
-    AgreementCheckButton(agreement: .constant(true), text: "동의합니다")
+    AgreementCheckButtonView(agreement: .constant(true), text: "동의합니다")
 }

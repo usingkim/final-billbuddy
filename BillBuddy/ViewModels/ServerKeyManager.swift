@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ServerKeyManager {
+final class ServerKeyManager {
     static func loadServerKey() -> String? {
         if let path = Bundle.main.path(forResource: "ServerKeys", ofType: "plist"),
            let serverKeys = NSDictionary(contentsOfFile: path) as? [String: Any],
