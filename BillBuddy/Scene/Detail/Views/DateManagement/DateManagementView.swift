@@ -13,6 +13,7 @@ struct DateManagementView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var travelDetailStore: TravelDetailStore
+    
     @State private var isPresentedSheet: Bool = false
     @State private var isPresentedSettledAlert: Bool = false
     @State var travel: TravelCalculation

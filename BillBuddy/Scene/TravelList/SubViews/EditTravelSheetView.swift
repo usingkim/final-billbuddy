@@ -10,20 +10,17 @@ import SwiftUI
 struct EditTravelSheetView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
-
-    @Binding var isPresentedSheet: Bool
-    @Binding var isPresentedDateView: Bool
-    @Binding var isPresentedMemeberView: Bool
-    @Binding var isPresentedSpendingView: Bool
+    
+    @ObservedObject var travelListVM: TravelListViewModel
 
     let travel: TravelCalculation
     
     var body: some View {
         VStack {
             Button {
-                isPresentedSheet = false
+                travelListVM.isShowingEditSheet = false
                 tabBarVisibilityStore.hideTabBar()
-                isPresentedDateView = true
+                travelListVM.isPresentedDateView = true
             } label: {
                 HStack {
                     Image(.calendarCheck1)
@@ -40,9 +37,9 @@ struct EditTravelSheetView: View {
             } //MARK: BUTTON1
             
             Button {
-                isPresentedSheet = false
+                travelListVM.isShowingEditSheet = false
                 tabBarVisibilityStore.hideTabBar()
-                isPresentedMemeberView = true
+                travelListVM.isPresentedMemeberView = true
             } label: {
                 
                 HStack {
@@ -60,9 +57,9 @@ struct EditTravelSheetView: View {
             } //MARK: BUTTON2
             
             Button {
-                isPresentedSheet = false
+                travelListVM.isShowingEditSheet = false
                 tabBarVisibilityStore.hideTabBar()
-                isPresentedSpendingView = true
+                travelListVM.isPresentedSpendingView = true
             } label: {
                 HStack {
                     Image(.script218)

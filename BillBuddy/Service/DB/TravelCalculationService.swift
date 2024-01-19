@@ -12,28 +12,28 @@ final class TravelCalculationService: ObservableObject, FirebaseProtocol {
     typealias DBData = TravelCalculation
     var dbRef: CollectionReference = Firestore.firestore().collection(StoreCollection.travel.path)
     
-    var userTravels: [UserTravel]
-    
-    init(userTravels: [UserTravel]) {
-        self.userTravels = userTravels
+    func fetchTravel(travel: UserTravel) -> AnyPublisher<TravelCalculation, Error> {
+        return Future { promise in
+            self.dbRef.document(travel.travelId).getDocument { doc, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    do {
+                        let travel = try doc?.data(as: TravelCalculation.self)
+                        promise(.success(travel!))
+                    } catch {
+                        promise(.failure(error))
+                    }
+                }
+            }
+        }
+        .eraseToAnyPublisher()
     }
     
     func fetchAll() -> AnyPublisher<[TravelCalculation], Error> {
         return Future { promise in
             var travels: [TravelCalculation] = []
-            for travel in self.userTravels {
-                self.dbRef.document(travel.travelId).getDocument { document, error in
-                    if let error = error {
-                        promise(.failure(error))
-                    } else {
-                        do {
-                            travels.append((try document?.data(as: TravelCalculation.self))!)
-                        } catch {
-                            promise(.failure(error))
-                        }
-                    }
-                }
-            }
+            
             promise(.success(travels))
         }
         .eraseToAnyPublisher()
