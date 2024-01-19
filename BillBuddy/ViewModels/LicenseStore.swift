@@ -7,13 +7,7 @@
 
 import SwiftUI
 
-struct PakageLicense: Identifiable {
-    let id = UUID()
-    let name: String
-    let contend: String
-}
-
-class LicenseStore: ObservableObject {
+final class LicenseStore: ObservableObject {
     @Published var licenses: [PakageLicense] = []
     
     init() {

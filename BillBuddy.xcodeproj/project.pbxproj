@@ -15,9 +15,7 @@
 		02C5A7D92AE0239800CBD8D1 /* FloatingButtonMenuStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C5A7D82AE0239800CBD8D1 /* FloatingButtonMenuStore.swift */; };
 		02C949972AD7D90300DFF9D4 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C949962AD7D90300DFF9D4 /* CalendarViewModel.swift */; };
 		2655B7052ADD976D002E051B /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 2655B7042ADD976D002E051B /* FirebaseMessaging */; };
-		2663484B2AD8DD6C002CCCF4 /* NotificationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2663484A2AD8DD6C002CCCF4 /* NotificationListView.swift */; };
 		266869AB2AE7CB9D0072FDB2 /* ServerKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266869AA2AE7CB9D0072FDB2 /* ServerKeyManager.swift */; };
-		26E188282AE46E3F0046AF12 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E188272AE46E3F0046AF12 /* NotificationCell.swift */; };
 		26E1882A2AE46E8C0046AF12 /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E188292AE46E8C0046AF12 /* PushNotificationManager.swift */; };
 		2717D0F72ACD78390002D620 /* BillBuddyTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2717D0F62ACD78390002D620 /* BillBuddyTabView.swift */; };
 		271F8BBF2B2E1C090032353C /* DateManagementCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F8BBE2B2E1C090032353C /* DateManagementCalendarViewModel.swift */; };
@@ -96,6 +94,9 @@
 		90039B8A2B5AEEA10061A6F8 /* TravelListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */; };
 		90039B8C2B5B0F740061A6F8 /* DateManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */; };
 		90039B8E2B5B185F0061A6F8 /* DateManagementModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */; };
+		90039B912B5B1F290061A6F8 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8F2B5B1F290061A6F8 /* NotificationCell.swift */; };
+		90039B922B5B1F290061A6F8 /* NotificationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B902B5B1F290061A6F8 /* NotificationListView.swift */; };
+		90039B942B5B20FA0061A6F8 /* PakageLicense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B932B5B20FA0061A6F8 /* PakageLicense.swift */; };
 		900B97CF2B31DFD300A89464 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */; };
 		9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */; };
 		9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */; };
@@ -123,7 +124,7 @@
 		C4F433B22ADE41AC00C8D20C /* PaymentManageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F433B12ADE41AC00C8D20C /* PaymentManageView.swift */; };
 		C4F87C0C2AC160FE00472876 /* PaymentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F87C0B2AC160FE00472876 /* PaymentStore.swift */; };
 		D21BD5EF2AD62E590074FA80 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21BD5EE2AD62E590074FA80 /* ProfileView.swift */; };
-		D26894172B2AF45400D37357 /* AppleSignInStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894162B2AF45400D37357 /* AppleSignInStore.swift */; };
+		D26894172B2AF45400D37357 /* AppleSignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894162B2AF45400D37357 /* AppleSignInViewModel.swift */; };
 		D26894192B2AF67200D37357 /* AppleSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26894182B2AF67200D37357 /* AppleSignInView.swift */; };
 		D2713EF72AD78C980020B2F4 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2713EF62AD78C980020B2F4 /* ProfileEditView.swift */; };
 		D279D1182ACFE6670087712F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D279D1172ACFE6670087712F /* UserService.swift */; };
@@ -132,7 +133,7 @@
 		D29BBF7F2AFFAE56000120CD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = D29BBF7E2AFFAE56000120CD /* GoogleSignIn */; };
 		D29BBF812AFFAE56000120CD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D29BBF802AFFAE56000120CD /* GoogleSignInSwift */; };
 		D29BBF872AFFB3A9000120CD /* GoogleSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29BBF862AFFB3A9000120CD /* GoogleSignInView.swift */; };
-		D2A8B6E02ADE481800A469D7 /* AgreementCheckButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A8B6DF2ADE481800A469D7 /* AgreementCheckButton.swift */; };
+		D2A8B6E02ADE481800A469D7 /* AgreementCheckButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A8B6DF2ADE481800A469D7 /* AgreementCheckButtonView.swift */; };
 		D2C7BD352AE52EFD00C6AA15 /* MyPageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C7BD342AE52EFD00C6AA15 /* MyPageService.swift */; };
 		D2C95AE62AD7A16D00DFCB03 /* MyPageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C95AE52AD7A16D00DFCB03 /* MyPageDetailView.swift */; };
 		D2C95AE82AD7B59900DFCB03 /* MyPageSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C95AE72AD7B59900DFCB03 /* MyPageSettingView.swift */; };
@@ -168,9 +169,7 @@
 		02C5A7D82AE0239800CBD8D1 /* FloatingButtonMenuStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButtonMenuStore.swift; sourceTree = "<group>"; };
 		02C949962AD7D90300DFF9D4 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		2655B7032ADD972A002E051B /* BillBuddy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BillBuddy.entitlements; sourceTree = "<group>"; };
-		2663484A2AD8DD6C002CCCF4 /* NotificationListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationListView.swift; sourceTree = "<group>"; };
 		266869AA2AE7CB9D0072FDB2 /* ServerKeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerKeyManager.swift; sourceTree = "<group>"; };
-		26E188272AE46E3F0046AF12 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		26E188292AE46E8C0046AF12 /* PushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
 		2717D0F62ACD78390002D620 /* BillBuddyTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillBuddyTabView.swift; sourceTree = "<group>"; };
 		2717D0FD2ACD7E260002D620 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -243,6 +242,9 @@
 		90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelListViewModel.swift; sourceTree = "<group>"; };
 		90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementViewModel.swift; sourceTree = "<group>"; };
 		90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementModifier.swift; sourceTree = "<group>"; };
+		90039B8F2B5B1F290061A6F8 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationCell.swift; path = BillBuddy/Scene/Notification/NotificationCell.swift; sourceTree = SOURCE_ROOT; };
+		90039B902B5B1F290061A6F8 /* NotificationListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotificationListView.swift; path = BillBuddy/Scene/Notification/NotificationListView.swift; sourceTree = SOURCE_ROOT; };
+		90039B932B5B20FA0061A6F8 /* PakageLicense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakageLicense.swift; sourceTree = "<group>"; };
 		900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTravelViewModel.swift; sourceTree = "<group>"; };
 		9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManagementViewModel.swift; sourceTree = "<group>"; };
@@ -270,14 +272,14 @@
 		C4F433B12ADE41AC00C8D20C /* PaymentManageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManageView.swift; sourceTree = "<group>"; };
 		C4F87C0B2AC160FE00472876 /* PaymentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentStore.swift; sourceTree = "<group>"; };
 		D21BD5EE2AD62E590074FA80 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		D26894162B2AF45400D37357 /* AppleSignInStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInStore.swift; sourceTree = "<group>"; };
+		D26894162B2AF45400D37357 /* AppleSignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInViewModel.swift; sourceTree = "<group>"; };
 		D26894182B2AF67200D37357 /* AppleSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInView.swift; sourceTree = "<group>"; };
 		D2713EF62AD78C980020B2F4 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		D279D1172ACFE6670087712F /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		D2913E9A2B30391D00B373B1 /* TextFieldAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldAlertView.swift; sourceTree = "<group>"; };
 		D2940EF62AFFBAED00E74B0F /* GoogleSignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInModel.swift; sourceTree = "<group>"; };
 		D29BBF862AFFB3A9000120CD /* GoogleSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInView.swift; sourceTree = "<group>"; };
-		D2A8B6DF2ADE481800A469D7 /* AgreementCheckButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCheckButton.swift; sourceTree = "<group>"; };
+		D2A8B6DF2ADE481800A469D7 /* AgreementCheckButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCheckButtonView.swift; sourceTree = "<group>"; };
 		D2C7BD342AE52EFD00C6AA15 /* MyPageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageService.swift; sourceTree = "<group>"; };
 		D2C95AE52AD7A16D00DFCB03 /* MyPageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageDetailView.swift; sourceTree = "<group>"; };
 		D2C95AE72AD7B59900DFCB03 /* MyPageSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingView.swift; sourceTree = "<group>"; };
@@ -341,35 +343,6 @@
 				0266B7382ADA6A1500DBF07D /* CalendarSheetView.swift */,
 			);
 			path = SubViews;
-			sourceTree = "<group>";
-		};
-		2717D0F12ACD77A30002D620 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				26E188272AE46E3F0046AF12 /* NotificationCell.swift */,
-				2663484A2AD8DD6C002CCCF4 /* NotificationListView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2717D0F22ACD77B20002D620 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				276648472ABD8E19000F8A10 /* ChattingView.swift */,
-				46A25E432ACD9F0700195F89 /* ChattingRoomView.swift */,
-				46C09CD22AE1C65D001E34E6 /* ChattingMenuView.swift */,
-				46231F3A2AE6E8C000083128 /* ChattingMenuDetailView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2717D0F32ACD77BD0002D620 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D2EF00B52AE7947800ABD4F0 /* MypagePorileView */,
-				D2EF00B02AE7873000ABD4F0 /* SettingView */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		2717D0F42ACD77C90002D620 /* Views */ = {
@@ -475,7 +448,8 @@
 				277C99A12AC08F9C006DFCFC /* MyTravel.swift */,
 				276648302ABD8B6E000F8A10 /* Travel.swift */,
 				276648342ABD8C73000F8A10 /* Payment.swift */,
-				636CE5FE2AC3BA1E00BF7730 /* Line.swift */,
+				46AA65702AD6796C00988491 /* Message.swift */,
+				90039B932B5B20FA0061A6F8 /* PakageLicense.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -492,8 +466,6 @@
 				276648462ABD8DD7000F8A10 /* Notification */,
 				276648492ABD8E22000F8A10 /* Chatting */,
 				2766484F2ABD8E51000F8A10 /* MyPage */,
-				276648432ABD8DB4000F8A10 /* Membership */,
-				277403DE2AC3B81E000537DF /* Admob */,
 				27B7AC3B2B324F7900D15972 /* Onboarding */,
 			);
 			path = Scene;
@@ -533,11 +505,14 @@
 		276648152ABD5586000F8A10 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				D2C7BD342AE52EFD00C6AA15 /* MyPageService.swift */,
+				278266462AE2008400118C21 /* NotificationService.swift */,
 				276648132ABD5583000F8A10 /* AuthService.swift */,
 				2785446A2AC41CE0009032CE /* InviteTravelService.swift */,
 				D279D1172ACFE6670087712F /* UserService.swift */,
 				FFCF22582B24500000B79BF9 /* SNSSignInService.swift */,
 				90A9D1322B56DFF2003D1563 /* FirestoreService.swift */,
+				46B8E2262AD8295F001B3A6C /* MessageService.swift */,
 				90D2C11D2B5849B3002B6575 /* DB */,
 			);
 			path = Service;
@@ -572,7 +547,6 @@
 			children = (
 				276648362ABD8CFD000F8A10 /* SignInView.swift */,
 				276648392ABD8D13000F8A10 /* SignUpView.swift */,
-				D2C16DA02ACD549F00F48A06 /* Model */,
 				D2C16DA52ACD551000F48A06 /* View */,
 			);
 			path = Sign;
@@ -612,8 +586,8 @@
 		276648462ABD8DD7000F8A10 /* Notification */ = {
 			isa = PBXGroup;
 			children = (
-				278266452AE2008400118C21 /* Store */,
-				2717D0F12ACD77A30002D620 /* Views */,
+				90039B8F2B5B1F290061A6F8 /* NotificationCell.swift */,
+				90039B902B5B1F290061A6F8 /* NotificationListView.swift */,
 			);
 			name = Notification;
 			path = Membership/Notification;
@@ -622,9 +596,10 @@
 		276648492ABD8E22000F8A10 /* Chatting */ = {
 			isa = PBXGroup;
 			children = (
-				46AA656D2AD6743700988491 /* Model */,
-				46B8E2252AD82948001B3A6C /* Store */,
-				2717D0F22ACD77B20002D620 /* Views */,
+				276648472ABD8E19000F8A10 /* ChattingView.swift */,
+				46A25E432ACD9F0700195F89 /* ChattingRoomView.swift */,
+				46C09CD22AE1C65D001E34E6 /* ChattingMenuView.swift */,
+				46231F3A2AE6E8C000083128 /* ChattingMenuDetailView.swift */,
 			);
 			path = Chatting;
 			sourceTree = "<group>";
@@ -640,8 +615,8 @@
 		2766484F2ABD8E51000F8A10 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				D2C7BD332AE52ECA00C6AA15 /* Store */,
-				2717D0F32ACD77BD0002D620 /* Views */,
+				D2EF00B52AE7947800ABD4F0 /* MypageProfileView */,
+				D2EF00B02AE7873000ABD4F0 /* SettingView */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -658,6 +633,9 @@
 		277403E22AC3E579000537DF /* Sign */ = {
 			isa = PBXGroup;
 			children = (
+				D2940EF62AFFBAED00E74B0F /* GoogleSignInModel.swift */,
+				D26894162B2AF45400D37357 /* AppleSignInViewModel.swift */,
+				FFFFF4202B2F019F0040B72B /* GoogleSignInViewModel.swift */,
 				277403E42AC3E579000537DF /* SignInViewModel.swift */,
 				277403E32AC3E579000537DF /* SignUpViewModel.swift */,
 			);
@@ -679,16 +657,6 @@
 				278193C32ADBDD900041A6BF /* MoreListCell.swift */,
 			);
 			path = SubView;
-			sourceTree = "<group>";
-		};
-		278266452AE2008400118C21 /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				278266462AE2008400118C21 /* NotificationService.swift */,
-				26E188292AE46E8C0046AF12 /* PushNotificationManager.swift */,
-				266869AA2AE7CB9D0072FDB2 /* ServerKeyManager.swift */,
-			);
-			path = Store;
 			sourceTree = "<group>";
 		};
 		278544692AC413AF009032CE /* MemberManagement */ = {
@@ -768,22 +736,6 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		46AA656D2AD6743700988491 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				46AA65702AD6796C00988491 /* Message.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		46B8E2252AD82948001B3A6C /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				46B8E2262AD8295F001B3A6C /* MessageService.swift */,
-			);
-			path = Store;
-			sourceTree = "<group>";
-		};
 		900B97D02B31E34E00A89464 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
@@ -813,6 +765,7 @@
 			isa = PBXGroup;
 			children = (
 				278DDC1B2ACC3E7F00B2EC50 /* JoinMemberStore.swift */,
+				277A93622B354D9A002CB609 /* LicenseStore.swift */,
 				2785ECC02AE046D0003E8D9D /* TravelDetailStore.swift */,
 				27933F732AD3403500E6A545 /* SettlementExpensesStore.swift */,
 				2785ECC42AE053EA003E8D9D /* TabBarVisibilityStore.swift */,
@@ -820,12 +773,12 @@
 				277403E22AC3E579000537DF /* Sign */,
 				9059FFF52B45C59E002D2F9B /* TravelList */,
 				909D4D4B2B4576E300B59A14 /* Detail */,
-				90DD22922B52B49B00090ECB /* NativeAdViewModel.swift */,
-				90DD22942B52B51F00090ECB /* AdViewModel.swift */,
 				90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */,
 				90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */,
 				90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */,
 				271F8BBE2B2E1C090032353C /* DateManagementCalendarViewModel.swift */,
+				26E188292AE46E8C0046AF12 /* PushNotificationManager.swift */,
+				266869AA2AE7CB9D0072FDB2 /* ServerKeyManager.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -862,6 +815,11 @@
 		90D2C1182B583C89002B6575 /* Reference */ = {
 			isa = PBXGroup;
 			children = (
+				90DD22922B52B49B00090ECB /* NativeAdViewModel.swift */,
+				90DD22942B52B51F00090ECB /* AdViewModel.swift */,
+				277403DE2AC3B81E000537DF /* Admob */,
+				276648432ABD8DB4000F8A10 /* Membership */,
+				636CE5FE2AC3BA1E00BF7730 /* Line.swift */,
 				C4F87C0B2AC160FE00472876 /* PaymentStore.swift */,
 			);
 			path = Reference;
@@ -900,34 +858,15 @@
 			path = Payment;
 			sourceTree = "<group>";
 		};
-		D2C16DA02ACD549F00F48A06 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D2940EF62AFFBAED00E74B0F /* GoogleSignInModel.swift */,
-				D26894162B2AF45400D37357 /* AppleSignInStore.swift */,
-				FFFFF4202B2F019F0040B72B /* GoogleSignInViewModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		D2C16DA52ACD551000F48A06 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D2A8B6DF2ADE481800A469D7 /* AgreementCheckButton.swift */,
+				D2A8B6DF2ADE481800A469D7 /* AgreementCheckButtonView.swift */,
 				D29BBF862AFFB3A9000120CD /* GoogleSignInView.swift */,
 				D26894182B2AF67200D37357 /* AppleSignInView.swift */,
 				FFBA42A12B2C6D4F00915D2F /* ForgotPasswordView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		D2C7BD332AE52ECA00C6AA15 /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				D2C7BD342AE52EFD00C6AA15 /* MyPageService.swift */,
-				277A93622B354D9A002CB609 /* LicenseStore.swift */,
-			);
-			path = Store;
 			sourceTree = "<group>";
 		};
 		D2EF00B02AE7873000ABD4F0 /* SettingView */ = {
@@ -939,7 +878,7 @@
 			path = SettingView;
 			sourceTree = "<group>";
 		};
-		D2EF00B52AE7947800ABD4F0 /* MypagePorileView */ = {
+		D2EF00B52AE7947800ABD4F0 /* MypageProfileView */ = {
 			isa = PBXGroup;
 			children = (
 				2766484D2ABD8E4D000F8A10 /* MyPageView.swift */,
@@ -949,7 +888,7 @@
 				D2713EF62AD78C980020B2F4 /* ProfileEditView.swift */,
 				FF17CCA62B2D7D5A000ACF72 /* ChangePasswordView.swift */,
 			);
-			path = MypagePorileView;
+			path = MypageProfileView;
 			sourceTree = "<group>";
 		};
 		FF635D232AD7D501002C0B67 /* Store */ = {
@@ -1082,7 +1021,6 @@
 				276647FD2ABD53F8000F8A10 /* ContentView.swift in Sources */,
 				638A9F4F2ADA816E00C931DD /* MapMainView.swift in Sources */,
 				2717D0F72ACD78390002D620 /* BillBuddyTabView.swift in Sources */,
-				26E188282AE46E3F0046AF12 /* NotificationCell.swift in Sources */,
 				90A9D1332B56DFF2003D1563 /* FirestoreService.swift in Sources */,
 				27933F742AD3403500E6A545 /* SettlementExpensesStore.swift in Sources */,
 				90A9D1312B56CF05003D1563 /* PaymentService.swift in Sources */,
@@ -1097,6 +1035,7 @@
 				FF635D272AD81EEF002C0B67 /* TossPaymentsView.swift in Sources */,
 				C47F6C772AD51878006B77D6 /* PaymentMainView.swift in Sources */,
 				27933F702AD3402300E6A545 /* CategoryLabel.swift in Sources */,
+				90039B922B5B1F290061A6F8 /* NotificationListView.swift in Sources */,
 				C478B1942AC6C5BD005EE427 /* Double+Extension.swift in Sources */,
 				90039B8C2B5B0F740061A6F8 /* DateManagementViewModel.swift in Sources */,
 				C45E24EE2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift in Sources */,
@@ -1115,7 +1054,7 @@
 				90DD22952B52B51F00090ECB /* AdViewModel.swift in Sources */,
 				FF8217682ACEFB9C002ACD4C /* NativeContentView.swift in Sources */,
 				D2940EF72AFFBAED00E74B0F /* GoogleSignInModel.swift in Sources */,
-				D2A8B6E02ADE481800A469D7 /* AgreementCheckButton.swift in Sources */,
+				D2A8B6E02ADE481800A469D7 /* AgreementCheckButtonView.swift in Sources */,
 				27499B742B2DABB800DE1BB3 /* DateManagementCalendarView.swift in Sources */,
 				023EF9242ACC0334005C3F30 /* UserTravelStore.swift in Sources */,
 				63A3F1762ADF78B1006EE206 /* CustomAnnotationView.swift in Sources */,
@@ -1125,6 +1064,7 @@
 				273FD6A92AC1A407007BF7D4 /* Font+Extension.swift in Sources */,
 				D2EF00B42AE78DBF00ABD4F0 /* LicenseView.swift in Sources */,
 				FF635D2B2AD8228C002C0B67 /* MembershipView.swift in Sources */,
+				90039B912B5B1F290061A6F8 /* NotificationCell.swift in Sources */,
 				D2C95AE62AD7A16D00DFCB03 /* MyPageDetailView.swift in Sources */,
 				C478B1922AC6BAE8005EE427 /* FillInPaymentInfoView.swift in Sources */,
 				D279D1182ACFE6670087712F /* UserService.swift in Sources */,
@@ -1145,7 +1085,6 @@
 				C4F87C0C2AC160FE00472876 /* PaymentStore.swift in Sources */,
 				FFBA42A42B2C9A9400915D2F /* MessageAlertView.swift in Sources */,
 				278193C42ADBDD900041A6BF /* MoreListCell.swift in Sources */,
-				2663484B2AD8DD6C002CCCF4 /* NotificationListView.swift in Sources */,
 				27933F762AD3405000E6A545 /* SettlementExpenses.swift in Sources */,
 				90DD22932B52B49B00090ECB /* NativeAdViewModel.swift in Sources */,
 				D2C7BD352AE52EFD00C6AA15 /* MyPageService.swift in Sources */,
@@ -1158,7 +1097,7 @@
 				022B2EED2ADD394F001B8C4D /* EditTravelSheetView.swift in Sources */,
 				D2913E9B2B30391D00B373B1 /* TextFieldAlertView.swift in Sources */,
 				FFFFF4212B2F019F0040B72B /* GoogleSignInViewModel.swift in Sources */,
-				D26894172B2AF45400D37357 /* AppleSignInStore.swift in Sources */,
+				D26894172B2AF45400D37357 /* AppleSignInViewModel.swift in Sources */,
 				63EF15662B319FA50031F617 /* CustomAnnotation.swift in Sources */,
 				FF2974A62AD310D400E10AC4 /* NativeAdTestView.swift in Sources */,
 				023EF92E2ACC0731005C3F30 /* AddTravelView.swift in Sources */,
@@ -1166,6 +1105,7 @@
 				27933F712AD3402300E6A545 /* MemeberAcountCell.swift in Sources */,
 				271F8BC12B2E37030032353C /* CheckDateAlert.swift in Sources */,
 				FF6364862AE552B300DDA16D /* BannerStore.swift in Sources */,
+				90039B942B5B20FA0061A6F8 /* PakageLicense.swift in Sources */,
 				276648142ABD5583000F8A10 /* AuthService.swift in Sources */,
 				278266492AE2008D00118C21 /* Notification.swift in Sources */,
 				9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */,

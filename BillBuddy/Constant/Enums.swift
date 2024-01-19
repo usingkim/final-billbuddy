@@ -62,6 +62,46 @@ enum NotiType: String, Codable {
     case travel
     case notice
     case invite
+    
+    var title: String {
+        switch self {
+        case .chatting:
+            return "채팅"
+        case .travel:
+            return "지출"
+        case .notice:
+            return "공지사항"
+        case .invite:
+            return "초대"
+        }
+    }
+    
+    var alreadyReadImageString: String {
+        switch self {
+        case .chatting:
+            return "chat-read-badge"
+        case .travel:
+            return "notification-read-badge"
+        case .notice:
+            return "announcement-read-badge"
+        case .invite:
+            return "notification-read-badge"
+        }
+    }
+    
+    var notReadImageString: String {
+        switch self {
+        case .chatting:
+            return "chat-badge"
+        case .travel:
+            return "notification-badge"
+        case .notice:
+            return "announcement-badge"
+        case .invite:
+            return "notification-badge"
+        }
+    }
+    
 }
 
 enum TravelFilter: Int, CaseIterable {
