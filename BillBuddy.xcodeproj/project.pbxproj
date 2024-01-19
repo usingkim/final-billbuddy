@@ -21,7 +21,7 @@
 		26E188282AE46E3F0046AF12 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E188272AE46E3F0046AF12 /* NotificationCell.swift */; };
 		26E1882A2AE46E8C0046AF12 /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E188292AE46E8C0046AF12 /* PushNotificationManager.swift */; };
 		2717D0F72ACD78390002D620 /* BillBuddyTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2717D0F62ACD78390002D620 /* BillBuddyTabView.swift */; };
-		271F8BBF2B2E1C090032353C /* EditDateCalenderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F8BBE2B2E1C090032353C /* EditDateCalenderStore.swift */; };
+		271F8BBF2B2E1C090032353C /* DateManagementCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F8BBE2B2E1C090032353C /* DateManagementCalendarViewModel.swift */; };
 		271F8BC12B2E37030032353C /* CheckDateAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271F8BC02B2E37030032353C /* CheckDateAlert.swift */; };
 		2729F3312AD427960089147E /* MemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2729F3302AD427960089147E /* MemberCell.swift */; };
 		273201242ADAF01100AE528B /* MemberEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273201232ADAF01100AE528B /* MemberEditSheet.swift */; };
@@ -29,7 +29,7 @@
 		273FD6A92AC1A407007BF7D4 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FD6A82AC1A407007BF7D4 /* Font+Extension.swift */; };
 		273FD6AB2AC1C6D9007BF7D4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 273FD6AA2AC1C6D9007BF7D4 /* Date+Extension.swift */; };
 		27499B702B2DA11D00DE1BB3 /* DateManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27499B6F2B2DA11D00DE1BB3 /* DateManagementView.swift */; };
-		27499B742B2DABB800DE1BB3 /* DateManagementCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27499B732B2DABB800DE1BB3 /* DateManagementCalendar.swift */; };
+		27499B742B2DABB800DE1BB3 /* DateManagementCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27499B732B2DABB800DE1BB3 /* DateManagementCalendarView.swift */; };
 		276647FB2ABD53F8000F8A10 /* BillBuddyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276647FA2ABD53F8000F8A10 /* BillBuddyApp.swift */; };
 		276647FD2ABD53F8000F8A10 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276647FC2ABD53F8000F8A10 /* ContentView.swift */; };
 		276647FF2ABD53F9000F8A10 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 276647FE2ABD53F9000F8A10 /* Assets.xcassets */; };
@@ -98,6 +98,7 @@
 		63EF15662B319FA50031F617 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EF15652B319FA50031F617 /* CustomAnnotation.swift */; };
 		90039B8A2B5AEEA10061A6F8 /* TravelListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */; };
 		90039B8C2B5B0F740061A6F8 /* DateManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */; };
+		90039B8E2B5B185F0061A6F8 /* DateManagementModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */; };
 		900B97CF2B31DFD300A89464 /* PaymentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */; };
 		9059FFF42B45C449002D2F9B /* AddTravelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */; };
 		9059FFF72B45C9B8002D2F9B /* MemberManagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */; };
@@ -178,7 +179,7 @@
 		26E188292AE46E8C0046AF12 /* PushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
 		2717D0F62ACD78390002D620 /* BillBuddyTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillBuddyTabView.swift; sourceTree = "<group>"; };
 		2717D0FD2ACD7E260002D620 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		271F8BBE2B2E1C090032353C /* EditDateCalenderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDateCalenderStore.swift; sourceTree = "<group>"; };
+		271F8BBE2B2E1C090032353C /* DateManagementCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementCalendarViewModel.swift; sourceTree = "<group>"; };
 		271F8BC02B2E37030032353C /* CheckDateAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckDateAlert.swift; sourceTree = "<group>"; };
 		2729F3302AD427960089147E /* MemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCell.swift; sourceTree = "<group>"; };
 		273201232ADAF01100AE528B /* MemberEditSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberEditSheet.swift; sourceTree = "<group>"; };
@@ -186,7 +187,7 @@
 		273FD6A82AC1A407007BF7D4 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		273FD6AA2AC1C6D9007BF7D4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		27499B6F2B2DA11D00DE1BB3 /* DateManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementView.swift; sourceTree = "<group>"; };
-		27499B732B2DABB800DE1BB3 /* DateManagementCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementCalendar.swift; sourceTree = "<group>"; };
+		27499B732B2DABB800DE1BB3 /* DateManagementCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementCalendarView.swift; sourceTree = "<group>"; };
 		276647F72ABD53F8000F8A10 /* BillBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BillBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		276647FA2ABD53F8000F8A10 /* BillBuddyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillBuddyApp.swift; sourceTree = "<group>"; };
 		276647FC2ABD53F8000F8A10 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -248,6 +249,7 @@
 		63EF15652B319FA50031F617 /* CustomAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelListViewModel.swift; sourceTree = "<group>"; };
 		90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementViewModel.swift; sourceTree = "<group>"; };
+		90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManagementModifier.swift; sourceTree = "<group>"; };
 		900B97CE2B31DFD300A89464 /* PaymentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentButtonView.swift; sourceTree = "<group>"; };
 		9059FFF32B45C449002D2F9B /* AddTravelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTravelViewModel.swift; sourceTree = "<group>"; };
 		9059FFF62B45C9B8002D2F9B /* MemberManagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberManagementViewModel.swift; sourceTree = "<group>"; };
@@ -421,17 +423,18 @@
 		27499B712B2DA12C00DE1BB3 /* DateManagement */ = {
 			isa = PBXGroup;
 			children = (
-				27499B722B2DAB9600DE1BB3 /* SubView */,
 				27499B6F2B2DA11D00DE1BB3 /* DateManagementView.swift */,
+				27499B722B2DAB9600DE1BB3 /* SubView */,
 			);
-			path = DateManagement;
+			name = DateManagement;
+			path = ../Detail/Views/DateManagement;
 			sourceTree = "<group>";
 		};
 		27499B722B2DAB9600DE1BB3 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
-				27499B732B2DABB800DE1BB3 /* DateManagementCalendar.swift */,
-				271F8BBE2B2E1C090032353C /* EditDateCalenderStore.swift */,
+				27499B732B2DABB800DE1BB3 /* DateManagementCalendarView.swift */,
+				90039B8D2B5B185F0061A6F8 /* DateManagementModifier.swift */,
 				271F8BC02B2E37030032353C /* CheckDateAlert.swift */,
 			);
 			path = SubView;
@@ -590,6 +593,7 @@
 				2766483B2ABD8D29000F8A10 /* TravelListView.swift */,
 				023EF92D2ACC0731005C3F30 /* AddTravelView.swift */,
 				2717D0EE2ACD770D0002D620 /* SubViews */,
+				27499B712B2DA12C00DE1BB3 /* DateManagement */,
 			);
 			path = TravelList;
 			sourceTree = "<group>";
@@ -830,6 +834,7 @@
 				90A9D12C2B569EAB003D1563 /* OnboardingViewModel.swift */,
 				90039B892B5AEEA10061A6F8 /* TravelListViewModel.swift */,
 				90039B8B2B5B0F740061A6F8 /* DateManagementViewModel.swift */,
+				271F8BBE2B2E1C090032353C /* DateManagementCalendarViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -893,7 +898,6 @@
 				278544692AC413AF009032CE /* MemberManagement */,
 				27933F6B2AD3402300E6A545 /* SettledAccount */,
 				278193C22ADBDD750041A6BF /* More */,
-				27499B712B2DA12C00DE1BB3 /* DateManagement */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1072,6 +1076,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90039B8E2B5B185F0061A6F8 /* DateManagementModifier.swift in Sources */,
 				638A9F4B2ADA813D00C931DD /* FillPaymentMapView.swift in Sources */,
 				276648092ABD54AE000F8A10 /* User.swift in Sources */,
 				27933F6A2AD33D9A00E6A545 /* Int+Extension.swift in Sources */,
@@ -1110,7 +1115,7 @@
 				90039B8C2B5B0F740061A6F8 /* DateManagementViewModel.swift in Sources */,
 				C45E24EE2B1E29FA0056FEF8 /* PaymentMemberManagementView.swift in Sources */,
 				2766484B2ABD8E34000F8A10 /* PaymentListView.swift in Sources */,
-				271F8BBF2B2E1C090032353C /* EditDateCalenderStore.swift in Sources */,
+				271F8BBF2B2E1C090032353C /* DateManagementCalendarViewModel.swift in Sources */,
 				27499B702B2DA11D00DE1BB3 /* DateManagementView.swift in Sources */,
 				278CC7342ADF2E2D004CAABA /* LodingView.swift in Sources */,
 				278DDC1C2ACC3E7F00B2EC50 /* JoinMemberStore.swift in Sources */,
@@ -1125,7 +1130,7 @@
 				FF8217682ACEFB9C002ACD4C /* NativeContentView.swift in Sources */,
 				D2940EF72AFFBAED00E74B0F /* GoogleSignInModel.swift in Sources */,
 				D2A8B6E02ADE481800A469D7 /* AgreementCheckButton.swift in Sources */,
-				27499B742B2DABB800DE1BB3 /* DateManagementCalendar.swift in Sources */,
+				27499B742B2DABB800DE1BB3 /* DateManagementCalendarView.swift in Sources */,
 				023EF9242ACC0334005C3F30 /* UserTravelStore.swift in Sources */,
 				63A3F1762ADF78B1006EE206 /* CustomAnnotationView.swift in Sources */,
 				90D2C11A2B583E19002B6575 /* UserTravelService.swift in Sources */,

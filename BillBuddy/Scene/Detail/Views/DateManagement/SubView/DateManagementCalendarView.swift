@@ -6,49 +6,11 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseFirestore
 
-struct DateManagementModifier: ViewModifier {
-    @StateObject var dateManagementVM: DateManagementViewModel
-    
-    init(dateManagementVM: DateManagementViewModel) {
-        _dateManagementVM = StateObject(wrappedValue: dateManagementVM)
-    }
-
-    func body(content: Content) -> some View {
-        ZStack(alignment: .bottom) {
-            content
-            
-            if dateManagementVM.isPresentedDateSheet {
-                Rectangle()
-                    .fill(.black.opacity(0.7))
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        dateManagementVM.isPresentedDateSheet = false
-                    }
-                
-                DateManagementCalendar(
-                    dateManagementVM: dateManagementVM
-                )
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-            }
-        }
-        .modifier(
-            CheckDateModifier(isPresented: $dateManagementVM.isPresentedAlert)
-        )
-        .animation(
-            dateManagementVM.isPresentedDateSheet ? .spring(response: 0.25) : .none,
-            value: dateManagementVM.isPresentedDateSheet
-        )
-        
-    }
-}
-
-struct DateManagementCalendar: View {
+struct DateManagementCalendarView: View {
     
     @ObservedObject var dateManagementVM: DateManagementViewModel
-    @StateObject private var calendarStore = EditDateCalenderStore()
+    @StateObject private var dateManagementCalendarVM = DateManagementCalendarViewModel()
     
     init(dateManagementVM: DateManagementViewModel) {
         self.dateManagementVM = dateManagementVM
@@ -58,7 +20,7 @@ struct DateManagementCalendar: View {
         VStack(spacing: 8) {
             HStack {
                 Button(action: {
-                    calendarStore.selectBackMonth()
+                    dateManagementCalendarVM.selectBackMonth()
                 }) {
                     Image("arrow_back")
                         .resizable()
@@ -67,11 +29,11 @@ struct DateManagementCalendar: View {
                 }
                 .padding(.trailing, 27)
                 
-                Text("\(calendarStore.titleForYear())   \(calendarStore.titleForMonth())")
+                Text("\(dateManagementCalendarVM.titleForYear())   \(dateManagementCalendarVM.titleForMonth())")
                     .font(.body01)
                 
                 Button(action: {
-                    calendarStore.selectForwardMonth()
+                    dateManagementCalendarVM.selectForwardMonth()
                 }) {
                     Image("arrow_forward_ios")
                         .resizable()
@@ -84,7 +46,7 @@ struct DateManagementCalendar: View {
             
             VStack(spacing: 3) {
                 HStack(spacing: 0) {
-                    ForEach(calendarStore.days, id: \.self) { day in
+                    ForEach(dateManagementCalendarVM.days, id: \.self) { day in
                         Text(day)
                             .font(.body04)
                             .foregroundColor(.gray500)
@@ -97,30 +59,30 @@ struct DateManagementCalendar: View {
             
             VStack(spacing: 6) {
               VStack(spacing: 6) {
-                ForEach(calendarStore.weeks, id: \.self) { week in
+                ForEach(dateManagementCalendarVM.weeks, id: \.self) { week in
                     ZStack {
                         HStack(spacing: 0) {
                             ForEach(week, id: \.self) { day in
-                                let isCurrentMonth = calendarStore.calendar.isDate(day, equalTo: calendarStore.date, toGranularity: .month)
+                                let isCurrentMonth = dateManagementCalendarVM.calendar.isDate(day, equalTo: dateManagementCalendarVM.date, toGranularity: .month)
                                 ZStack {
                                     fillRange(day: day, week: week, index: week.firstIndex(of: day)!)
                                     Button(action: {
-                                        calendarStore.selectDay(day)
+                                        dateManagementCalendarVM.selectDay(day)
                                     }) {
                                         ZStack {
-                                            Text("\(calendarStore.calendar.component(.day, from: day))")
-                                                .foregroundColor(isCurrentMonth ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.black) : Color.gray500)
-                                                .foregroundColor(calendarStore.isDateSelected(day: day) ? Color.white : Color.black)
+                                            Text("\(dateManagementCalendarVM.calendar.component(.day, from: day))")
+                                                .foregroundColor(isCurrentMonth ? (dateManagementCalendarVM.isDateSelected(day: day) ? Color.white : Color.black) : Color.gray500)
+                                                .foregroundColor(dateManagementCalendarVM.isDateSelected(day: day) ? Color.white : Color.black)
                                             
                                             Circle()
                                                 .frame(width: 4, height: 4)
-                                                .foregroundColor(calendarStore.isToday(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.white : Color.myPrimary) : Color.clear)
+                                                .foregroundColor(dateManagementCalendarVM.isToday(day: day) ? (dateManagementCalendarVM.isDateSelected(day: day) ? Color.white : Color.myPrimary) : Color.clear)
                                                 .offset(y: 11.5)
                                         }
                                         .frame(width: 30, height: 30)
                                         .clipShape(Circle())
                                     }
-                                    .background(calendarStore.isDateInRange(day: day) ? (calendarStore.isDateSelected(day: day) ? Color.myPrimary.cornerRadius(30) : Color.clear.cornerRadius(30)) : Color.clear.cornerRadius(30))
+                                    .background(dateManagementCalendarVM.isDateInRange(day: day) ? (dateManagementCalendarVM.isDateSelected(day: day) ? Color.myPrimary.cornerRadius(30) : Color.clear.cornerRadius(30)) : Color.clear.cornerRadius(30))
                                 }
                                 .frame(height: 36)
                                 .frame(maxWidth: .infinity)
@@ -133,15 +95,15 @@ struct DateManagementCalendar: View {
             }
             Spacer()
             Button(action: {
-                dateManagementVM.checkPaymentsDate(calendarStore: calendarStore)
+                dateManagementVM.checkPaymentsDate(calendarStore: dateManagementCalendarVM)
             }) {
-                Text(calendarStore.seletedState.labelText)
-                    .foregroundColor(calendarStore.isSelectedAll ? Color.white : Color.gray600)
+                Text(dateManagementCalendarVM.seletedState.labelText)
+                    .foregroundColor(dateManagementCalendarVM.isSelectedAll ? Color.white : Color.gray600)
                     .font(Font.body02)
             }
-            .disabled(!calendarStore.isSelectedAll)
+            .disabled(!dateManagementCalendarVM.isSelectedAll)
             .frame(width: 335, height: 52)
-            .background(calendarStore.isSelectedAll ? Color.myPrimary.cornerRadius(8) : Color.gray100.cornerRadius(8))
+            .background(dateManagementCalendarVM.isSelectedAll ? Color.myPrimary.cornerRadius(8) : Color.gray100.cornerRadius(8))
             .foregroundColor(.white)
             .padding(.bottom, 52)
             
@@ -160,7 +122,7 @@ struct DateManagementCalendar: View {
             )
         )
         .onAppear {
-            calendarStore.setDate(dateManagementVM.getStartDate(), dateManagementVM.getEndDate())
+            dateManagementCalendarVM.setDate(dateManagementVM.getStartDate(), dateManagementVM.getEndDate())
         }
     } //MARK: BODY
     
@@ -171,18 +133,18 @@ struct DateManagementCalendar: View {
                 .fill(Color.lightBlue200)
                 .frame(height: 30)
             
-            if calendarStore.isDateSelected(day: day) {
-                if day == calendarStore.firstDate {
+            if dateManagementCalendarVM.isDateSelected(day: day) {
+                if day == dateManagementCalendarVM.firstDate {
                     Color.clear
                 } else {
                     rangeFrame
                 }
             } else {
-                if calendarStore.isDateInRange(day: day) {
+                if dateManagementCalendarVM.isDateInRange(day: day) {
                     if index == 0 {
                         rangeFrame
                     } else {
-                        if calendarStore.isFirstDayOfMonth(date: day) {
+                        if dateManagementCalendarVM.isFirstDayOfMonth(date: day) {
                             rangeFrame
                         } else {
                             rangeFrame
@@ -193,22 +155,22 @@ struct DateManagementCalendar: View {
                 }
             }
             
-            if calendarStore.isDateSelected(day: day) {
-                if day == calendarStore.secondDate {
+            if dateManagementCalendarVM.isDateSelected(day: day) {
+                if day == dateManagementCalendarVM.secondDate {
                     Color.clear
                 } else {
-                    if calendarStore.secondDate == nil {
+                    if dateManagementCalendarVM.secondDate == nil {
                         Color.clear
                     } else {
                         rangeFrame
                     }
                 }
             } else {
-                if calendarStore.isDateInRange(day: day) {
+                if dateManagementCalendarVM.isDateInRange(day: day) {
                     if index == week.count - 1 {
                         rangeFrame
                     } else {
-                        if calendarStore.isLastDayOfMonth(date: day) {
+                        if dateManagementCalendarVM.isLastDayOfMonth(date: day) {
                             rangeFrame
                         } else {
                             rangeFrame

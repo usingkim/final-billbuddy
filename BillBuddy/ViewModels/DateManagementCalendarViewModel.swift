@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-final class EditDateCalenderStore: ObservableObject {
+final class DateManagementCalendarViewModel: ObservableObject {
     
     
     var calendar = Calendar.current

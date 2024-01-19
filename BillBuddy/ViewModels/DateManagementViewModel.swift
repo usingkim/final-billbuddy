@@ -54,7 +54,7 @@ final class DateManagementViewModel: ObservableObject {
         return travel.endDate.toDate()
     }
     
-    func checkPaymentsDate(calendarStore: EditDateCalenderStore) {
+    func checkPaymentsDate(calendarStore: DateManagementCalendarViewModel) {
         switch calendarStore.isDatesInRange(days: paymentDates) {
         case true:
             guard let firstDate = calendarStore.firstDate,
