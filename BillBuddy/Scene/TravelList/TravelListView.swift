@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TravelListView: View {
-    @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     @EnvironmentObject private var nativeAdViewModel: NativeAdViewModel
@@ -196,14 +195,15 @@ struct TravelListView: View {
                     nativeAdViewModel.refreshAd()
                 }
             }
-            userTravelStore.fetchFirstInit()
             if !AuthService.shared.userUid.isEmpty {
                 if notificationStore.didFetched == false {
                     notificationStore.getUserUid()
                 }
             }
-            travelListVM.fetchAll { travels in
-                travelListVM.filterTravel()
+            if !travelListVM.isFetchedFirst {
+                travelListVM.fetchAll { travels in
+                    travelListVM.filterTravel()
+                }
             }
         }
         .onDisappear {
