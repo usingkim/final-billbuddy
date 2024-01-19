@@ -21,7 +21,7 @@ struct DetailMainView: View {
     
     let menus: [String] = ["내역", "지도"]
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         _travelDetailStore = StateObject(wrappedValue: TravelDetailStore(travel: travel))
         _detailMainVM = StateObject(wrappedValue: DetailMainViewModel(travel: travel))
     }
@@ -86,7 +86,6 @@ struct DetailMainView: View {
         
         .onAppear {
             tabBarVisibilityStore.hideTabBar()
-            // FIXME: 바로 정산 금액이 업데이트 되지 않음
             if detailMainVM.selectedDate == 0 {
 //                if travelDetailStore.isFirstFetch {
                     travelDetailStore.checkAndResaveToken()

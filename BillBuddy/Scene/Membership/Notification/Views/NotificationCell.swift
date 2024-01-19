@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotificationCell: View {
-    var notification: UserNotification
+    var notification: Notification
     var isRead: Bool
     let deleteAction: () -> Void
     let callBack: () -> Void
@@ -56,7 +56,7 @@ struct NotificationCell: View {
             }
     }
     
-    private func setContentTitle(noti: UserNotification) -> String {
+    private func setContentTitle(noti: Notification) -> String {
         if noti.duplicationIds == nil {
             return "\(notification.content)가 있습니다"
         } else {

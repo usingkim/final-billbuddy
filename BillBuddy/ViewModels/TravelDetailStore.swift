@@ -12,29 +12,29 @@ import FirebaseFirestoreSwift
 // Firebase 결합 -> 다른데서 하도록 해야된당
 
 final class TravelDetailStore: ObservableObject {
-    @Published var travel: TravelCalculation
+    @Published var travel: Travel
     @Published var isChangedTravel: Bool = false
     @Published var isFirstFetch: Bool = true
     
-    var travelTmp: TravelCalculation
+    var travelTmp: Travel
     var travelId: String
-    let dbRef = Firestore.firestore().collection(StoreCollection.travel.path) // "TravelCalculation"
+    let dbRef = Firestore.firestore().collection(StoreCollection.travel.path)
     var listener: ListenerRegistration? = nil
     
     init() {
-        travelTmp = TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
+        travelTmp = Travel(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
         travelId = ""
         self.travel = travelTmp
     }
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         self.travel = travel
         self.travelTmp = travel
         self.travelId = travel.id
     }
     
     @MainActor
-    func setTravel(travel: TravelCalculation) {
+    func setTravel(travel: Travel) {
         self.travelTmp = travel
         self.travel = travel
         self.travelId = travel.id
@@ -52,7 +52,7 @@ final class TravelDetailStore: ObservableObject {
         Task {
             do {
                 let snapshot = try await dbRef.document(travelId).getDocument()
-                let travel = try snapshot.data(as: TravelCalculation.self)
+                let travel = try snapshot.data(as: Travel.self)
                 DispatchQueue.main.async {
                     self.travel = travel
                 }
@@ -63,7 +63,7 @@ final class TravelDetailStore: ObservableObject {
     }
     
     func checkAndResaveToken() {
-        guard let index = travelTmp.members.firstIndex(where: { $0.userId == AuthStore.shared.userUid }) else { return }
+        guard let index = travelTmp.members.firstIndex(where: { $0.userId == AuthService.shared.userUid }) else { return }
         if travelTmp.members[index].reciverToken != UserService.shared.reciverToken {
             travelTmp.members[index].reciverToken = UserService.shared.reciverToken
             travelTmp.updateContentDate = Date.now.timeIntervalSince1970
@@ -93,7 +93,7 @@ final class TravelDetailStore: ObservableObject {
             print("listenTravelDate1")
             do {
                 guard let snapshot = querySnapshot else { return }
-                let travel = try snapshot.data(as: TravelCalculation.self)
+                let travel = try snapshot.data(as: Travel.self)
                 // 여행 변경사항이 있을 시
                 DispatchQueue.main.async {
                     if self.isFirstFetch {
@@ -131,7 +131,7 @@ final class TravelDetailStore: ObservableObject {
 
     
     /// 인원관리뷰 리스닝
-    func listenTravelDate(callback: @escaping (TravelCalculation) -> Void) {
+    func listenTravelDate(callback: @escaping (Travel) -> Void) {
         if travel.isPaymentSettled { return }
         self.listener = dbRef.document(travelId).addSnapshotListener { querySnapshot, error in
             if let error = error {
@@ -140,7 +140,7 @@ final class TravelDetailStore: ObservableObject {
             print("listenTravelDate2")
             do {
                 guard let snapshot = querySnapshot else { return }
-                let travel = try snapshot.data(as: TravelCalculation.self)
+                let travel = try snapshot.data(as: Travel.self)
                 // 여행 변경사항이 있을 시
                 DispatchQueue.main.async {
                     if self.isFirstFetch {

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct UserNotification: Identifiable, Codable {
+struct Notification: Identifiable, Codable {
     @DocumentID var id: String?
     var duplicationIds: [String]?
     var type: NotiType
@@ -19,9 +19,3 @@ struct UserNotification: Identifiable, Codable {
     var isChecked: Bool = false
 }
 
-enum NotiType: String, Codable {
-    case chatting
-    case travel
-    case notice
-    case invite
-}

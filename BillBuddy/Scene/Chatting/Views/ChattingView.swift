@@ -32,7 +32,7 @@ struct ChattingView: View {
         }
         .onAppear {
             tabBarVisibilityStore.showTabBar()
-            if !AuthStore.shared.userUid.isEmpty {
+            if !AuthService.shared.userUid.isEmpty {
                 travelStore.fetchTravelCalculation()
             }
         }
@@ -106,7 +106,7 @@ struct ChattingView: View {
                                 .font(Font.caption01)
                                 .foregroundColor(.gray500)
                         }
-                        if let unreadMessage = travel.unreadMessageCount?[AuthStore.shared.userUid], unreadMessage > 0 {
+                        if let unreadMessage = travel.unreadMessageCount?[AuthService.shared.userUid], unreadMessage > 0 {
                             Text("\(unreadMessage)")
                                 .frame(width: 16, height: 16)
                                 .font(Font.caption03)
@@ -124,7 +124,7 @@ struct ChattingView: View {
         .padding(2)
     }
     
-    private func sortedList() -> [TravelCalculation] {
+    private func sortedList() -> [Travel] {
         let sortedItems = travelStore.travels.sorted { (firstTravel, secondTravel) in
                 if let firstDate = firstTravel.lastMessageDate, let secondDate = secondTravel.lastMessageDate {
                     // 1. lastMessageDate 최신순

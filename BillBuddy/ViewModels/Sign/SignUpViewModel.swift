@@ -78,7 +78,7 @@ final class SignUpViewModel: ObservableObject {
     
     // 이메일 중복 검사
     func emailCheck(email: String, completion: @escaping (Bool) -> Void) {
-        let userDB = Firestore.firestore().collection("User")
+        let userDB = Firestore.firestore().collection(StoreCollection.user.path)
         let query = userDB.whereField("email", isEqualTo: email)
         
         query.getDocuments() { (qs, err) in
@@ -108,12 +108,12 @@ final class SignUpViewModel: ObservableObject {
     @MainActor
     public func postSignUp() async -> Bool {
         do {
-            let authResult = try await AuthStore.shared.createUser(email: signUpData.email, password: signUpData.password )
+            let authResult = try await AuthService.shared.createUser(email: signUpData.email, password: signUpData.password )
             var user = signUpData.changeToUserModel(id: authResult.user.uid)
             user.reciverToken = UserService.shared.reciverToken
             try await saveUserData(user: user)
             
-            UserDefaults.standard.setValue(authResult.user.uid, forKey: "User")
+            UserDefaults.standard.setValue(authResult.user.uid, forKey: StoreCollection.user.path)
             return true
         } catch {
             self.isShowingCompleteJoinAlert = true

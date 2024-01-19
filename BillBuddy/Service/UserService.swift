@@ -4,8 +4,6 @@
 //
 //  Created by 박지현 on 10/6/23.
 //
-
-import Foundation
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
@@ -30,18 +28,18 @@ final class UserService: ObservableObject {
     func getReciverToken(_ token: String) {
         reciverToken = token
         currentUser?.reciverToken = token
-        AuthStore.shared.currentUser?.reciverToken = token
+        AuthService.shared.currentUser?.reciverToken = token
     }
     
     // 현재 유저 패치작업
     @MainActor
     func fetchUser() async throws  {
-        let uid: String = AuthStore.shared.userUid
+        let uid: String = AuthService.shared.userUid
         if uid == "" {
             return
         }
         do {
-            let snapshot = try await Firestore.firestore().collection("User").document(uid).getDocument()
+            let snapshot = try await Firestore.firestore().collection(StoreCollection.user.path).document(uid).getDocument()
             var user: User = try snapshot.data(as: User.self)
             
             if user.reciverToken != self.reciverToken {
@@ -69,7 +67,7 @@ final class UserService: ObservableObject {
             return
         }
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection(StoreCollection.user.path).document(AuthService.shared.userUid)
             let updatedData = [
                 "email": user.email,
                 "bankName": user.bankName,
@@ -89,7 +87,7 @@ final class UserService: ObservableObject {
             return
         }
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection(StoreCollection.user.path).document(AuthService.shared.userUid)
             let updatedData = [
                 "reciverToken": self.reciverToken
             ]
@@ -105,7 +103,7 @@ final class UserService: ObservableObject {
     func updateUserPremium() async throws {
         guard let user = currentUser else { return }
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection(StoreCollection.user.path).document(AuthService.shared.userUid)
             let updatedData = [
                 "isPremium": user.isPremium,
                 "premiumDueDate": user.premiumDueDate
@@ -134,25 +132,25 @@ final class UserService: ObservableObject {
         currentUser?.userImage = name
         
         do {
-            let userRef = Firestore.firestore().collection("User").document(AuthStore.shared.userUid)
+            let userRef = Firestore.firestore().collection(StoreCollection.user.path).document(AuthService.shared.userUid)
             let updatedData = [
                 "userImage" : name/*user.userImage*/
             ]
             
             try await userRef.setData(updatedData, merge: true)
             
-            let travelIdDocuments = try await userRef.collection("UserTravel").order(by: "travelId").getDocuments()
+            let travelIdDocuments = try await userRef.collection(StoreCollection.userTravel.path).order(by: "travelId").getDocuments()
             for travelIdDocument in travelIdDocuments.documents {
                 
-                let userTravel = try travelIdDocument.data(as: UserTravel.self)
-                let travelCalculationDocuments = try await Firestore.firestore().collection("TravelCalculation").document(userTravel.travelId).getDocument()
+                let userTravel = try travelIdDocument.data(as: MyTravel.self)
+                let travelCalculationDocuments = try await Firestore.firestore().collection(StoreCollection.travel.path).document(userTravel.travelId).getDocument()
 
-                var travelCalc = try travelCalculationDocuments.data(as: TravelCalculation.self)
+                var travelCalc = try travelCalculationDocuments.data(as: Travel.self)
                 if let index = travelCalc.members.firstIndex(where: {$0.userId == user.id}) {
                     travelCalc.members[index].userImage = name
                 }
 //                print("members -> \(travelCalc.members)")
-                try  Firestore.firestore().collection("TravelCalculation").document(userTravel.travelId).setData(from: travelCalc, merge: true)
+                try  Firestore.firestore().collection(StoreCollection.travel.path).document(userTravel.travelId).setData(from: travelCalc, merge: true)
             }
             
             print("업데이트 성공")

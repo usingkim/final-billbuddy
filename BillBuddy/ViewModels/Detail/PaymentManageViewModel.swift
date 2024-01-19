@@ -17,7 +17,7 @@ final class PaymentManageViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var payment: Payment?
-    @Published var travelCalculation: TravelCalculation
+    @Published var travelCalculation: Travel
     
     @Published var expandDetails: String = ""
     @Published var priceString: String = ""
@@ -36,21 +36,21 @@ final class PaymentManageViewModel: ObservableObject {
     @Published var isShowingDatePicker: Bool = false
     @Published var isShowingTimePicker: Bool = false
     @Published var paymentType: Int = 0 // 0: 1/n, 1: 개별
-    @Published var selectedMember: TravelCalculation.Member = TravelCalculation.Member(name: "", advancePayment: 0, payment: 0)
-    @Published var members: [TravelCalculation.Member] = []
+    @Published var selectedMember: Travel.Member = Travel.Member(name: "", advancePayment: 0, payment: 0)
+    @Published var members: [Travel.Member] = []
     
     @Published var isShowingDescription: Bool = false
     @Published var isShowingPersonalMemberSheet: Bool = false
     @Published var paidButton: Bool = false
     @Published var personalButton: Bool = false
-    @Published var tempMembers: [TravelCalculation.Member] = []
+    @Published var tempMembers: [Travel.Member] = []
     
     @Published var advanceAmountString: String = ""
     @Published var seperateAmountString: String = ""
     @Published var personalMemo: String = ""
     @Published var seperate: [Int] = [0, 0]
     
-    init(mode: PaymentManageMode, payment: Payment?, travelCalculation: TravelCalculation) {
+    init(mode: PaymentManageMode, payment: Payment?, travelCalculation: Travel) {
         self.mode = mode
         self.payment = payment
         self.travelCalculation = travelCalculation
@@ -102,7 +102,7 @@ final class PaymentManageViewModel: ObservableObject {
         }
     }
     
-    func setTravel(travel: TravelCalculation) {
+    func setTravel(travel: Travel) {
         travelCalculation = travel
         paymentDate = travel.startDate.toDate()
         isShowingSelectTripSheet = false
@@ -151,7 +151,7 @@ final class PaymentManageViewModel: ObservableObject {
 //            settlementExpensesStore.setSettlementExpenses(payments: paymentStore.payments, members: travelCalculation.members)
         
         PushNotificationManager.sendPushNotification(toTravel: travelCalculation, title: "\(travelCalculation.travelTitle)여행방", body: "지출이 추가 되었습니다.", senderToken: "senderToken")
-        notificationStore.sendNotification(members: travelCalculation.members, notification: UserNotification(type: .travel, content: "\(travelCalculation.travelTitle)여행방에서 확인하지 않은 지출", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travelCalculation.id)", addDate: Date(), isChecked: false))
+        notificationStore.sendNotification(members: travelCalculation.members, notification: Notification(type: .travel, content: "\(travelCalculation.travelTitle)여행방에서 확인하지 않은 지출", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travelCalculation.id)", addDate: Date(), isChecked: false))
     }
     
     func mainAddPayment(settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationService, userTravelStore: UserTravelStore) {
@@ -160,7 +160,7 @@ final class PaymentManageViewModel: ObservableObject {
         userTravelStore.addPayment(travelCalculation: travelCalculation, payment: newPayment)
         
         PushNotificationManager.sendPushNotification(toTravel: travelCalculation, title: "\(travelCalculation.travelTitle)여행방", body: "지출이 추가 되었습니다.", senderToken: "senderToken")
-        notificationStore.sendNotification(members: travelCalculation.members, notification: UserNotification(type: .travel, content: "\(travelCalculation.travelTitle)여행방에서 확인하지 않은 지출", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travelCalculation.id)", addDate: Date(), isChecked: false))
+        notificationStore.sendNotification(members: travelCalculation.members, notification: Notification(type: .travel, content: "\(travelCalculation.travelTitle)여행방에서 확인하지 않은 지출", contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(travelCalculation.id)", addDate: Date(), isChecked: false))
     }
     
     func editPayment(settlementExpensesStore: SettlementExpensesStore, locationManager: LocationManager, notificationStore: NotificationService) {
@@ -308,7 +308,7 @@ final class PaymentManageViewModel: ObservableObject {
         }
     }
     
-    func addOrDeleteMember(member: TravelCalculation.Member) {
+    func addOrDeleteMember(member: Travel.Member) {
         if let existMember = tempMembers.firstIndex(where: { m in
             m.name == member.name
         }) {

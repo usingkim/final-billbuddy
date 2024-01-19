@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import Combine
 
-protocol FirebaseService {
+protocol FirebaseProtocol {
     associatedtype DBData
     
     var dbRef: CollectionReference { get set }

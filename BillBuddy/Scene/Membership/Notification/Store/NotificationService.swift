@@ -18,13 +18,13 @@ final class NotificationService: ObservableObject {
     }
     
     /// fetch해온 안읽은 notifications
-    @Published var notifications: [UserNotification] = []
+    @Published var notifications: [Notification] = []
     /// 읽은 notifications (파이어 베이스에서는 삭제)
-    @Published var readedNotifications: [UserNotification] = []
+    @Published var readedNotifications: [Notification] = []
     var hasUnReadNoti: Bool {
         return !notifications.filter { $0.isChecked == false }.isEmpty
     }
-    var viewList: [UserNotification] {
+    var viewList: [Notification] {
         let list = notifications + readedNotifications
         return list.sorted(by: { $0.addDate > $1.addDate })
     }
@@ -33,7 +33,7 @@ final class NotificationService: ObservableObject {
     private var dbRef: CollectionReference?
     
     private init() {
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         if !userId.isEmpty {
             self.dbRef = Firestore.firestore().collection(StoreCollection.user.path).document(userId).collection(StoreCollection.notification.path)
             self.didFetched = true
@@ -47,7 +47,7 @@ final class NotificationService: ObservableObject {
         }
     }
     
-    func readNotifications(noti: UserNotification) {
+    func readNotifications(noti: Notification) {
         if noti.duplicationIds == nil {
             readSingleNotification(notiId: noti.id ?? "")
         } else {
@@ -94,11 +94,11 @@ final class NotificationService: ObservableObject {
         
     }
     
-    func setDuplicateNotifications(_ notifications: [UserNotification]) -> [UserNotification] {
-        var chattingNotis: [UserNotification] = []
-        var travelNotis: [UserNotification] = []
-        var noticeNotis: [UserNotification] = []
-        var inviteNotis: [UserNotification] = []
+    func setDuplicateNotifications(_ notifications: [Notification]) -> [Notification] {
+        var chattingNotis: [Notification] = []
+        var travelNotis: [Notification] = []
+        var noticeNotis: [Notification] = []
+        var inviteNotis: [Notification] = []
         for notification in notifications {
             switch notification.type {
             case .chatting:
@@ -112,20 +112,20 @@ final class NotificationService: ObservableObject {
             }
         }
         
-        let chattingResult: [UserNotification] = convertDuplicateNotifications(chattingNotis)
-        let travelResult: [UserNotification] = convertDuplicateNotifications(travelNotis)
+        let chattingResult: [Notification] = convertDuplicateNotifications(chattingNotis)
+        let travelResult: [Notification] = convertDuplicateNotifications(travelNotis)
         
         let result = chattingResult + travelResult + noticeNotis + inviteNotis
         
         return result
     }
     
-    private func convertDuplicateNotifications(_ notis: [UserNotification]) -> [UserNotification] {
-        var chattingResult: [UserNotification] = []
+    private func convertDuplicateNotifications(_ notis: [Notification]) -> [Notification] {
+        var chattingResult: [Notification] = []
 
         for noti in notis {
             guard let notiIndex = chattingResult.firstIndex(where: { $0.contentId == noti.contentId }) else {
-                let noti = UserNotification(id: UUID().uuidString, duplicationIds: [noti.id ?? ""], type: noti.type, content: noti.content, contentId: noti.contentId, addDate: noti.addDate, isChecked: noti.isChecked)
+                let noti = Notification(id: UUID().uuidString, duplicationIds: [noti.id ?? ""], type: noti.type, content: noti.content, contentId: noti.contentId, addDate: noti.addDate, isChecked: noti.isChecked)
                 chattingResult.append(noti)
                 continue
             }
@@ -138,7 +138,7 @@ final class NotificationService: ObservableObject {
         return chattingResult
     }
     
-    func deleteNotification(_ notification: UserNotification) {
+    func deleteNotification(_ notification: Notification) {
         if notification.isChecked {
             if let index = readedNotifications.firstIndex(where: { $0.id == notification.id }) {
                 readedNotifications.remove(at: index)
@@ -167,7 +167,7 @@ final class NotificationService: ObservableObject {
     }
     
     func getUserUid() {
-        let userId = AuthStore.shared.userUid
+        let userId = AuthService.shared.userUid
         self.dbRef = Firestore.firestore().collection(StoreCollection.user.path).document(userId).collection(StoreCollection.notification.path)
         self.didFetched = true
         self.fetchNotification()
@@ -177,10 +177,10 @@ final class NotificationService: ObservableObject {
         guard let dbRef = dbRef else { return }
         Task {
             do {
-                var thumpNotis: [UserNotification] = []
+                var thumpNotis: [Notification] = []
                 let snapShot = try await dbRef.getDocuments()
                 for document in snapShot.documents {
-                    let noti = try document.data(as: UserNotification.self)
+                    let noti = try document.data(as: Notification.self)
                     thumpNotis.append(noti)
                 }
                 thumpNotis.sort(by: { $0.addDate > $1.addDate })
@@ -194,12 +194,12 @@ final class NotificationService: ObservableObject {
     }
     
     /// 여행방 갱신, 채팅을 맴버들에게 보낼 시
-    func sendNotification(members: [TravelCalculation.Member], notification: UserNotification) {
+    func sendNotification(members: [Travel.Member], notification: Notification) {
         let members = members.filter { $0.userId != nil }
         Task {
             for member in members {
                 do {
-                    try Firestore.firestore().collection("User").document(member.userId ?? "").collection("Notification").addDocument(from: notification.self)
+                    try Firestore.firestore().collection(StoreCollection.user.path).document(member.userId ?? "").collection(StoreCollection.notification.path).addDocument(from: notification.self)
                 } catch {
                     print("false send notification to \(member.name) - \(error)")
                 }
@@ -208,11 +208,11 @@ final class NotificationService: ObservableObject {
     }
     
     /// 유저에게 직접 보낼 시
-    func sendNotification(users: [User], notification: UserNotification) {
+    func sendNotification(users: [User], notification: Notification) {
         Task {
             for user in users {
                 do {
-                    try Firestore.firestore().collection("User").document(user.id ?? "").collection("Notification").addDocument(from: notification.self)
+                    try Firestore.firestore().collection(StoreCollection.user.path).document(user.id ?? "").collection(StoreCollection.notification.path).addDocument(from: notification.self)
                 } catch {
                     print("false send notification to \(user.name) - \(error)")
                 }

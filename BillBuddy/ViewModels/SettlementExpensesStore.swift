@@ -38,7 +38,7 @@ final class SettlementExpensesStore: ObservableObject {
     }
     
     @MainActor
-    func setSettlementExpenses(payments: [Payment], members: [TravelCalculation.Member]) {
+    func setSettlementExpenses(payments: [Payment], members: [Travel.Member]) {
         self.payments = payments
         var newExpenses = SettlementExpenses()
         newExpenses.totalExpenditure = payments.reduce(0, { $0 + $1.payment } )

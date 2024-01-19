@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TravelListView: View {
-    @EnvironmentObject private var userTravelStore: UserTravelStore
     @EnvironmentObject private var notificationStore: NotificationService
     @EnvironmentObject private var tabBarVisibilityStore: TabBarVisibilityStore
     @EnvironmentObject private var nativeAdViewModel: NativeAdViewModel
@@ -17,14 +16,7 @@ struct TravelListView: View {
     
     @StateObject private var travelDetailStore: TravelDetailStore = TravelDetailStore()
     @ObservedObject var floatingButtonMenuStore: FloatingButtonMenuStore
-    
-    @State private var selectedFilter: TravelFilter = .paymentInProgress
-    @State private var isShowingEditTravelView = false
-    @State private var selectedTravel: TravelCalculation?
-    
-    @State private var isPresentedDateView: Bool = false
-    @State private var isPresentedMemeberView: Bool = false
-    @State private var isPresentedSpendingView: Bool = false
+    @StateObject private var travelListVM: TravelListViewModel = TravelListViewModel()
     
     var body: some View {
         ZStack {
@@ -37,24 +29,30 @@ struct TravelListView: View {
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 0) {
-                        if !userTravelStore.isFetching {
-                            //.onAppear 애니메이션 효과 때문에 문장이 접혔다 펴지는 문제가 있음
-                            if selectedFilter == .paymentInProgress && createTravelList().isEmpty {
+                        if travelListVM.isFetchingList || !travelListVM.isFetchedFirst {
+                            progressView
+                        }
+                        else {
+                            if travelListVM.filteredTravels.isEmpty {
+                                switch(travelListVM.selectedFilter) {
+                                case .paymentInProgress:
                                     Text("정산 중인 여행이 없습니다.")
                                         .font(.body04)
                                         .foregroundColor(.gray600)
                                         .padding(.top, 270)
                                         .lineLimit(1)
                                         .lineSpacing(25)
-                            } else if selectedFilter == .paymentSettled && createTravelList().isEmpty {
+                                case .paymentSettled:
                                     Text("정산이 완료된 여행이 없습니다.")
                                         .font(.body04)
                                         .foregroundColor(.gray600)
                                         .padding(.top, 270)
                                         .lineLimit(1)
                                         .lineSpacing(25)
-                            } else {
-                                ForEach(createTravelList()) { travel in
+                                }
+                            }
+                            else {
+                                ForEach(travelListVM.filteredTravels) { travel in
                                     Button {
                                         tabViewStore.pushView(type: .travel, travel: travel)
                                     } label: {
@@ -75,36 +73,29 @@ struct TravelListView: View {
                                             
                                             Button {
                                                 travelDetailStore.setTravel(travel: travel)
-                                                selectedTravel = travel
-                                                isShowingEditTravelView.toggle()
+                                                travelListVM.selectedTravel = travel
+                                                travelListVM.isShowingEditSheet.toggle()
                                             } label: {
                                                 Image(.steps13)
                                                     .resizable()
                                                     .frame(width: 24, height: 24)
                                             }
                                             .padding(.trailing, 23)
-                                            .sheet(isPresented: $isShowingEditTravelView) {
-                                                if let travel = selectedTravel {
+                                            .sheet(isPresented: $travelListVM.isShowingEditSheet) {
+                                                if let travel = travelListVM.selectedTravel {
                                                     EditTravelSheetView(
-                                                        isPresentedSheet: $isShowingEditTravelView,
-                                                        isPresentedDateView: $isPresentedDateView,
-                                                        isPresentedMemeberView: $isPresentedMemeberView,
-                                                        isPresentedSpendingView: $isPresentedSpendingView,
+                                                        travelListVM: travelListVM,
                                                         travel: travel
                                                     )
                                                     .presentationDetents([.height(250)])
                                                 }
                                             }
-                                            .navigationDestination(isPresented: $isPresentedDateView) {
-                                                DateManagementView(
-                                                    travel: travel,
-                                                    paymentDates: [],
-                                                    entryViewtype: .list
-                                                )
+                                            .navigationDestination(isPresented: $travelListVM.isPresentedDateView) {
+                                                DateManagementView(entryViewType: .list, travel: travel, paymentDates: [])
                                                 .environmentObject(travelDetailStore)
                                             }
-                                            .navigationDestination(isPresented: $isPresentedMemeberView) {
-                                                if let travel = selectedTravel {
+                                            .navigationDestination(isPresented: $travelListVM.isPresentedMemeberView) {
+                                                if let travel = travelListVM.selectedTravel {
                                                     MemberManagementView(
                                                         travel: travel,
                                                         entryViewType: .list
@@ -112,12 +103,10 @@ struct TravelListView: View {
                                                     .environmentObject(travelDetailStore)
                                                 }
                                             }
-                                            .navigationDestination(isPresented: $isPresentedSpendingView) {
+                                            .navigationDestination(isPresented: $travelListVM.isPresentedSpendingView) {
                                                 SettledAccountView(entryViewtype: .list)
                                                     .environmentObject(travelDetailStore)
-
                                             }
-                                            
                                         }
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 94)
@@ -129,13 +118,10 @@ struct TravelListView: View {
                                 .padding(.horizontal, 12)
                             }
                             
-                        } else {
-                            progressView
                         } //MARK: else
                         
                         
                     }
-                    
                 } //MARK: SCROLLVIEW
                 //                }
                 Divider().padding(0)
@@ -165,16 +151,9 @@ struct TravelListView: View {
                             .frame(width: 24, height: 24)
                     }
                     else {
-                        if notificationStore.hasUnReadNoti {
-                            Image(.redDotRingBell)
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                        }
-                        else {
-                            Image("ringing-bell-notification-3")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                        }
+                        Image("ringing-bell-notification-3")
+                            .resizable()
+                            .frame(width: 24, height: 24)
                     }
                 }
             }
@@ -184,9 +163,9 @@ struct TravelListView: View {
         }
         .overlay(
             Rectangle()
-                .fill(Color.systemBlack.opacity(isShowingEditTravelView ? 0.6 : 0)).edgesIgnoringSafeArea(.all)
+                .fill(Color.systemBlack.opacity(travelListVM.isShowingEditSheet ? 0.6 : 0)).edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    isShowingEditTravelView = false
+                    travelListVM.isShowingEditSheet = false
                 }
         )
         .overlay(
@@ -205,7 +184,6 @@ struct TravelListView: View {
         )
         
         .toolbar(tabBarVisibilityStore.visibility, for: .tabBar)
-        
         .onAppear {
             tabBarVisibilityStore.showTabBar()
             if let isPremium = userService.currentUser?.isPremium {
@@ -213,10 +191,14 @@ struct TravelListView: View {
                     nativeAdViewModel.refreshAd()
                 }
             }
-            userTravelStore.fetchFirstInit()
-            if !AuthStore.shared.userUid.isEmpty {
+            if !AuthService.shared.userUid.isEmpty {
                 if notificationStore.didFetched == false {
                     notificationStore.getUserUid()
+                }
+            }
+            if !travelListVM.isFetchedFirst {
+                travelListVM.fetchAll { travels in
+                    travelListVM.filterTravel()
                 }
             }
         }
@@ -227,60 +209,37 @@ struct TravelListView: View {
         
     } //MARK: BODY
     
-    func createTravelList() -> [TravelCalculation] {
-        var sortedTravels: [TravelCalculation]
-        
-        switch selectedFilter {
-        case .paymentInProgress:
-            sortedTravels = userTravelStore.travels.filter { userTravel in
-                return !userTravel.isPaymentSettled
-            }
-        case .paymentSettled:
-            sortedTravels = userTravelStore.travels.filter { userTravel in
-                return userTravel.isPaymentSettled
-            }
-        }
-        
-        let sortingTravels = sortedTravels.sorted { travel1, travel2 in
-            if travel1.startDate != travel2.startDate {
-                return travel1.startDate < travel2.startDate
-            } else {
-                return travel1.endDate < travel2.endDate
-            }
-        }
-        
-        return sortingTravels
-    }
 }
 
 extension TravelListView {
     var travelFilterButton: some View {
         HStack(spacing: 0) {
             ForEach(TravelFilter.allCases, id: \.rawValue) { filter in
-                VStack {
-                    Text(filter.title)
-                        .padding(.top, 25)
-                        .font(Font.body02)
-                        .fontWeight(selectedFilter == filter ? .bold : .regular)
-                        .foregroundColor(selectedFilter == filter ? .myPrimary : .gray500)
-                    
-                    if filter == selectedFilter {
-                        Capsule()
-                            .foregroundColor(Color.myPrimary)
-                            .frame(width: 100, height: 3)
-//                            .matchedGeometryEffect(id: "filter", in: animation)
-                    } else {
-                        Capsule()
-                            .foregroundColor(.gray100)
-                            .frame(width: 100, height: 3)
+                Button {
+                    travelListVM.selectedFilter = filter
+                    travelListVM.filterTravel()
+                } label: {
+                    VStack {
+                        Text(filter.title)
+                            .padding(.top, 25)
+                            .font(Font.body02)
+                            .fontWeight(travelListVM.selectedFilter == filter ? .bold : .regular)
+                            .foregroundColor(travelListVM.selectedFilter == filter ? .myPrimary : .gray500)
+                        
+                        if filter == travelListVM.selectedFilter {
+                            Capsule()
+                                .foregroundColor(Color.myPrimary)
+                                .frame(width: 100, height: 3)
+                            //                            .matchedGeometryEffect(id: "filter", in: animation)
+                        } else {
+                            Capsule()
+                                .foregroundColor(.gray100)
+                                .frame(width: 100, height: 3)
+                        }
                     }
                 }
-                .onTapGesture {
-//                    withAnimation(Animation.default) {
-                        self.selectedFilter = filter
-                        print(self.selectedFilter)
-//                    }
-                }
+                .buttonStyle(.plain)
+
             }
         }
     }
@@ -288,7 +247,7 @@ extension TravelListView {
     var progressView: some View {
         VStack(spacing: 0) {
             
-            ForEach(0..<userTravelStore.travelCount) { _ in
+            ForEach(0..<3) { _ in
                 HStack {
                     VStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 12)

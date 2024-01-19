@@ -22,8 +22,8 @@ struct NotificationListView: View {
     @EnvironmentObject private var userTravelStore: UserTravelStore
 
     private var db = Firestore.firestore()
-    @State private var notifications: [UserNotification] = []
-    @State private var selectedNotification: UserNotification?
+    @State private var notifications: [Notification] = []
+    @State private var selectedNotification: Notification?
     
     var body: some View {
         ScrollView {
@@ -89,13 +89,13 @@ struct NotificationListView: View {
     }
     
     private func fetchNotifications() {
-        db.collection("User").document(AuthStore.shared.userUid).collection("Notification").getDocuments { (querySnapshot, error) in
+        db.collection(StoreCollection.user.path).document(AuthService.shared.userUid).collection(StoreCollection.notification.path).getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error fetching notifications: \(error)")
             } else {
-                var notifications: [UserNotification] = []
+                var notifications: [Notification] = []
                 for document in querySnapshot!.documents {
-                    if let notification = try? document.data(as: UserNotification.self) {
+                    if let notification = try? document.data(as: Notification.self) {
                         notifications.append(notification)
                     }
                 }
@@ -105,7 +105,7 @@ struct NotificationListView: View {
         }
     }
     
-    private func deleteNotification(_ notification: UserNotification) {
+    private func deleteNotification(_ notification: Notification) {
         notificationStore.deleteNotification(notification)
     }
     
@@ -115,7 +115,7 @@ struct NotificationListView: View {
 //        }
 //    }
           
-    private func getInvited(accept: Bool, selectedNotification: UserNotification?) {
+    private func getInvited(accept: Bool, selectedNotification: Notification?) {
         guard let selectedNotification else { return }
         switch accept {
         case true:

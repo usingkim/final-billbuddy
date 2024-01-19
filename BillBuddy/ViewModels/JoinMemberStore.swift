@@ -9,18 +9,18 @@ import Foundation
 import FirebaseFirestore
 
 class JoinMemberStore: ObservableObject {    
-    @Published var members: [TravelCalculation.Member] = []
+    @Published var members: [Travel.Member] = []
     @Published var searchResult: [User] = []
-    var connectedMemebers: [TravelCalculation.Member] {
+    var connectedMemebers: [Travel.Member] {
         return members.filter { $0.userId != nil && $0.isExcluded == false  }
     }
-    var dummyMemebers: [TravelCalculation.Member] {
+    var dummyMemebers: [Travel.Member] {
         return members.filter { $0.userId == nil && $0.isExcluded == false }
     }
-    var excludedMemebers: [TravelCalculation.Member] {
+    var excludedMemebers: [Travel.Member] {
         return members.filter { $0.isExcluded == true }
     }
-    var seletedMember: TravelCalculation.Member {
+    var seletedMember: Travel.Member {
         return members[selectedmemberIndex]
     }
     
@@ -34,10 +34,10 @@ class JoinMemberStore: ObservableObject {
     @Published var isSearching: Bool = false
     @Published var isfinishsearched: Bool = true
     
-    var travel: TravelCalculation = TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
+    var travel: Travel = Travel(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: [])
     
     @MainActor
-    func initStore(travel: TravelCalculation) {
+    func initStore(travel: Travel) {
         self.travel = travel
         self.members = travel.members
         self.InitializedStore = true
@@ -65,7 +65,7 @@ class JoinMemberStore: ObservableObject {
     
     @MainActor
     func addMember() {
-        let newMemeber = TravelCalculation.Member(name: "인원\(members.count + 1)", advancePayment: 0, payment: 0)
+        let newMemeber = Travel.Member(name: "인원\(members.count + 1)", advancePayment: 0, payment: 0)
         members.append(newMemeber)
         isSelectedMember = true
         print(isSelectedMember)
@@ -113,9 +113,9 @@ class JoinMemberStore: ObservableObject {
             self.isSearching = true
             do {
                 var searchResult: [User] = []
-                let nameSnapshot = try await Firestore.firestore().collection("User")
+                let nameSnapshot = try await Firestore.firestore().collection(StoreCollection.user.path)
                     .whereField("name", isEqualTo: query).getDocuments()
-                let emailSnapshot = try await Firestore.firestore().collection("User")
+                let emailSnapshot = try await Firestore.firestore().collection(StoreCollection.user.path)
                     .whereField("email", isEqualTo: query).getDocuments()
                 if nameSnapshot.isEmpty == false {
                     for document in nameSnapshot.documents {
@@ -129,7 +129,7 @@ class JoinMemberStore: ObservableObject {
                         searchResult.append(user)
                     }
                 }
-                self.searchResult = searchResult.filter { $0.id != AuthStore.shared.userUid }
+                self.searchResult = searchResult.filter { $0.id != AuthService.shared.userUid }
                 self.isSearching = false
                 self.isfinishsearched = false
             } catch {

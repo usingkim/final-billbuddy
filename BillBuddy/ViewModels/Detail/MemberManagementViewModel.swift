@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestore
 
 final class MemberManagementViewModel: ObservableObject {
-    var travel: TravelCalculation
+    var travel: Travel
     var entryViewType: EntryViewType
     
     @Published var payments: [Payment]
@@ -22,7 +22,7 @@ final class MemberManagementViewModel: ObservableObject {
     @Published var isPresentedSettledAlert: Bool = false
     @Published var nickName: String = ""
     @Published var advancePayment: String = ""
-    @Published var member: TravelCalculation.Member = TravelCalculation.Member(name: "", advancePayment: 0, payment: 0)
+    @Published var member: Travel.Member = Travel.Member(name: "", advancePayment: 0, payment: 0)
     @Published var isExcluded: Bool = false
     @Published var searchText: String = ""
     @Published var isShowingInviteAlert: Bool = false
@@ -31,7 +31,7 @@ final class MemberManagementViewModel: ObservableObject {
     
     var saveAction: () -> Void = {}
     
-    init(travel: TravelCalculation, entryViewType: EntryViewType) {
+    init(travel: Travel, entryViewType: EntryViewType) {
         self.travel = travel
         self.entryViewType = entryViewType
         self.payments = []
@@ -52,7 +52,7 @@ final class MemberManagementViewModel: ObservableObject {
         }
     }
     
-    func setMemberAndIsExcluded(m: TravelCalculation.Member) {
+    func setMemberAndIsExcluded(m: Travel.Member) {
         member = m
         isExcluded = m.isExcluded
     }
@@ -83,7 +83,7 @@ final class MemberManagementViewModel: ObservableObject {
     
     func inviteMember(joinMemberStore: JoinMemberStore, notificationStore: NotificationService) {
         Task {
-            let noti = UserNotification(
+            let noti = Notification(
                 type: .invite,
                 content: "\(joinMemberStore.travel.travelTitle) 에서 당신을 초대했습니다",
                 contentId: "\(URLSchemeBase.scheme.rawValue)://travel?travelId=\(joinMemberStore.travel.id )&memberId=\(joinMemberStore.seletedMember.id)",

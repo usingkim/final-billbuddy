@@ -8,13 +8,16 @@
 import Foundation
 import FirebaseFirestore
 
+/// Payment DB 관련 구버전 Store
+/// 참고할 부분이 있을거같아서 남겨둔다.
+
 @MainActor
-final class PaymentServiceOrigin: ObservableObject {
+final class PaymentStore: ObservableObject {
     @Published var payments: [Payment] = []
     @Published var isFetchingList: Bool = false
     public var updateContentDate: Double = 0
     
-    private var members: [TravelCalculation.Member]
+    private var members: [Travel.Member]
     private var travelCalculationId: String
     private var dbRef: CollectionReference
     private var isPaymentSettled: Bool
@@ -24,12 +27,12 @@ final class PaymentServiceOrigin: ObservableObject {
         payments.map { $0.paymentDate.toDate() }
     }
     
-    init(travel: TravelCalculation) {
+    init(travel: Travel) {
         self.travelCalculationId = travel.id
         self.dbRef = Firestore.firestore()
-            .collection("TravelCalculation")
+            .collection(StoreCollection.travel.path)
             .document(travel.id)
-            .collection("Payment")
+            .collection(StoreCollection.payment.path)
         self.members = travel.members
         self.updateContentDate = travel.updateContentDate
         self.isPaymentSettled = travel.isPaymentSettled

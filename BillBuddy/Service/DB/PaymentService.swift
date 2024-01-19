@@ -9,16 +9,16 @@ import Foundation
 import FirebaseFirestore
 import Combine
 
-final class PaymentService: ObservableObject, FirebaseService {
+final class PaymentService: ObservableObject, FirebaseProtocol {
     
     var dbRef: CollectionReference
     typealias DBData = Payment
     
     var travelId: String
     
-    init(travel: TravelCalculation) {
-        self.dbRef = Firestore.firestore().collection("TravelCalculation")
-            .document(travel.id).collection("Payment")
+    init(travel: Travel) {
+        self.dbRef = Firestore.firestore().collection(StoreCollection.travel.path)
+            .document(travel.id).collection(StoreCollection.payment.path)
         self.travelId = travel.id
     }
     

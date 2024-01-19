@@ -14,7 +14,7 @@ struct ChattingMenuView: View {
     @EnvironmentObject private var messageStore: MessageService
     @EnvironmentObject private var tabViewStore: TabViewModel
     @State private var isPresentedLeaveAlert: Bool = false
-    var travel: TravelCalculation
+    var travel: Travel
     
     var body: some View {
         VStack {
@@ -199,7 +199,7 @@ struct ChattingMenuView: View {
 }
 
 #Preview {
-    ChattingMenuView(travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
+    ChattingMenuView(travel: Travel(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
         .environmentObject(UserTravelStore())
         .environmentObject(MessageService())
         .environmentObject(TabViewModel.shared)

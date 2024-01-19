@@ -9,13 +9,13 @@ import Foundation
 import FirebaseFirestore
 
 class PushNotificationManager {
-    static func sendPushNotification(toTravel travel: TravelCalculation, title: String, body: String, senderToken: String) {
+    static func sendPushNotification(toTravel travel: Travel, title: String, body: String, senderToken: String) {
         if let serverKey = ServerKeyManager.loadServerKey() {
             let db = Firestore.firestore()
-            let _ = db.collection("TravelCalculation").document(travel.id)
+            let _ = db.collection(StoreCollection.travel.path).document(travel.id)
             
             let members = travel.members.filter { member in
-                return member.userId != nil && !member.reciverToken.isEmpty && member.userId != AuthStore.shared.userUid
+                return member.userId != nil && !member.reciverToken.isEmpty && member.userId != AuthService.shared.userUid
             }
             
             for member in members {

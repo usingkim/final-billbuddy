@@ -38,7 +38,7 @@ final class InviteTravelService: ObservableObject {
     
     /// Notification - 여행방 초대 알림으로 진입 시
     @MainActor
-    func getInviteNoti(_ noti: UserNotification) {
+    func getInviteNoti(_ noti: Notification) {
         let urlString = noti.contentId
         guard let encodeString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         guard let url = URL(string: encodeString) else { return }
@@ -47,7 +47,7 @@ final class InviteTravelService: ObservableObject {
         pushData?.querys["notiId"] = noti.id!
     }
     
-    func denialInviteNoti(_ noti: UserNotification) {
+    func denialInviteNoti(_ noti: Notification) {
         let urlString = noti.contentId
         guard let encodeString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         guard let url = URL(string: encodeString) else { return }
@@ -58,7 +58,7 @@ final class InviteTravelService: ObservableObject {
     
     private func removeNoti(_ notiId: String?) {
         guard let notiId = notiId else { return }
-        dbRef.collection(StoreCollection.user.path).document(AuthStore.shared.userUid).collection(StoreCollection.notification.path).document(notiId).delete()
+        dbRef.collection(StoreCollection.user.path).document(AuthService.shared.userUid).collection(StoreCollection.notification.path).document(notiId).delete()
     }
     
     private func changeMemberInvitingBoolean(_ push: PushData) {
@@ -66,8 +66,8 @@ final class InviteTravelService: ObservableObject {
             guard let travelId = push.querys["travelId"] else { return }
             let memberId = push.querys["memberId"]
             do {
-                let snapshotData = try await self.dbRef.collection("TravelCalculation").document(travelId).getDocument()
-                var travel = try snapshotData.data(as: TravelCalculation.self)
+                let snapshotData = try await self.dbRef.collection(StoreCollection.travel.path).document(travelId).getDocument()
+                var travel = try snapshotData.data(as: Travel.self)
                 
                 guard let index = travel.members.firstIndex(where: { $0.id == memberId }) else { return }
                 travel.members[index].isInvited = false
@@ -84,7 +84,7 @@ final class InviteTravelService: ObservableObject {
     
     /// 여행 입장 및 fetch
     @MainActor
-    func joinAndFetchTravel(onComplete: @escaping (TravelCalculation) -> ()) {
+    func joinAndFetchTravel(onComplete: @escaping (Travel) -> ()) {
         Task {
             guard let travelId = pushData?.querys["travelId"] else { return }
             guard let memberId = pushData?.querys["memberId"] else { return }
@@ -94,7 +94,7 @@ final class InviteTravelService: ObservableObject {
                 
                 let snapshotData = try await self.dbRef.collection(StoreCollection.travel.path).document(travelId).getDocument()
                 
-                var travel = try snapshotData.data(as: TravelCalculation.self)
+                var travel = try snapshotData.data(as: Travel.self)
                 
                 
                 // 현재 맴버에 자신이 포함되어있으면 return
@@ -123,7 +123,7 @@ final class InviteTravelService: ObservableObject {
                 var members = travel.members
                 var newMember = members[index]
                 
-                newMember.userId = AuthStore.shared.userUid
+                newMember.userId = AuthService.shared.userUid
                 newMember.name = user.name
                 newMember.bankName = user.bankName
                 newMember.bankAccountNum = user.bankAccountNum
@@ -133,7 +133,7 @@ final class InviteTravelService: ObservableObject {
                 
                 members[index] = newMember
                 
-                let userTravel = UserTravel(travelId: travelId)
+                let userTravel = MyTravel(travelId: travelId)
                 
                 travel.members = members
                 
@@ -148,7 +148,7 @@ final class InviteTravelService: ObservableObject {
                 
                 do {
                     try dbRef.collection(StoreCollection.user.path)
-                        .document(AuthStore.shared.userUid).collection(StoreCollection.userTravel.path)
+                        .document(AuthService.shared.userUid).collection(StoreCollection.userTravel.path)
                         .addDocument(from: userTravel)
                     
                 } catch {
@@ -172,7 +172,7 @@ final class InviteTravelService: ObservableObject {
     func deleteNotification() {
         guard let notiId = pushData?.querys["notiId"] else { return }
         dbRef.collection(StoreCollection.user.path)
-            .document(AuthStore.shared.userUid)
+            .document(AuthService.shared.userUid)
             .collection(StoreCollection.notification.path)
             .document(notiId)
     }

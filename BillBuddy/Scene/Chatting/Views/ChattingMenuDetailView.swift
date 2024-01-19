@@ -13,7 +13,7 @@ struct ChattingMenuDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State var selection: String
     
-    var travel: TravelCalculation
+    var travel: Travel
     let menus: [String] = ["공지", "사진"]
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
@@ -158,6 +158,6 @@ struct ChattingMenuDetailView: View {
 }
 
 #Preview {
-    ChattingMenuDetailView(selection: "사진", travel: TravelCalculation(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
+    ChattingMenuDetailView(selection: "사진", travel: Travel(hostId: "", travelTitle: "", managerId: "", startDate: 0, endDate: 0, updateContentDate: 0, members: []))
         .environmentObject(MessageService())
 }

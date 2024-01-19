@@ -11,16 +11,16 @@ import FirebaseStorage
 import _PhotosUI_SwiftUI
 
 final class MessageService: ObservableObject {
-    private let db = Firestore.firestore().collection("TravelCalculation")
+    private let db = Firestore.firestore().collection(StoreCollection.travel.path)
     private let storage = Storage.storage().reference()
     ///불러온 메시지 쿼리 중 마지막 쿼리스냅샷
     var lastDoc: QueryDocumentSnapshot?
     @Published var messages: [Message] = []
     @Published var isAddedNewMessage: Bool = false
-    @Published var travel: TravelCalculation?
+    @Published var travel: Travel?
     
     /// 채팅 메세지 보내기
-    func sendMessage(travelCalculation: TravelCalculation, message: Message) {
+    func sendMessage(travelCalculation: Travel, message: Message) {
         do {
             try db.document(travelCalculation.id)
                 .collection("Message").addDocument(from: message.self)
@@ -33,7 +33,7 @@ final class MessageService: ObservableObject {
     }
     
     /// firebase storage에 이미지 업로드 -> url 반환
-    func getImagePath(item: PhotosPickerItem, travelCalculation: TravelCalculation) async -> String {
+    func getImagePath(item: PhotosPickerItem, travelCalculation: Travel) async -> String {
         
         let path = "chat/\(travelCalculation.id)/\(UUID().uuidString).jpeg"
         var urlString: String = ""
@@ -51,7 +51,7 @@ final class MessageService: ObservableObject {
     }
     
     /// 실시간 채팅 메세지 불러오기
-    func fetchMessages(travelCalculation: TravelCalculation, count: Int) {
+    func fetchMessages(travelCalculation: Travel, count: Int) {
         //마지막 메시지 쿼리스냅샷이 있는지에 따라 나뉨 ( 없으면 최근 count만큼, 있으면 마지막 메시지가 보일때 count만큼 불러오는 상황 )
         if let lastDoc {
             // firestore message에 해당하는 여행 id 채팅 데이터 시간 순으로 불러오기
@@ -145,7 +145,7 @@ final class MessageService: ObservableObject {
     }
     
     /// 마지막 채팅 메세지 travelCalculation 에 업데이트
-    private func updateLastMessage(travelCalculation: TravelCalculation, message: Message) {
+    private func updateLastMessage(travelCalculation: Travel, message: Message) {
         let data = [
             "lastMessage" : message.message ?? "사진",
             "lastMessageDate" : message.sendDate
@@ -157,7 +157,7 @@ final class MessageService: ObservableObject {
     }
     
     /// 채팅방 사이드메뉴 이미지 배열 업데이트
-    func updateChatRoomImages(travelCalculation: TravelCalculation, message: Message) async {
+    func updateChatRoomImages(travelCalculation: Travel, message: Message) async {
         guard let imageExist = message.imageString else { return }
         do {
             try await db.document(travelCalculation.id)
@@ -170,7 +170,7 @@ final class MessageService: ObservableObject {
     }
     
     /// 채팅방 공지사항 업데이트
-    func updateChatRoomNotice(travelCalculation: TravelCalculation, message: Message) async {
+    func updateChatRoomNotice(travelCalculation: Travel, message: Message) async {
         guard let existMessage = message.message else { return }
         let data = [ "notice" : existMessage,
                      "name" : message.userName ?? "이름없음",
@@ -186,7 +186,7 @@ final class MessageService: ObservableObject {
     }
     
     /// 채팅방 데이터 가져오기
-    func getChatRoomData(travelCalculation: TravelCalculation)  {
+    func getChatRoomData(travelCalculation: Travel)  {
         db.document(travelCalculation.id).addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Failed to load chat room data: \(error)")
@@ -197,7 +197,7 @@ final class MessageService: ObservableObject {
                 return
             }
             do {
-                let item = try querySnapshot.data(as: TravelCalculation.self)
+                let item = try querySnapshot.data(as: Travel.self)
                 self.travel = item
             } catch {
                 print("Failed to fetch chat message: \(error)")

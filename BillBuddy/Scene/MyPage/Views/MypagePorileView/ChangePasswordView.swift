@@ -84,11 +84,11 @@ struct ChangePasswordView: View {
             
             Button(action: {
                 Task {
-                    isUnmatchCurrentPassword = await !AuthStore.shared.checkCurrentPassword(password: currentPassword)
+                    isUnmatchCurrentPassword = await !AuthService.shared.checkCurrentPassword(password: currentPassword)
                     isUnmatchNewPassword = (newPassword != confirmNewPassword)
                     
                     if !isUnmatchCurrentPassword && !isUnmatchNewPassword {
-                        alertMessage = try await AuthStore.shared.changePassword(password: newPassword)
+                        alertMessage = try await AuthService.shared.changePassword(password: newPassword)
                         isShowingAlert.toggle()
                     }
                 }

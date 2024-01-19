@@ -27,7 +27,7 @@ final class SignInViewModel: ObservableObject {
     func checkSignIn() async throws -> Bool {
         isDisableSignInButton = true
         
-        let result = try await AuthStore.shared.signIn(email: emailText, password: passwordText)
+        let result = try await AuthService.shared.signIn(email: emailText, password: passwordText)
         self.alertDescription = result.description
         
         switch result {

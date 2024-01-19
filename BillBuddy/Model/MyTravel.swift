@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct UserTravel: Identifiable, Codable {
+struct MyTravel: Identifiable, Codable {
     @DocumentID var id: String?
     var travelId: String
 }
